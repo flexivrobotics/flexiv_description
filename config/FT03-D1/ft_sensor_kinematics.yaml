@@ -1,0 +1,22 @@
+kinematics:
+  wrist_sensor_remove_rizon_flange_body:
+    x: 0
+    y: 0
+    z: -0.016
+    roll: 0
+    pitch: 0
+    yaw: 0
+  wrist_sensor_proximal_link_to_sensing_frame:
+    x: 0
+    y: 0
+    z: 0.0235
+    roll: 0
+    pitch: 0
+    yaw: 0
+  wrist_sensor_sensing_frame_to_flange:
+    x: 0.0
+    y: 0.0
+    z: 0.0285
+    roll: 0
+    pitch: 0
+    yaw: 0
