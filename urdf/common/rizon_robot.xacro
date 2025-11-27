@@ -29,7 +29,7 @@
 
     <!-- Load gripper -->
     <xacro:if value="${load_gripper and gripper_name=='Flexiv-GN01'}">
-      <xacro:include filename="$(find flexiv_description)/urdf/grav_macro.xacro" />
+      <xacro:include filename="$(find flexiv_description)/urdf/common/grav_macro.xacro" />
       <xacro:flexiv_GN01 prefix="${prefix}" mesh_prefix_path="package://flexiv_description/" />
     </xacro:if>
 

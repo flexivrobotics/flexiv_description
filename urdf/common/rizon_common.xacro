@@ -13,7 +13,8 @@
         <xacro:property name="shell_config" value="${visual_config['shell']}" lazy_eval="false" />
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
-          <mesh filename="package://${shell_config.mesh.package}/${shell_config.mesh.path}" />
+          <mesh
+            filename="package://${shell_config['mesh']['package']}/${shell_config['mesh']['path']}" />
         </geometry>
       </visual>
     </xacro:if>
@@ -21,12 +22,12 @@
       <visual name="ring">
         <xacro:property name="ring_config" value="${visual_config['ring']}" lazy_eval="false" />
         <origin
-          xyz="${ring_config.origin.x} ${ring_config.origin.y} ${ring_config.origin.z}"
-          rpy="${ring_config.origin.roll} ${ring_config.origin.pitch} ${ring_config.origin.yaw}" />
+          xyz="${ring_config['origin']['x']} ${ring_config['origin']['y']} ${ring_config['origin']['z']}"
+          rpy="${ring_config['origin']['roll']} ${ring_config['origin']['pitch']} ${ring_config['origin']['yaw']}" />
         <geometry>
           <mesh
-            filename="package://${ring_config.mesh.package}/${ring_config.mesh.path}"
-            scale="${ring_config.mesh.scale}" />
+            filename="package://${ring_config['mesh']['package']}/${ring_config['mesh']['path']}"
+            scale="${ring_config['mesh']['scale']}" />
         </geometry>
       </visual>
     </xacro:if>
@@ -43,7 +44,7 @@
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://${collision_config.mesh.package}/${collision_config.mesh.path}" />
+          filename="package://${collision_config['mesh']['package']}/${collision_config['mesh']['path']}" />
       </geometry>
     </collision>
   </xacro:macro>
@@ -54,10 +55,11 @@
   -->
   <xacro:macro name="get_joint_limits" params="name">
     <xacro:property name="limits" value="${sec_joint_limits[name]}" lazy_eval="false" />
-    <limit lower="${limits.lower}" upper="${limits.upper}" effort="${limits.effort}"
-      velocity="${limits.velocity}" />
-    <safety_controller k_position="100.0" k_velocity="40.0" soft_lower_limit="${limits.soft_lower}"
-      soft_upper_limit="${limits.soft_upper}" />
+    <limit lower="${limits['lower']}" upper="${limits['upper']}" effort="${limits['effort']}"
+      velocity="${limits['velocity']}" />
+    <safety_controller k_position="100.0" k_velocity="40.0"
+      soft_lower_limit="${limits['soft_lower']}"
+      soft_upper_limit="${limits['soft_upper']}" />
   </xacro:macro>
 
   <!--
@@ -66,8 +68,8 @@
   -->
   <xacro:macro name="get_kinematics" params="name">
     <xacro:property name="kinematics" value="${sec_kinematics[name]}" lazy_eval="false" />
-    <origin xyz="${kinematics.x} ${kinematics.y} ${kinematics.z}"
-      rpy="${kinematics.roll} ${kinematics.pitch} ${kinematics.yaw}" />
+    <origin xyz="${kinematics['x']} ${kinematics['y']} ${kinematics['z']}"
+      rpy="${kinematics['roll']} ${kinematics['pitch']} ${kinematics['yaw']}" />
   </xacro:macro>
 
   <!--
@@ -76,12 +78,13 @@
   -->
   <xacro:macro name="get_inertias" params="name">
     <xacro:property name="inertias" value="${sec_inertia_parameters[name]}" lazy_eval="false" />
-    <origin xyz="${inertias.origin.x} ${inertias.origin.y} ${inertias.origin.z}"
-      rpy="${inertias.origin.roll} ${inertias.origin.pitch} ${inertias.origin.yaw}" />
-    <mass value="${inertias.mass}" />
-    <inertia ixx="${inertias.inertia.ixx}" ixy="${inertias.inertia.ixy}"
-      ixz="${inertias.inertia.ixz}" iyy="${inertias.inertia.iyy}" iyz="${inertias.inertia.iyz}"
-      izz="${inertias.inertia.izz}" />
+    <origin xyz="${inertias['origin']['x']} ${inertias['origin']['y']} ${inertias['origin']['z']}"
+      rpy="${inertias['origin']['roll']} ${inertias['origin']['pitch']} ${inertias['origin']['yaw']}" />
+    <mass value="${inertias['mass']}" />
+    <inertia ixx="${inertias['inertia']['ixx']}" ixy="${inertias['inertia']['ixy']}"
+      ixz="${inertias['inertia']['ixz']}" iyy="${inertias['inertia']['iyy']}"
+      iyz="${inertias['inertia']['iyz']}"
+      izz="${inertias['inertia']['izz']}" />
   </xacro:macro>
 
   <!--
