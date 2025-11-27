@@ -1,0 +1,205 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:include filename="$(find flexiv_description)/urdf/common/rizon_common.xacro" />
+
+  <xacro:macro name="rizon_arm"
+    params="
+    prefix
+    joint_limits_parameters_file
+    kinematics_parameters_file
+    inertia_parameters_file
+    visual_parameters_file
+    load_mounted_ft_sensor:=false
+    ">
+
+    <!-- Load configuration data from the YAML files -->
+    <xacro:read_model_data
+      joint_limits_parameters_file="${joint_limits_parameters_file}"
+      kinematics_parameters_file="${kinematics_parameters_file}"
+      inertia_parameters_file="${inertia_parameters_file}"
+      visual_parameters_file="${visual_parameters_file}"
+      load_mounted_ft_sensor="${load_mounted_ft_sensor}"
+      sensor_kinematics_file="$(find flexiv_description)/config/FT03-D1/ft_sensor_kinematics.yaml"
+      sensor_inertia_file="$(find flexiv_description)/config/FT03-D1/ft_sensor_inertia.yaml"
+      sensor_visual_file="$(find flexiv_description)/config/FT03-D1/ft_sensor_visual.yaml"
+    />
+
+    <!-- JOINTS -->
+    <joint name="${prefix}base_joint" type="fixed">
+      <parent link="world" />
+      <child link="${prefix}base_link" />
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+    </joint>
+
+    <joint name="${prefix}joint1" type="revolute">
+      <parent link="${prefix}base_link" />
+      <child link="${prefix}link1" />
+      <xacro:get_kinematics name="joint1" />
+      <axis xyz="0 0 1" />
+      <xacro:get_joint_limits name="joint1" />
+    </joint>
+
+    <joint name="${prefix}joint2" type="revolute">
+      <parent link="${prefix}link1" />
+      <child link="${prefix}link2" />
+      <xacro:get_kinematics name="joint2" />
+      <axis xyz="0 1 0" />
+      <xacro:get_joint_limits name="joint2" />
+    </joint>
+
+    <joint name="${prefix}joint3" type="revolute">
+      <parent link="${prefix}link2" />
+      <child link="${prefix}link3" />
+      <xacro:get_kinematics name="joint3" />
+      <axis xyz="0 0 1" />
+      <xacro:get_joint_limits name="joint3" />
+    </joint>
+
+    <joint name="${prefix}joint4" type="revolute">
+      <parent link="${prefix}link3" />
+      <child link="${prefix}link4" />
+      <xacro:get_kinematics name="joint4" />
+      <axis xyz="0 1 0" />
+      <xacro:get_joint_limits name="joint4" />
+    </joint>
+
+    <joint name="${prefix}joint5" type="revolute">
+      <parent link="${prefix}link4" />
+      <child link="${prefix}link5" />
+      <xacro:get_kinematics name="joint5" />
+      <axis xyz="0 0 1" />
+      <xacro:get_joint_limits name="joint5" />
+    </joint>
+
+    <joint name="${prefix}joint6" type="revolute">
+      <parent link="${prefix}link5" />
+      <child link="${prefix}link6" />
+      <xacro:get_kinematics name="joint6" />
+      <axis xyz="0 1 0" />
+      <xacro:get_joint_limits name="joint6" />
+    </joint>
+
+    <joint name="${prefix}joint7" type="revolute">
+      <parent link="${prefix}link6" />
+      <child link="${prefix}link7" />
+      <xacro:get_kinematics name="joint7" />
+      <axis xyz="0 0 1" />
+      <xacro:get_joint_limits name="joint7" />
+    </joint>
+
+    <joint name="${prefix}link7_to_flange" type="fixed">
+      <parent link="${prefix}link7" />
+      <xacro:if value="${load_mounted_ft_sensor}">
+        <child link="${prefix}wrist-sensor.base_link" />
+      </xacro:if>
+      <xacro:unless value="${load_mounted_ft_sensor}">
+        <child link="${prefix}flange" />
+      </xacro:unless>
+      <xacro:get_kinematics name="link7_to_flange" />
+    </joint>
+
+    <!-- LINKS -->
+    <link name="world">
+    </link>
+
+    <link name="${prefix}base_link">
+      <xacro:get_inertias name="base_link" />
+      <xacro:get_visuals name="base_link" />
+      <xacro:get_collisions name="base_link" />
+      <workspace>
+        <origin rpy="0 0 0" xyz="0 0 0.365" />
+        <geometry>
+          <sphere radius="0.890" />
+        </geometry>
+      </workspace>
+    </link>
+
+    <link name="${prefix}link1">
+      <xacro:get_inertias name="link1" />
+      <xacro:get_visuals name="link1" />
+      <xacro:get_collisions name="link1" />
+    </link>
+
+    <link name="${prefix}link2">
+      <xacro:get_inertias name="link2" />
+      <xacro:get_visuals name="link2" />
+      <xacro:get_collisions name="link2" />
+    </link>
+
+    <link name="${prefix}link3">
+      <xacro:get_inertias name="link3" />
+      <xacro:get_visuals name="link3" />
+      <xacro:get_collisions name="link3" />
+    </link>
+
+    <link name="${prefix}link4">
+      <xacro:get_inertias name="link4" />
+      <xacro:get_visuals name="link4" />
+      <xacro:get_collisions name="link4" />
+    </link>
+
+    <link name="${prefix}link5">
+      <xacro:get_inertias name="link5" />
+      <xacro:get_visuals name="link5" />
+      <xacro:get_collisions name="link5" />
+    </link>
+
+    <link name="${prefix}link6">
+      <xacro:get_inertias name="link6" />
+      <xacro:get_visuals name="link6" />
+      <xacro:get_collisions name="link6" />
+    </link>
+
+    <link name="${prefix}link7">
+      <xacro:get_inertias name="link7" />
+      <xacro:get_visuals name="link7" />
+      <xacro:get_collisions name="link7" />
+    </link>
+
+    <!-- FT03-D1 wrist sensor -->
+    <xacro:if value="${load_mounted_ft_sensor}">
+      <joint name="${prefix}wrist-sensor.remove_rizon_flange_body" type="fixed">
+        <xacro:get_kinematics name="wrist_sensor_remove_rizon_flange_body" />
+        <parent link="${prefix}wrist-sensor.base_link" />
+        <child link="${prefix}wrist-sensor.proximal_link" />
+        <axis xyz="0 0 1" />
+      </joint>
+
+      <joint name="${prefix}wrist-sensor.proximal_link_to_sensing_frame" type="fixed">
+        <xacro:get_kinematics name="wrist_sensor_proximal_link_to_sensing_frame" />
+        <parent link="${prefix}wrist-sensor.proximal_link" />
+        <child link="${prefix}wrist-sensor.distal_link" />
+        <axis xyz="0 0 1" />
+      </joint>
+
+      <joint name="${prefix}wrist-sensor.sensing_frame_to_flange" type="fixed">
+        <parent link="${prefix}wrist-sensor.distal_link" />
+        <child link="${prefix}flange" />
+        <xacro:get_kinematics name="wrist_sensor_sensing_frame_to_flange" />
+      </joint>
+
+      <link name="${prefix}wrist-sensor.base_link">
+        <xacro:get_inertias name="wrist_sensor_base_link" />
+      </link>
+
+      <link name="${prefix}wrist-sensor.proximal_link">
+        <xacro:get_inertias name="wrist_sensor_proximal_link" />
+        <xacro:get_visuals name="wrist_sensor_proximal_link" />
+        <xacro:get_collisions name="wrist_sensor_proximal_link" />
+      </link>
+
+      <link name="${prefix}wrist-sensor.distal_link">
+        <xacro:get_inertias name="wrist_sensor_distal_link" />
+        <xacro:get_visuals name="wrist_sensor_distal_link" />
+        <xacro:get_collisions name="wrist_sensor_distal_link" />
+      </link>
+    </xacro:if>
+
+    <link name="${prefix}flange">
+    </link>
+
+  </xacro:macro>
+
+
+</robot>

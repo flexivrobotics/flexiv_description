@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="rizon">
-  <!-- 'rizon_type' values: Rizon4, Rizon4s, Rizon10, Rizon10s -->
+  <!-- 'rizon_type' values: Rizon4, Rizon4s, Rizon4M, Rizon4R, Rizon10, Rizon10s -->
   <xacro:arg name="rizon_type" default="Rizon4" />
 
   <!-- import main macro -->
-  <xacro:include filename="$(find flexiv_description)/urdf/rizon_macro.xacro" />
+  <xacro:include filename="$(find flexiv_description)/urdf/common/rizon_robot.xacro" />
 
   <!-- parameters -->
   <xacro:arg name="arm_prefix" default="" />
