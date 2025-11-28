@@ -107,12 +107,7 @@
       <xacro:get_inertias name="base_link" />
       <xacro:get_visuals name="base_link" />
       <xacro:get_collisions name="base_link" />
-      <workspace>
-        <origin rpy="0 0 0" xyz="0 0 0.365" />
-        <geometry>
-          <sphere radius="0.890" />
-        </geometry>
-      </workspace>
+      <xacro:get_workspace name="base_link" />
     </link>
 
     <link name="${prefix}link1">

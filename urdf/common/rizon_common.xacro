@@ -11,7 +11,14 @@
     <xacro:if value="${'shell' in visual_config}">
       <visual name="shell">
         <xacro:property name="shell_config" value="${visual_config['shell']}" lazy_eval="false" />
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <xacro:if value="${'origin' in shell_config}">
+          <origin
+            xyz="${shell_config['origin']['x']} ${shell_config['origin']['y']} ${shell_config['origin']['z']}"
+            rpy="${shell_config['origin']['roll']} ${shell_config['origin']['pitch']} ${shell_config['origin']['yaw']}" />
+        </xacro:if>
+        <xacro:unless value="${'origin' in shell_config}">
+          <origin xyz="0 0 0" rpy="0 0 0" />
+        </xacro:unless>
         <geometry>
           <mesh
             filename="package://${shell_config['mesh']['package']}/${shell_config['mesh']['path']}" />
@@ -41,7 +48,14 @@
     <xacro:property name="collision_config" value="${sec_visual_parameters[name]['collision']}"
       lazy_eval="false" />
     <collision name="convex_mesh">
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <xacro:if value="${'origin' in collision_config}">
+        <origin
+          xyz="${collision_config['origin']['x']} ${collision_config['origin']['y']} ${collision_config['origin']['z']}"
+          rpy="${collision_config['origin']['roll']} ${collision_config['origin']['pitch']} ${collision_config['origin']['yaw']}" />
+      </xacro:if>
+      <xacro:unless value="${'origin' in collision_config}">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+      </xacro:unless>
       <geometry>
         <mesh
           filename="package://${collision_config['mesh']['package']}/${collision_config['mesh']['path']}" />
@@ -142,6 +156,25 @@
         value="${config_visual_parameters['visual_parameters']}" scope="parent" />
     </xacro:unless>
 
+  </xacro:macro>
+
+  <!--
+    Extract workspace parameters from the config file
+    name: name of the link
+  -->
+  <xacro:macro name="get_workspace" params="name">
+    <xacro:if value="${'workspace' in sec_visual_parameters[name]}">
+      <xacro:property name="workspace_config" value="${sec_visual_parameters[name]['workspace']}"
+        lazy_eval="false" />
+      <workspace>
+        <origin
+          xyz="${workspace_config['origin']['x']} ${workspace_config['origin']['y']} ${workspace_config['origin']['z']}"
+          rpy="${workspace_config['origin']['roll']} ${workspace_config['origin']['pitch']} ${workspace_config['origin']['yaw']}" />
+        <geometry>
+          <sphere radius="${workspace_config['sphere']['radius']}" />
+        </geometry>
+      </workspace>
+    </xacro:if>
   </xacro:macro>
 
 </robot>
