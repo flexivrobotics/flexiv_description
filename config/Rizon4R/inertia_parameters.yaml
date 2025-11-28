@@ -1,0 +1,129 @@
+inertia_parameters:
+  base_link:
+    mass: 3.7
+    origin:
+      x: -0.0
+      y: 0.0
+      z: 0.09
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.02
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 0.02
+      iyz: -0.0
+      izz: 0.01
+  link1:
+    mass: 3.7
+    origin:
+      x: 0.0
+      y: 0.01
+      z: -0.15
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.03
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 0.03
+      iyz: 0.0
+      izz: 0.01
+  link2:
+    mass: 2.7
+    origin:
+      x: -0.0
+      y: -0.04
+      z: -0.1
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.02
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 0.02
+      iyz: -0.0003
+      izz: 0.004
+  link3:
+    mass: 2.4
+    origin:
+      x: -0.01
+      y: -0.0
+      z: -0.13
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.01
+      ixy: 0.0
+      ixz: 0.001
+      iyy: 0.01
+      iyz: 0.0007
+      izz: 0.004
+  link4:
+    mass: 2.4
+    origin:
+      x: 0.01
+      y: -0.03
+      z: -0.1
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.02
+      ixy: 0.0
+      ixz: -0.002
+      iyy: 0.02
+      iyz: -0.001
+      izz: 0.003
+  link5:
+    mass: 2.4
+    origin:
+      x: 0.0
+      y: 0.0
+      z: -0.13
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.01
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 0.01
+      iyz: -0.001
+      izz: 0.004
+  link6:
+    mass: 2.2
+    origin:
+      x: -0.02
+      y: -0.06
+      z: -0.07
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.01
+      ixy: 0.0
+      ixz: -0.001
+      iyy: 0.01
+      iyz: 0.002
+      izz: 0.004
+  link7:
+    mass: 0.8
+    origin:
+      x: 0.0
+      y: -0.0
+      z: 0.03
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.001
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 0.001
+      iyz: 0.0
+      izz: 0.001

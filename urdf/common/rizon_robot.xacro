@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:macro name="rizon_robot"
+    params="
+    rizon_type
+    robot_sn
+    joint_limits_parameters_file
+    kinematics_parameters_file
+    inertia_parameters_file
+    visual_parameters_file
+    arm_prefix:=''
+    load_gripper:=false
+    gripper_name:='Flexiv-GN01'
+    load_mounted_ft_sensor:=false
+    ros2_control:=false
+    rdk_control_mode:='joint_position'
+    use_fake_hardware:=false
+    fake_sensor_commands:=false
+    ">
+
+    <!-- Prefix defaults to 'arm_prefix_robot_sn' -->
+    <xacro:property name="prefix"
+      value="${(arm_prefix + '_' + robot_sn + '_') if arm_prefix != '' and robot_sn != '' else (arm_prefix + robot_sn + '_') if (arm_prefix + robot_sn) != '' else ''}" />
+
+    <!-- FT sensor mounting only supported for Rizon4, Rizon4R and Rizon10 -->
+    <xacro:unless value="${rizon_type=='Rizon4' or rizon_type=='Rizon4R' or rizon_type=='Rizon10'}">
+      <xacro:property name="load_mounted_ft_sensor" value="false" />
+    </xacro:unless>
+
+    <!-- Load gripper -->
+    <xacro:if value="${load_gripper and gripper_name=='Flexiv-GN01'}">
+      <xacro:include filename="$(find flexiv_description)/urdf/common/grav_macro.xacro" />
+      <xacro:flexiv_GN01 prefix="${prefix}" mesh_prefix_path="package://flexiv_description/" />
+    </xacro:if>
+
+    <xacro:include filename="$(find flexiv_description)/urdf/common/rizon_arm.xacro" />
+    <xacro:rizon_arm prefix="${prefix}"
+      load_mounted_ft_sensor="${load_mounted_ft_sensor}"
+      joint_limits_parameters_file="${joint_limits_parameters_file}"
+      kinematics_parameters_file="${kinematics_parameters_file}"
+      inertia_parameters_file="${inertia_parameters_file}"
+      visual_parameters_file="${visual_parameters_file}"
+    />
+
+    <xacro:if value="${ros2_control}">
+      <!-- ros2 control include -->
+      <xacro:include filename="$(find flexiv_description)/urdf/common/rizon.ros2_control.xacro" />
+      <xacro:rizon_ros2_control prefix="${prefix}" robot_sn="${robot_sn}"
+        rdk_control_mode="${rdk_control_mode}"
+        use_fake_hardware="${use_fake_hardware}"
+        fake_sensor_commands="${fake_sensor_commands}"
+      />
+    </xacro:if>
+
+  </xacro:macro>
+
+</robot>

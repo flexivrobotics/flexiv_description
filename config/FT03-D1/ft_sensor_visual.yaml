@@ -1,0 +1,33 @@
+visual_parameters:
+  wrist_sensor_proximal_link:
+    visual:
+      shell:
+        mesh:
+          package: flexiv_description
+          path: meshes/FT03-D1/visual/proximal.obj
+    collision:
+      mesh:
+        package: flexiv_description
+        path: meshes/FT03-D1/collision/proximal.stl
+  wrist_sensor_distal_link:
+    visual:
+      shell:
+        mesh:
+          package: flexiv_description
+          path: meshes/FT03-D1/visual/distal.obj
+      ring:
+        origin:
+          x: 0
+          y: 0
+          z: 0
+          roll: 0
+          pitch: 0
+          yaw: 0
+        mesh:
+          package: flexiv_description
+          path: meshes/FT03-D1/visual/ring.obj
+          scale: 0.039 0.039 0.002
+    collision:
+      mesh:
+        package: flexiv_description
+        path: meshes/FT03-D1/collision/distal.stl
