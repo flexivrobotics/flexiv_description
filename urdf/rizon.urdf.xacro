@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="rizon">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="$(arg rizon_type)">
   <!-- 'rizon_type' values: Rizon4, Rizon4s, Rizon4M, Rizon4R, Rizon10, Rizon10s -->
   <xacro:arg name="rizon_type" default="Rizon4" />
 

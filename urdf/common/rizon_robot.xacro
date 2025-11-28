@@ -20,7 +20,7 @@
     ">
 
     <!-- Prefix defaults to 'arm_prefix_robot_sn' -->
-    <xacro:property name="prefix" value="${arm_prefix + robot_sn + '_'}" />
+    <xacro:property name="prefix" value="${(arm_prefix + robot_sn + '_') if (arm_prefix + robot_sn) != '' else ''}" />
 
     <!-- FT sensor mounting only supported for Rizon4, Rizon4R and Rizon10 -->
     <xacro:unless value="${rizon_type=='Rizon4' or rizon_type=='Rizon4R' or rizon_type=='Rizon10'}">
