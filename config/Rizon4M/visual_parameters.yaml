@@ -4,31 +4,21 @@ visual_parameters:
       shell:
         mesh:
           package: flexiv_description
-          path: meshes/Rizon4/visual/link0.obj
+          path: meshes/Rizon4M/visual/link0.obj
     collision:
       mesh:
         package: flexiv_description
-        path: meshes/Rizon4/collision/link0.stl
-    workspace:
-      origin:
-        x: 0.0
-        y: 0.0
-        z: 0.365
-        roll: 0.0
-        pitch: 0.0
-        yaw: 0.0
-      sphere:
-        radius: 0.890
+        path: meshes/Rizon4M/collision/link0.stl
   link1:
     visual:
       shell:
         mesh:
           package: flexiv_description
-          path: meshes/Rizon4/visual/link1.obj
+          path: meshes/Rizon4M/visual/link1.obj
       ring:
         mesh:
           package: flexiv_description
-          path: meshes/Rizon4/visual/ring.obj
+          path: meshes/Rizon4M/visual/ring.obj
           scale: 0.062 0.062 0.002
         origin:
           x: 0.0
@@ -40,17 +30,17 @@ visual_parameters:
     collision:
       mesh:
         package: flexiv_description
-        path: meshes/Rizon4/collision/link1.stl
+        path: meshes/Rizon4M/collision/link1.stl
   link2:
     visual:
       shell:
         mesh:
           package: flexiv_description
-          path: meshes/Rizon4/visual/link2.obj
+          path: meshes/Rizon4M/visual/link2.obj
       ring:
         mesh:
           package: flexiv_description
-          path: meshes/Rizon4/visual/ring.obj
+          path: meshes/Rizon4M/visual/ring.obj
           scale: 0.062 0.062 0.002
         origin:
           x: 0.0
@@ -62,17 +52,17 @@ visual_parameters:
     collision:
       mesh:
         package: flexiv_description
-        path: meshes/Rizon4/collision/link2.stl
+        path: meshes/Rizon4M/collision/link2.stl
   link3:
     visual:
       shell:
         mesh:
           package: flexiv_description
-          path: meshes/Rizon4/visual/link3.obj
+          path: meshes/Rizon4M/visual/link3.obj
       ring:
         mesh:
           package: flexiv_description
-          path: meshes/Rizon4/visual/ring.obj
+          path: meshes/Rizon4M/visual/ring.obj
           scale: 0.051 0.051 0.002
         origin:
           x: 0.0
@@ -84,17 +74,17 @@ visual_parameters:
     collision:
       mesh:
         package: flexiv_description
-        path: meshes/Rizon4/collision/link3.stl
+        path: meshes/Rizon4M/collision/link3.stl
   link4:
     visual:
       shell:
         mesh:
           package: flexiv_description
-          path: meshes/Rizon4/visual/link4.obj
+          path: meshes/Rizon4M/visual/link4.obj
       ring:
         mesh:
           package: flexiv_description
-          path: meshes/Rizon4/visual/ring.obj
+          path: meshes/Rizon4M/visual/ring.obj
           scale: 0.051 0.051 0.002
         origin:
           x: 0.0
@@ -106,17 +96,17 @@ visual_parameters:
     collision:
       mesh:
         package: flexiv_description
-        path: meshes/Rizon4/collision/link4.stl
+        path: meshes/Rizon4M/collision/link4.stl
   link5:
     visual:
       shell:
         mesh:
           package: flexiv_description
-          path: meshes/Rizon4/visual/link5.obj
+          path: meshes/Rizon4M/visual/link5.obj
       ring:
         mesh:
           package: flexiv_description
-          path: meshes/Rizon4/visual/ring.obj
+          path: meshes/Rizon4M/visual/ring.obj
           scale: 0.051 0.051 0.002
         origin:
           x: 0.0
@@ -128,17 +118,17 @@ visual_parameters:
     collision:
       mesh:
         package: flexiv_description
-        path: meshes/Rizon4/collision/link5.stl
+        path: meshes/Rizon4M/collision/link5.stl
   link6:
     visual:
       shell:
         mesh:
           package: flexiv_description
-          path: meshes/Rizon4/visual/link6.obj
+          path: meshes/Rizon4M/visual/link6.obj
       ring:
         mesh:
           package: flexiv_description
-          path: meshes/Rizon4/visual/ring.obj
+          path: meshes/Rizon4M/visual/ring.obj
           scale: 0.051 0.051 0.002
         origin:
           x: 0.0
@@ -150,17 +140,17 @@ visual_parameters:
     collision:
       mesh:
         package: flexiv_description
-        path: meshes/Rizon4/collision/link6.stl
+        path: meshes/Rizon4M/collision/link6.stl
   link7:
     visual:
       shell:
         mesh:
           package: flexiv_description
-          path: meshes/Rizon4/visual/link7.obj
+          path: meshes/Rizon4M/visual/link7.obj
       ring:
         mesh:
           package: flexiv_description
-          path: meshes/Rizon4/visual/ring.obj
+          path: meshes/Rizon4M/visual/ring.obj
           scale: 0.051 0.051 0.002
         origin:
           x: 0.0
@@ -172,4 +162,4 @@ visual_parameters:
     collision:
       mesh:
         package: flexiv_description
-        path: meshes/Rizon4/collision/link7.stl
+        path: meshes/Rizon4M/collision/link7.stl

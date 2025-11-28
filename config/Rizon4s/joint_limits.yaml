@@ -1,0 +1,50 @@
+joint_limits:
+  joint1:
+    lower: -2.8798
+    upper: 2.8798
+    effort: 123
+    velocity: 2.0944
+    soft_lower: -2.7925
+    soft_upper: 2.7925
+  joint2:
+    lower: -2.3562
+    upper: 2.3562
+    effort: 123
+    velocity: 2.0944
+    soft_lower: -2.2689
+    soft_upper: 2.2689
+  joint3:
+    lower: -3.0543
+    upper: 3.0543
+    effort: 64
+    velocity: 2.4435
+    soft_lower: -2.9671
+    soft_upper: 2.9671
+  joint4:
+    lower: -1.9548
+    upper: 2.7751
+    effort: 64
+    velocity: 2.4435
+    soft_lower: -1.8675
+    soft_upper: 2.6878
+  joint5:
+    lower: -3.0543
+    upper: 3.0543
+    effort: 39
+    velocity: 4.8869
+    soft_lower: -2.9671
+    soft_upper: 2.9671
+  joint6:
+    lower: -1.4835
+    upper: 4.6251
+    effort: 39
+    velocity: 4.8869
+    soft_lower: -1.3963
+    soft_upper: 4.5379
+  joint7:
+    lower: -3.0543
+    upper: 3.0543
+    effort: 39
+    velocity: 4.8869
+    soft_lower: -2.9671
+    soft_upper: 2.9671
