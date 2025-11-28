@@ -20,7 +20,7 @@ Run the `create_urdf.sh` script from the package root directory:
 
 ### Parameters
 
-```bash
+```
 usage: create_urdf.sh [-h] --rizon_type RIZON_TYPE [--arm_prefix ARM_PREFIX] [--robot_sn ROBOT_SN] [--load_gripper] [--gripper_name GRIPPER_NAME][--load_mounted_ft_sensor]
 
 Create URDF files from xacro for Flexiv robots.
@@ -54,7 +54,7 @@ Generate URDF for Rizon4 with a specific serial number:
 
 The robot models can be visualized in RViz using the provided script. This script runs inside a Docker container and requires a GUI environment.
 
-```bash
+```
 usage: visualize_rizon.sh robot_sn:=ROBOT_SN [rizon_type:=Rizon4] [load_gripper:=false] [gripper_name:=Flexiv-GN01] [load_mounted_ft_sensor:=false] [gui:=false]
 
 Visualize Flexiv robots in RViz.
