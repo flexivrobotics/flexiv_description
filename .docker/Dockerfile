@@ -15,6 +15,10 @@ RUN groupadd --gid $USER_GID $USERNAME \
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     ros-humble-xacro \
+    ros-humble-joint-state-publisher \
+    ros-humble-joint-state-publisher-gui \
+    ros-humble-robot-state-publisher \
+    ros-humble-rviz2 \
     python3-colcon-common-extensions \
     && rm -rf /var/lib/apt/lists/*
 

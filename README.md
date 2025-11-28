@@ -45,8 +45,8 @@ Generate URDF for Rizon4 with a specific serial number:
 
 ## Visualize in RViz
 
-``flexiv_description`` is a ROS package that contains the URDF files for Flexiv robots. The robot models can be visualized in RViz with the following command:
+The robot models can be visualized in RViz using the provided script. This script runs inside a Docker container and requires a GUI environment.
 
 ```bash
-ros2 launch flexiv_description view_rizon.launch.py rizon_type:=Rizon4 robot_sn:=Rizon4-123456
+./scripts/visualize_rizon.sh rizon_type:=Rizon4 robot_sn:=Rizon4-123456
 ```
