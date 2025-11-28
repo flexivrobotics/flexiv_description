@@ -111,7 +111,7 @@ if __name__ == "__main__":
         file_name = rizon_type
 
     if args.arm_prefix:
-        file_name += f"_{args.arm_prefix}"
+        file_name = f"{args.arm_prefix}_{file_name}"
     if args.load_gripper:
         file_name += f"_{args.gripper_name}"
 
