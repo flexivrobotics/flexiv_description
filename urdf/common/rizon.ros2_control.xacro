@@ -49,7 +49,6 @@
         <command_interface name="position" />
         <command_interface name="velocity" />
         <command_interface name="effort" />
-        <command_interface name="effort" />
         <state_interface name="position">
           <param name="initial_value">0.0</param>
         </state_interface>
