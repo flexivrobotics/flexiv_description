@@ -1,4 +1,4 @@
-FROM osrf/ros:humble-desktop
+FROM osrf/ros:jazzy-desktop
 ARG DEBIAN_FRONTEND=noninteractive
 ARG USER_UID=1000
 ARG USER_GID=1000
@@ -14,11 +14,11 @@ RUN groupadd --gid $USER_GID $USERNAME \
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    ros-humble-xacro \
-    ros-humble-joint-state-publisher \
-    ros-humble-joint-state-publisher-gui \
-    ros-humble-robot-state-publisher \
-    ros-humble-rviz2 \
+    ros-jazzy-xacro \
+    ros-jazzy-joint-state-publisher \
+    ros-jazzy-joint-state-publisher-gui \
+    ros-jazzy-robot-state-publisher \
+    ros-jazzy-rviz2 \
     python3-colcon-common-extensions \
     && rm -rf /var/lib/apt/lists/*
 
