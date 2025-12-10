@@ -19,6 +19,8 @@
     fake_sensor_commands:=false
     add_world_link:=true
     initial_positions_file:='$(find flexiv_description)/config/initial_positions.yaml'
+    base_xyz:='0.0 0.0 0.0'
+    base_rpy:='0.0 0.0 0.0'
     ">
 
     <!-- Prefix defaults to 'arm_prefix_robot_sn' -->
@@ -44,6 +46,8 @@
       inertia_parameters_file="${inertia_parameters_file}"
       visual_parameters_file="${visual_parameters_file}"
       add_world_link="${add_world_link}"
+      base_xyz="${base_xyz}"
+      base_rpy="${base_rpy}"
     />
 
     <xacro:if value="${ros2_control}">

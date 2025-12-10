@@ -6,10 +6,23 @@ docker build -t urdf_creation \
 
 echo
 
+LAUNCH_FILE="view_rizon.launch.py"
+ARGS=""
+
+for arg in "$@"
+do
+    if [ "$arg" == "--dual" ]; then
+        LAUNCH_FILE="view_rizon_dual.launch.py"
+    else
+        ARGS="$ARGS $arg"
+    fi
+done
+
 docker run -it -u $(id -u) \
     --privileged \
     -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=${DISPLAY} \
     -v $(pwd):/workspaces/src/flexiv_description \
     -w /workspaces/src/flexiv_description \
+    -e LAUNCH_FILE=$LAUNCH_FILE \
     urdf_creation \
-    .docker/visualize_rizon.entrypoint.sh $*
+    .docker/visualize_rizon.entrypoint.sh $ARGS

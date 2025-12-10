@@ -21,19 +21,55 @@ Run the `create_urdf.sh` script from the package root directory:
 ### Parameters
 
 ```
-usage: create_urdf.sh [-h] --rizon_type RIZON_TYPE [--arm_prefix ARM_PREFIX] [--robot_sn ROBOT_SN] [--load_gripper] [--gripper_name GRIPPER_NAME][--load_mounted_ft_sensor]
+usage: create_urdf.py [-h] [--dual] [--rizon_type RIZON_TYPE]
+                      [--arm_prefix ARM_PREFIX] [--robot_sn ROBOT_SN]
+                      [--load_gripper] [--gripper_name GRIPPER_NAME]
+                      [--load_mounted_ft_sensor]
+                      [--rizon_type_left RIZON_TYPE_LEFT]
+                      [--rizon_type_right RIZON_TYPE_RIGHT]
+                      [--robot_sn_left ROBOT_SN_LEFT]
+                      [--robot_sn_right ROBOT_SN_RIGHT] [--load_gripper_left]
+                      [--load_gripper_right]
+                      [--gripper_name_left GRIPPER_NAME_LEFT]
+                      [--gripper_name_right GRIPPER_NAME_RIGHT]
+                      [--load_mounted_ft_sensor_left]
+                      [--load_mounted_ft_sensor_right]
 
 Create URDF files from xacro for Flexiv robots.
 
-required arguments:
-  --rizon_type RIZON_TYPE       Rizon robot type. Options: ['Rizon4', 'Rizon4s', 'Rizon4M', 'Rizon4R', 'Rizon10', 'Rizon10s'].
-
 optional arguments:
-  --arm_prefix ARM_PREFIX       Arm prefix. (default: '')
-  --robot_sn ROBOT_SN           Robot serial number. (default: '')
-  --load_gripper                Load gripper. (default: False)
-  --gripper_name GRIPPER_NAME   Gripper name. (default: 'Flexiv-GN01')
-  --load_mounted_ft_sensor      Load mounted FT sensor. (default: False)
+  -h, --help            show this help message and exit
+  --dual                Generate URDF for dual arm setup.
+  --rizon_type RIZON_TYPE
+                        Rizon robot type (Single arm). Options: ['Rizon4', 'Rizon4s', 'Rizon4M', 'Rizon4R', 'Rizon10', 'Rizon10s'].
+  --arm_prefix ARM_PREFIX
+                        Arm prefix. (default: '')
+  --robot_sn ROBOT_SN   Robot serial number. (default: '')
+  --load_gripper        Load gripper. (default: False)
+  --gripper_name GRIPPER_NAME
+                        Gripper name. (default: 'Flexiv-GN01')
+  --load_mounted_ft_sensor
+                        Load mounted FT sensor. (default: False)
+
+Dual arm arguments:
+  --rizon_type_left RIZON_TYPE_LEFT
+                        Left Rizon robot type.
+  --rizon_type_right RIZON_TYPE_RIGHT
+                        Right Rizon robot type.
+  --robot_sn_left ROBOT_SN_LEFT
+                        Left robot serial number.
+  --robot_sn_right ROBOT_SN_RIGHT
+                        Right robot serial number.
+  --load_gripper_left   Load gripper for left robot.
+  --load_gripper_right  Load gripper for right robot.
+  --gripper_name_left GRIPPER_NAME_LEFT
+                        Gripper name for left robot.
+  --gripper_name_right GRIPPER_NAME_RIGHT
+                        Gripper name for right robot.
+  --load_mounted_ft_sensor_left
+                        Load mounted FT sensor for left robot.
+  --load_mounted_ft_sensor_right
+                        Load mounted FT sensor for right robot.
 ```
 
 ### Examples
@@ -50,28 +86,57 @@ Generate URDF for Rizon4 with a specific serial number:
 ./scripts/create_urdf.sh --rizon_type Rizon4 --robot_sn Rizon4-123456
 ```
 
+Generate URDF for Dual Arm setup:
+
+```bash
+./scripts/create_urdf.sh --dual --rizon_type_left Rizon4 --rizon_type_right Rizon4R --robot_sn_left Rizon4-123456 --robot_sn_right Rizon4R-654321
+```
+
 ## Visualize in RViz
 
 The robot models can be visualized in RViz using the provided script. This script runs inside a Docker container and requires a GUI environment.
 
 ```
-usage: visualize_rizon.sh robot_sn:=ROBOT_SN [rizon_type:=Rizon4] [load_gripper:=false] [gripper_name:=Flexiv-GN01] [load_mounted_ft_sensor:=false] [gui:=false]
+usage: visualize_rizon.sh [--dual] [OPTIONS]
 
 Visualize Flexiv robots in RViz.
 
-required arguments:
-  robot_sn:=ROBOT_SN       Serial number of the robot to connect to. Remove any space, for example: Rizon4s-123456.
+Single Arm Arguments:
+  robot_sn:=ROBOT_SN            Serial number of the robot to connect to.
+  rizon_type:=TYPE              Type of the Flexiv Rizon robot. (default: 'Rizon4')
+  load_gripper:=BOOL            Flag to load the Flexiv Grav gripper. (default: 'False')
+  gripper_name:=NAME            Full name of the gripper to be controlled. (default: 'Flexiv-GN01')
+  load_mounted_ft_sensor:=BOOL  Flag to load the mounted force torque sensor. (default: 'False')
 
-optional arguments:
-  rizon_type               Type of the Flexiv Rizon robot. Options: ['Rizon4', 'Rizon4M', 'Rizon4R', 'Rizon4s', 'Rizon10', 'Rizon10s']. (default: 'Rizon4')
-  load_gripper             Flag to load the Flexiv Grav gripper. (default: 'False')
-  gripper_name             Full name of the gripper to be controlled. (default: 'Flexiv-GN01')
-  load_mounted_ft_sensor   Flag to load the mounted force torque sensor. Only available for Rizon4, Rizon4R and Rizon10. (default: 'False')
-  gui                      Flag to enable joint_state_publisher_gui. (default: 'False')
+Dual Arm Arguments (use with --dual):
+  robot_sn_left:=SN                   Serial number of the left robot.
+  robot_sn_right:=SN                  Serial number of the right robot.
+  rizon_type_left:=TYPE               Type of the left robot. (default: 'Rizon4')
+  rizon_type_right:=TYPE              Type of the right robot. (default: 'Rizon4')
+  load_gripper_left:=BOOL             Load gripper for left robot. (default: 'False')
+  load_gripper_right:=BOOL            Load gripper for right robot. (default: 'False')
+  gripper_name_left:=NAME             Gripper name for left robot. (default: 'Flexiv-GN01')
+  gripper_name_right:=NAME            Gripper name for right robot. (default: 'Flexiv-GN01')
+  load_mounted_ft_sensor_left:=BOOL   Load FT sensor for left robot. (default: 'False')
+  load_mounted_ft_sensor_right:=BOOL  Load FT sensor for right robot. (default: 'False')
+
+Common Arguments:
+  gui:=BOOL                Flag to enable joint_state_publisher_gui. (default: 'False')
 ```
 
-### Example
+Visualize single robot:
 
 ```bash
 ./scripts/visualize_rizon.sh rizon_type:=Rizon4 robot_sn:=Rizon4-123456 gui:=True
 ```
+
+Visualize dual robots:
+
+```bash
+./scripts/visualize_rizon.sh --dual robot_sn_left:=Rizon4-123456 robot_sn_right:=Rizon4R-654321 gui:=True
+```
+
+The translation of the two robots in the world frame can be configured in the `config/dual_arm_translations.yaml` file.
+
+> [!NOTE]
+> The launch files can also be run directly using `ros2 launch` if the package is built and sourced in your ROS2 workspace.

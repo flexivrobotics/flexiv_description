@@ -12,6 +12,12 @@
     fake_sensor_commands:=false
     initial_positions_file_left
     initial_positions_file_right
+    translation_left_x:=0.0
+    translation_left_y:=0.0
+    translation_left_z:=0.0
+    translation_right_x:=0.0
+    translation_right_y:=0.0
+    translation_right_z:=0.0
     ">
 
     <xacro:property name="initial_positions_left" value="${xacro.load_yaml(initial_positions_file_left)['initial_positions']}"/>
@@ -31,6 +37,12 @@
           <param name="prefix_left">${prefix_left}</param>
           <param name="prefix_right">${prefix_right}</param>
           <param name="rdk_control_mode">${rdk_control_mode}</param>
+          <param name="translation_left_x">${translation_left_x}</param>
+          <param name="translation_left_y">${translation_left_y}</param>
+          <param name="translation_left_z">${translation_left_z}</param>
+          <param name="translation_right_x">${translation_right_x}</param>
+          <param name="translation_right_y">${translation_right_y}</param>
+          <param name="translation_right_z">${translation_right_z}</param>
         </xacro:unless>
       </hardware>
 

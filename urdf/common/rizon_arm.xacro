@@ -12,6 +12,8 @@
     visual_parameters_file
     load_mounted_ft_sensor:=false
     add_world_link:=true
+    base_xyz:='0.0 0.0 0.0'
+    base_rpy:='0.0 0.0 0.0'
     ">
 
     <!-- Load configuration data from the YAML files -->
@@ -30,7 +32,7 @@
     <joint name="${prefix}base_joint" type="fixed">
       <parent link="world" />
       <child link="${prefix}base_link" />
-      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+      <origin xyz="${base_xyz}" rpy="${base_rpy}" />
     </joint>
 
     <joint name="${prefix}joint1" type="revolute">
