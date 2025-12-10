@@ -11,6 +11,7 @@
     inertia_parameters_file
     visual_parameters_file
     load_mounted_ft_sensor:=false
+    add_world_link:=true
     ">
 
     <!-- Load configuration data from the YAML files -->
@@ -100,8 +101,10 @@
     </joint>
 
     <!-- LINKS -->
-    <link name="world">
-    </link>
+    <xacro:if value="${add_world_link}">
+      <link name="world">
+      </link>
+    </xacro:if>
 
     <link name="${prefix}base_link">
       <xacro:get_inertias name="base_link" />
