@@ -14,13 +14,15 @@ from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
     pkg_share = FindPackageShare("flexiv_description")
+
     robot_sn_left = LaunchConfiguration("robot_sn_left")
-    robot_sn_right = LaunchConfiguration("robot_sn_right")
     rizon_type_left = LaunchConfiguration("rizon_type_left")
-    rizon_type_right = LaunchConfiguration("rizon_type_right")
     load_gripper_left = LaunchConfiguration("load_gripper_left")
     gripper_name_left = LaunchConfiguration("gripper_name_left")
     load_mounted_ft_sensor_left = LaunchConfiguration("load_mounted_ft_sensor_left")
+
+    robot_sn_right = LaunchConfiguration("robot_sn_right")
+    rizon_type_right = LaunchConfiguration("rizon_type_right")
     load_gripper_right = LaunchConfiguration("load_gripper_right")
     gripper_name_right = LaunchConfiguration("gripper_name_right")
     load_mounted_ft_sensor_right = LaunchConfiguration("load_mounted_ft_sensor_right")
@@ -57,17 +59,17 @@ def generate_launch_description():
                 "load_gripper_left:=",
                 load_gripper_left,
                 " ",
-                "gripper_name_left:=",
-                gripper_name_left,
-                " ",
-                "load_mounted_ft_sensor_left:=",
-                load_mounted_ft_sensor_left,
-                " ",
                 "load_gripper_right:=",
                 load_gripper_right,
                 " ",
+                "gripper_name_left:=",
+                gripper_name_left,
+                " ",
                 "gripper_name_right:=",
                 gripper_name_right,
+                " ",
+                "load_mounted_ft_sensor_left:=",
+                load_mounted_ft_sensor_left,
                 " ",
                 "load_mounted_ft_sensor_right:=",
                 load_mounted_ft_sensor_right,
@@ -150,24 +152,24 @@ def generate_launch_description():
                 description="Flag to load the Flexiv Grav gripper for left robot",
             ),
             DeclareLaunchArgument(
-                name="gripper_name_left",
-                default_value="Flexiv-GN01",
-                description="Full name of the gripper to be controlled for left robot",
-            ),
-            DeclareLaunchArgument(
-                name="load_mounted_ft_sensor_left",
-                default_value="False",
-                description="Flag to load the mounted force torque sensor for left robot. Only available for Rizon4, Rizon4R and Rizon10",
-            ),
-            DeclareLaunchArgument(
                 name="load_gripper_right",
                 default_value="False",
                 description="Flag to load the Flexiv Grav gripper for right robot",
             ),
             DeclareLaunchArgument(
+                name="gripper_name_left",
+                default_value="Flexiv-GN01",
+                description="Full name of the gripper to be controlled for left robot",
+            ),
+            DeclareLaunchArgument(
                 name="gripper_name_right",
                 default_value="Flexiv-GN01",
                 description="Full name of the gripper to be controlled for right robot",
+            ),
+            DeclareLaunchArgument(
+                name="load_mounted_ft_sensor_left",
+                default_value="False",
+                description="Flag to load the mounted force torque sensor for left robot. Only available for Rizon4, Rizon4R and Rizon10",
             ),
             DeclareLaunchArgument(
                 name="load_mounted_ft_sensor_right",
