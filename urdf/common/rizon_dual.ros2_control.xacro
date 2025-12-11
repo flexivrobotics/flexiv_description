@@ -75,15 +75,20 @@
       <xacro:configure_joint joint_name="${prefix_right}joint6" initial_pos="${initial_positions_right['joint6']}" />
       <xacro:configure_joint joint_name="${prefix_right}joint7" initial_pos="${initial_positions_right['joint7']}" />
 
-      <!-- 36 digital IO ports (18 per robot) -->
-      <gpio name="dual_arm_gpio">
-        <xacro:macro name="loop_gpio" params="idx">
-          <command_interface name="digital_output_${idx}" />
-          <state_interface name="digital_input_${idx}" />
-          <xacro:if value="${idx &lt; 35}">
-            <xacro:loop_gpio idx="${idx+1}" />
-          </xacro:if>
-        </xacro:macro>
+      <!-- 18 digital IO ports per robot -->
+      <xacro:macro name="loop_gpio" params="idx">
+        <command_interface name="digital_output_${idx}" />
+        <state_interface name="digital_input_${idx}" />
+        <xacro:if value="${idx &lt; 17}">
+          <xacro:loop_gpio idx="${idx+1}" />
+        </xacro:if>
+      </xacro:macro>
+
+      <gpio name="${prefix_left}gpio">
+        <xacro:loop_gpio idx="0" />
+      </gpio>
+
+      <gpio name="${prefix_right}gpio">
         <xacro:loop_gpio idx="0" />
       </gpio>
 
