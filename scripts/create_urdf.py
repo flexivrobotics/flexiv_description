@@ -72,10 +72,14 @@ if __name__ == "__main__":
         description="Create URDF files from xacro for Flexiv robots."
     )
     parser.add_argument(
+        "--dual",
+        action="store_true",
+        help="Generate URDF for dual arm setup.",
+    )
+    parser.add_argument(
         "--rizon_type",
         type=str,
-        required=True,
-        help=f"Rizon robot type. Options: {RIZON_TYPES}.",
+        help=f"Rizon robot type (Single arm). Options: {RIZON_TYPES}.",
     )
     parser.add_argument("--arm_prefix", type=str, default="", help="Arm prefix.")
     parser.add_argument("--robot_sn", type=str, default="", help="Robot serial number.")
@@ -87,33 +91,127 @@ if __name__ == "__main__":
         "--load_mounted_ft_sensor", action="store_true", help="Load mounted FT sensor."
     )
 
+    # Dual arm arguments
+    parser.add_argument(
+        "--rizon_type_left",
+        type=str,
+        default="Rizon4",
+        help=f"Left Rizon robot type. Options: {RIZON_TYPES}.",
+    )
+    parser.add_argument(
+        "--rizon_type_right",
+        type=str,
+        default="Rizon4R",
+        help=f"Right Rizon robot type. Options: {RIZON_TYPES}.",
+    )
+    parser.add_argument(
+        "--robot_sn_left", type=str, default="", help="Left robot serial number."
+    )
+    parser.add_argument(
+        "--robot_sn_right", type=str, default="", help="Right robot serial number."
+    )
+    parser.add_argument(
+        "--load_gripper_left", action="store_true", help="Load gripper for left robot."
+    )
+    parser.add_argument(
+        "--load_gripper_right",
+        action="store_true",
+        help="Load gripper for right robot.",
+    )
+    parser.add_argument(
+        "--gripper_name_left",
+        type=str,
+        default="Flexiv-GN01",
+        help="Gripper name for left robot.",
+    )
+    parser.add_argument(
+        "--gripper_name_right",
+        type=str,
+        default="Flexiv-GN01",
+        help="Gripper name for right robot.",
+    )
+    parser.add_argument(
+        "--load_mounted_ft_sensor_left",
+        action="store_true",
+        help="Load mounted FT sensor for left robot.",
+    )
+    parser.add_argument(
+        "--load_mounted_ft_sensor_right",
+        action="store_true",
+        help="Load mounted FT sensor for right robot.",
+    )
+
     args = parser.parse_args()
 
-    if args.rizon_type not in RIZON_TYPES:
-        print(f"Invalid rizon_type: {args.rizon_type}. Available: {RIZON_TYPES}")
-        exit(1)
+    if args.dual:
+        if args.rizon_type_left not in RIZON_TYPES:
+            print(
+                f"Invalid rizon_type_left: {args.rizon_type_left}. Available: {RIZON_TYPES}"
+            )
+            exit(1)
+        if args.rizon_type_right not in RIZON_TYPES:
+            print(
+                f"Invalid rizon_type_right: {args.rizon_type_right}. Available: {RIZON_TYPES}"
+            )
+            exit(1)
 
-    xacro_file = "urdf/rizon.urdf.xacro"
+        xacro_file = "urdf/rizon_dual.urdf.xacro"
+        mappings = {
+            "rizon_type_left": args.rizon_type_left,
+            "rizon_type_right": args.rizon_type_right,
+            "robot_sn_left": args.robot_sn_left,
+            "robot_sn_right": args.robot_sn_right,
+            "load_gripper_left": str(args.load_gripper_left).lower(),
+            "load_gripper_right": str(args.load_gripper_right).lower(),
+            "gripper_name_left": args.gripper_name_left,
+            "gripper_name_right": args.gripper_name_right,
+            "load_mounted_ft_sensor_left": str(
+                args.load_mounted_ft_sensor_left
+            ).lower(),
+            "load_mounted_ft_sensor_right": str(
+                args.load_mounted_ft_sensor_right
+            ).lower(),
+        }
 
-    rizon_type = args.rizon_type
-    mappings = {
-        "rizon_type": rizon_type,
-        "arm_prefix": args.arm_prefix,
-        "robot_sn": args.robot_sn,
-        "load_gripper": str(args.load_gripper).lower(),
-        "gripper_name": args.gripper_name,
-        "load_mounted_ft_sensor": str(args.load_mounted_ft_sensor).lower(),
-    }
+        file_name = "rizon_dual"
+        if args.robot_sn_left and args.robot_sn_right:
+            file_name = f"dual_{args.robot_sn_left}_{args.robot_sn_right}"
 
-    if args.robot_sn:
-        file_name = args.robot_sn
+        print(
+            f"Generating Dual URDF for {args.rizon_type_left} and {args.rizon_type_right}..."
+        )
+        urdf_generation(os.getcwd(), xacro_file, file_name, mappings)
+
     else:
-        file_name = rizon_type
+        if not args.rizon_type:
+            print("Error: --rizon_type is required for single arm generation.")
+            exit(1)
 
-    if args.arm_prefix:
-        file_name = f"{args.arm_prefix}_{file_name}"
-    if args.load_gripper:
-        file_name += f"_{args.gripper_name}"
+        if args.rizon_type not in RIZON_TYPES:
+            print(f"Invalid rizon_type: {args.rizon_type}. Available: {RIZON_TYPES}")
+            exit(1)
 
-    print(f"Generating URDF for {rizon_type}...")
-    urdf_generation(os.getcwd(), xacro_file, file_name, mappings)
+        xacro_file = "urdf/rizon.urdf.xacro"
+
+        rizon_type = args.rizon_type
+        mappings = {
+            "rizon_type": rizon_type,
+            "arm_prefix": args.arm_prefix,
+            "robot_sn": args.robot_sn,
+            "load_gripper": str(args.load_gripper).lower(),
+            "gripper_name": args.gripper_name,
+            "load_mounted_ft_sensor": str(args.load_mounted_ft_sensor).lower(),
+        }
+
+        if args.robot_sn:
+            file_name = args.robot_sn
+        else:
+            file_name = rizon_type
+
+        if args.arm_prefix:
+            file_name = f"{args.arm_prefix}_{file_name}"
+        if args.load_gripper:
+            file_name += f"_{args.gripper_name}"
+
+        print(f"Generating URDF for {rizon_type}...")
+        urdf_generation(os.getcwd(), xacro_file, file_name, mappings)
