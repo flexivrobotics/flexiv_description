@@ -47,7 +47,7 @@
     use_fake_hardware="$(arg use_fake_hardware)"
     fake_sensor_commands="$(arg fake_sensor_commands)"
     initial_positions_file="$(arg initial_positions_file)"
-    base_rpy="${radians(mounting['mounting']['rx'])} ${radians(mounting['mounting']['ry'])} ${radians(mounting['mounting']['rz'])}">
+    base_rpy="${radians(mounting['orientation']['rx'])} ${radians(mounting['orientation']['ry'])} ${radians(mounting['orientation']['rz'])}">
   </xacro:rizon_robot>
 
 </robot>
