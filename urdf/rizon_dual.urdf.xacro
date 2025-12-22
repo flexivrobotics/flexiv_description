@@ -47,8 +47,8 @@
     load_mounted_ft_sensor="$(arg load_mounted_ft_sensor_left)"
     ros2_control="false"
     add_world_link="false"
-    base_xyz="${mounting['mounting']['left']['x']} ${mounting['mounting']['left']['y']} ${mounting['mounting']['left']['z']}"
-    base_rpy="${radians(mounting['mounting']['left']['rx'])} ${radians(mounting['mounting']['left']['ry'])} ${radians(mounting['mounting']['left']['rz'])}"
+    base_xyz="${mounting['positions']['left']['x']} ${mounting['positions']['left']['y']} ${mounting['positions']['left']['z']}"
+    base_rpy="${radians(mounting['positions']['left']['rx'])} ${radians(mounting['positions']['left']['ry'])} ${radians(mounting['positions']['left']['rz'])}"
   />
 
   <!-- Right Robot -->
@@ -65,8 +65,8 @@
     load_mounted_ft_sensor="$(arg load_mounted_ft_sensor_right)"
     ros2_control="false"
     add_world_link="false"
-    base_xyz="${mounting['mounting']['right']['x']} ${mounting['mounting']['right']['y']} ${mounting['mounting']['right']['z']}"
-    base_rpy="${radians(mounting['mounting']['right']['rx'])} ${radians(mounting['mounting']['right']['ry'])} ${radians(mounting['mounting']['right']['rz'])}"
+    base_xyz="${mounting['positions']['right']['x']} ${mounting['positions']['right']['y']} ${mounting['positions']['right']['z']}"
+    base_rpy="${radians(mounting['positions']['right']['rx'])} ${radians(mounting['positions']['right']['ry'])} ${radians(mounting['positions']['right']['rz'])}"
   />
 
   <!-- Dual ROS 2 Control -->
@@ -81,12 +81,12 @@
       fake_sensor_commands="$(arg fake_sensor_commands)"
       initial_positions_file_left="$(arg initial_positions_file_left)"
       initial_positions_file_right="$(arg initial_positions_file_right)"
-      translation_left_x="${mounting['mounting']['left']['x']}"
-      translation_left_y="${mounting['mounting']['left']['y']}"
-      translation_left_z="${mounting['mounting']['left']['z']}"
-      translation_right_x="${mounting['mounting']['right']['x']}"
-      translation_right_y="${mounting['mounting']['right']['y']}"
-      translation_right_z="${mounting['mounting']['right']['z']}"
+      translation_left_x="${mounting['positions']['left']['x']}"
+      translation_left_y="${mounting['positions']['left']['y']}"
+      translation_left_z="${mounting['positions']['left']['z']}"
+      translation_right_x="${mounting['positions']['right']['x']}"
+      translation_right_y="${mounting['positions']['right']['y']}"
+      translation_right_z="${mounting['positions']['right']['z']}"
     />
   </xacro:if>
 
