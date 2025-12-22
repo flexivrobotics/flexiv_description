@@ -21,7 +21,7 @@
   <xacro:arg name="fake_sensor_commands" default="false" />
   <xacro:arg name="initial_positions_file_left" default="$(find flexiv_description)/config/left_initial_positions.yaml" />
   <xacro:arg name="initial_positions_file_right" default="$(find flexiv_description)/config/right_initial_positions.yaml" />
-  <xacro:arg name="translations_file" default="$(find flexiv_description)/config/dual_arm_translations.yaml" />
+  <xacro:arg name="mounting_file" default="$(find flexiv_description)/config/dual_arm_mounting.yaml" />
 
   <xacro:include filename="$(find flexiv_description)/urdf/common/rizon_robot.xacro" />
   <xacro:include filename="$(find flexiv_description)/urdf/common/rizon_dual.ros2_control.xacro" />
@@ -29,7 +29,7 @@
   <!-- Define prefixes -->
   <xacro:property name="prefix_left" value="left_$(arg robot_sn_left)_" />
   <xacro:property name="prefix_right" value="right_$(arg robot_sn_right)_" />
-  <xacro:property name="translations" value="${xacro.load_yaml('$(arg translations_file)')}" />
+  <xacro:property name="mounting" value="${xacro.load_yaml('$(arg mounting_file)')}" />
 
   <link name="world" />
 
@@ -47,8 +47,8 @@
     load_mounted_ft_sensor="$(arg load_mounted_ft_sensor_left)"
     ros2_control="false"
     add_world_link="false"
-    base_xyz="${translations['translations']['left']['x']} ${translations['translations']['left']['y']} ${translations['translations']['left']['z']}"
-    base_rpy="0 0 0"
+    base_xyz="${mounting['mounting']['left']['x']} ${mounting['mounting']['left']['y']} ${mounting['mounting']['left']['z']}"
+    base_rpy="${radians(mounting['mounting']['left']['rx'])} ${radians(mounting['mounting']['left']['ry'])} ${radians(mounting['mounting']['left']['rz'])}"
   />
 
   <!-- Right Robot -->
@@ -65,8 +65,8 @@
     load_mounted_ft_sensor="$(arg load_mounted_ft_sensor_right)"
     ros2_control="false"
     add_world_link="false"
-    base_xyz="${translations['translations']['right']['x']} ${translations['translations']['right']['y']} ${translations['translations']['right']['z']}"
-    base_rpy="0 0 0"
+    base_xyz="${mounting['mounting']['right']['x']} ${mounting['mounting']['right']['y']} ${mounting['mounting']['right']['z']}"
+    base_rpy="${radians(mounting['mounting']['right']['rx'])} ${radians(mounting['mounting']['right']['ry'])} ${radians(mounting['mounting']['right']['rz'])}"
   />
 
   <!-- Dual ROS 2 Control -->
@@ -81,12 +81,12 @@
       fake_sensor_commands="$(arg fake_sensor_commands)"
       initial_positions_file_left="$(arg initial_positions_file_left)"
       initial_positions_file_right="$(arg initial_positions_file_right)"
-      translation_left_x="${translations['translations']['left']['x']}"
-      translation_left_y="${translations['translations']['left']['y']}"
-      translation_left_z="${translations['translations']['left']['z']}"
-      translation_right_x="${translations['translations']['right']['x']}"
-      translation_right_y="${translations['translations']['right']['y']}"
-      translation_right_z="${translations['translations']['right']['z']}"
+      translation_left_x="${mounting['mounting']['left']['x']}"
+      translation_left_y="${mounting['mounting']['left']['y']}"
+      translation_left_z="${mounting['mounting']['left']['z']}"
+      translation_right_x="${mounting['mounting']['right']['x']}"
+      translation_right_y="${mounting['mounting']['right']['y']}"
+      translation_right_z="${mounting['mounting']['right']['z']}"
     />
   </xacro:if>
 
