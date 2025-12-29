@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:macro name="aico2_platform_x1"
+    params="prefix left_arm_prefix right_arm_prefix mesh_prefix_path">
+
+    <joint name="${prefix}aico2_x1_joint1" type="revolute">
+      <origin xyz="0 0 0.307" rpy="0 0 0" />
+      <parent link="${prefix}aico2_x1_base_link" />
+      <child link="${prefix}aico2_x1_link1" />
+      <axis xyz="0 0 1" />
+      <limit lower="-3.14" upper="3.14" effort="165" velocity="1" />
+    </joint>
+
+    <joint name="${prefix}aico2_x1_joint2" type="revolute">
+      <origin xyz="0.025 0 0" rpy="0 0 0" />
+      <parent link="${prefix}aico2_x1_link1" />
+      <child link="${prefix}aico2_x1_link2" />
+      <axis xyz="0 1 0" />
+      <limit lower="0" upper="1.57" effort="365" velocity="1" />
+    </joint>
+
+    <joint name="${prefix}aico2_x1_left_arm_adapter" type="fixed">
+      <origin xyz="0 -0.035 0.2885" rpy="-1.5708 0 0" />
+      <parent link="${prefix}aico2_x1_link2" />
+      <child link="${left_arm_prefix}base_link" />
+      <axis xyz="0 0 0" />
+    </joint>
+
+    <joint name="${prefix}aico2_x1_right_arm_adapter" type="fixed">
+      <origin xyz="0 0.035 0.2885" rpy="1.5708 0 0" />
+      <parent link="${prefix}aico2_x1_link2" />
+      <child link="${right_arm_prefix}base_link" />
+      <axis xyz="0 0 0" />
+    </joint>
+
+    <link name="${prefix}aico2_x1_base_link">
+      <inertial>
+        <origin xyz="0.0052 -0.0154 0.258" rpy="0 0 0" />
+        <mass value="53.5" />
+        <inertia ixx="1.61" ixy="0.00049" ixz="0.0047" iyy="0.81" iyz="-0.0133" izz="1.86" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 1.5708" />
+        <geometry>
+          <mesh filename="${mesh_prefix_path}meshes/AICO2-X1/visual/base_link.obj"
+            scale="0.001 0.001 0.001" />
+        </geometry>
+        <material name="">
+          <color rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="${mesh_prefix_path}meshes/AICO2-X1/collision/base_link.stl" />
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="${prefix}aico2_x1_link1">
+      <inertial>
+        <origin xyz="0.0484 -6.38E-05 -0.134" rpy="0 0 0" />
+        <mass value="11.5" />
+        <inertia ixx="0.549" ixy="3.3E-05" ixz="-0.061" iyy="0.48" iyz="-5.7E-05" izz="0.218" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 1.5708" />
+        <geometry>
+          <mesh filename="${mesh_prefix_path}meshes/AICO2-X1/visual/link1.obj" />
+        </geometry>
+        <material name="">
+          <color rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="${mesh_prefix_path}meshes/AICO2-X1/collision/link1.stl" />
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="${prefix}aico2_x1_link2">
+      <inertial>
+        <origin xyz="-0.0155 0.00056 0.25" rpy="0 0 0" />
+        <mass value="8.6" />
+        <inertia ixx="0.28" ixy="0.00029" ixz="-0.0073" iyy="0.19" iyz="7.7E-05" izz="0.175" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 1.5708" />
+        <geometry>
+          <mesh filename="${mesh_prefix_path}meshes/AICO2-X1/visual/link2.obj" />
+        </geometry>
+        <material name="">
+          <color rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="${mesh_prefix_path}meshes/AICO2-X1/collision/link2.stl" />
+        </geometry>
+      </collision>
+    </link>
+
+  </xacro:macro>
+
+</robot>
