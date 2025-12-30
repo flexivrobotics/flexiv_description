@@ -66,6 +66,9 @@
     initial_positions_file="$(arg initial_positions_file)"
     add_world_link="false"
     create_base_joint="false"
+    platform_name="aico1"
+    platform_type="$(arg platform_type)"
+    platform_prefix="$(arg platform_prefix)"
   />
 
 </robot>

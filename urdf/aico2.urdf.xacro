@@ -118,6 +118,9 @@
       translation_right_x="0"
       translation_right_y="0"
       translation_right_z="0"
+      platform_name="aico2"
+      platform_type="$(arg platform_type)"
+      platform_prefix="$(arg platform_prefix)"
     />
   </xacro:if>
 

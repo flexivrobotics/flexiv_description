@@ -22,6 +22,9 @@
     initial_positions_file:='$(find flexiv_description)/config/initial_positions.yaml'
     base_xyz:='0.0 0.0 0.0'
     base_rpy:='0.0 0.0 0.0'
+    platform_name:=''
+    platform_type:=''
+    platform_prefix:=''
     ">
 
     <!-- Prefix defaults to 'arm_prefix_robot_sn' -->
@@ -60,6 +63,9 @@
         use_fake_hardware="${use_fake_hardware}"
         fake_sensor_commands="${fake_sensor_commands}"
         initial_positions_file="${initial_positions_file}"
+        platform_name="${platform_name}"
+        platform_type="${platform_type}"
+        platform_prefix="${platform_prefix}"
       />
     </xacro:if>
 
