@@ -9,7 +9,7 @@
       <parent link="${prefix}aico2_x1_base_link" />
       <child link="${prefix}aico2_x1_link1" />
       <axis xyz="0 0 1" />
-      <limit lower="-3.14" upper="3.14" effort="165" velocity="1" />
+      <limit lower="-1.57" upper="1.57" effort="400" velocity="1.05" />
     </joint>
 
     <joint name="${prefix}aico2_x1_joint2" type="revolute">
