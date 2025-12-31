@@ -30,13 +30,16 @@ def save_urdf_to_file(package_path, urdf_file, file_name):
     print(f"Created {output_path}")
 
 
-def urdf_generation(package_path, xacro_file, file_name, mappings):
+def urdf_generation(package_path, xacro_file, file_name, mappings, output_path=None):
     """Generate URDF file and save it."""
     full_xacro_path = os.path.join(package_path, xacro_file)
     try:
         urdf_file = convert_xacro_to_urdf(full_xacro_path, mappings)
+
+        target_path = output_path if output_path else package_path
+
         urdf_file = convert_package_name_to_absolute_path(
-            "flexiv_description", package_path, urdf_file
+            "flexiv_description", target_path, urdf_file
         )
         save_urdf_to_file(package_path, urdf_file, file_name)
     except Exception as e:
@@ -163,6 +166,12 @@ if __name__ == "__main__":
         action="store_true",
         help="Load mounted FT sensor for right robot.",
     )
+    parser.add_argument(
+        "--output_path",
+        type=str,
+        default="",
+        help="Absolute path to replace package://flexiv_description with.",
+    )
 
     args = parser.parse_args()
 
@@ -190,7 +199,7 @@ if __name__ == "__main__":
             file_name = f"aico1_{args.robot_sn}"
 
         print(f"Generating URDF for AICO1 with {args.rizon_type}...")
-        urdf_generation(os.getcwd(), xacro_file, file_name, mappings)
+        urdf_generation(os.getcwd(), xacro_file, file_name, mappings, args.output_path)
 
     elif args.aico2:
         if args.rizon_type_left not in RIZON_TYPES:
@@ -231,7 +240,7 @@ if __name__ == "__main__":
         print(
             f"Generating URDF for AICO2 with {args.rizon_type_left} and {args.rizon_type_right}..."
         )
-        urdf_generation(os.getcwd(), xacro_file, file_name, mappings)
+        urdf_generation(os.getcwd(), xacro_file, file_name, mappings, args.output_path)
 
     elif args.dual:
         if args.rizon_type_left not in RIZON_TYPES:
@@ -270,7 +279,7 @@ if __name__ == "__main__":
         print(
             f"Generating Dual URDF for {args.rizon_type_left} and {args.rizon_type_right}..."
         )
-        urdf_generation(os.getcwd(), xacro_file, file_name, mappings)
+        urdf_generation(os.getcwd(), xacro_file, file_name, mappings, args.output_path)
 
     else:
         if not args.rizon_type:
@@ -304,4 +313,4 @@ if __name__ == "__main__":
             file_name += f"_{args.gripper_name}"
 
         print(f"Generating URDF for {rizon_type}...")
-        urdf_generation(os.getcwd(), xacro_file, file_name, mappings)
+        urdf_generation(os.getcwd(), xacro_file, file_name, mappings, args.output_path)
