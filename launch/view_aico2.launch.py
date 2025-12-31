@@ -20,13 +20,11 @@ def generate_launch_description():
     platform_prefix = LaunchConfiguration("platform_prefix")
 
     robot_sn_left = LaunchConfiguration("robot_sn_left")
-    rizon_type_left = LaunchConfiguration("rizon_type_left")
     load_gripper_left = LaunchConfiguration("load_gripper_left")
     gripper_name_left = LaunchConfiguration("gripper_name_left")
     load_mounted_ft_sensor_left = LaunchConfiguration("load_mounted_ft_sensor_left")
 
     robot_sn_right = LaunchConfiguration("robot_sn_right")
-    rizon_type_right = LaunchConfiguration("rizon_type_right")
     load_gripper_right = LaunchConfiguration("load_gripper_right")
     gripper_name_right = LaunchConfiguration("gripper_name_right")
     load_mounted_ft_sensor_right = LaunchConfiguration("load_mounted_ft_sensor_right")
@@ -53,9 +51,6 @@ def generate_launch_description():
                 "robot_sn_left:=",
                 robot_sn_left,
                 " ",
-                "rizon_type_left:=",
-                rizon_type_left,
-                " ",
                 "load_gripper_left:=",
                 load_gripper_left,
                 " ",
@@ -67,9 +62,6 @@ def generate_launch_description():
                 " ",
                 "robot_sn_right:=",
                 robot_sn_right,
-                " ",
-                "rizon_type_right:=",
-                rizon_type_right,
                 " ",
                 "load_gripper_right:=",
                 load_gripper_right,
@@ -135,19 +127,6 @@ def generate_launch_description():
                 description="Serial number of the left robot.",
             ),
             DeclareLaunchArgument(
-                name="rizon_type_left",
-                default_value="Rizon4",
-                description="Type of the left Flexiv Rizon robot.",
-                choices=[
-                    "Rizon4",
-                    "Rizon4M",
-                    "Rizon4R",
-                    "Rizon4s",
-                    "Rizon10",
-                    "Rizon10s",
-                ],
-            ),
-            DeclareLaunchArgument(
                 name="load_gripper_left",
                 default_value="False",
                 description="Flag to load the gripper for left robot",
@@ -166,19 +145,6 @@ def generate_launch_description():
             DeclareLaunchArgument(
                 name="robot_sn_right",
                 description="Serial number of the right robot.",
-            ),
-            DeclareLaunchArgument(
-                name="rizon_type_right",
-                default_value="Rizon4R",
-                description="Type of the right Flexiv Rizon robot.",
-                choices=[
-                    "Rizon4",
-                    "Rizon4M",
-                    "Rizon4R",
-                    "Rizon4s",
-                    "Rizon10",
-                    "Rizon10s",
-                ],
             ),
             DeclareLaunchArgument(
                 name="load_gripper_right",

@@ -17,6 +17,11 @@
   <xacro:arg name="initial_positions_file"
     default="$(find flexiv_description)/config/initial_positions.yaml" />
 
+  <!-- Validate rizon_type -->
+  <xacro:if value="${'$(arg rizon_type)' != 'Rizon4' and '$(arg rizon_type)' != 'Rizon4s'}">
+    ${xacro.warning('AICO1 only supports Rizon4 and Rizon4s. You selected $(arg rizon_type).')}
+  </xacro:if>
+
   <xacro:include filename="$(find flexiv_description)/urdf/common/aico1_platform_x1.xacro" />
   <xacro:include filename="$(find flexiv_description)/urdf/common/aico1_platform_x2.xacro" />
   <xacro:include filename="$(find flexiv_description)/urdf/common/rizon_robot.xacro" />

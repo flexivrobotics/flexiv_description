@@ -179,8 +179,10 @@ if __name__ == "__main__":
         if not args.rizon_type:
             print("Error: --rizon_type is required for AICO1 generation.")
             exit(1)
-        if args.rizon_type not in RIZON_TYPES:
-            print(f"Invalid rizon_type: {args.rizon_type}. Available: {RIZON_TYPES}")
+        if args.rizon_type not in ["Rizon4", "Rizon4s"]:
+            print(
+                f"Invalid rizon_type: {args.rizon_type}. AICO1 only supports Rizon4 and Rizon4s."
+            )
             exit(1)
 
         xacro_file = "urdf/aico1.urdf.xacro"
@@ -202,23 +204,10 @@ if __name__ == "__main__":
         urdf_generation(os.getcwd(), xacro_file, file_name, mappings, args.output_path)
 
     elif args.aico2:
-        if args.rizon_type_left not in RIZON_TYPES:
-            print(
-                f"Invalid rizon_type_left: {args.rizon_type_left}. Available: {RIZON_TYPES}"
-            )
-            exit(1)
-        if args.rizon_type_right not in RIZON_TYPES:
-            print(
-                f"Invalid rizon_type_right: {args.rizon_type_right}. Available: {RIZON_TYPES}"
-            )
-            exit(1)
-
         xacro_file = "urdf/aico2.urdf.xacro"
         mappings = {
             "platform_type": args.platform_type,
             "platform_prefix": args.platform_prefix,
-            "rizon_type_left": args.rizon_type_left,
-            "rizon_type_right": args.rizon_type_right,
             "robot_sn_left": args.robot_sn_left,
             "robot_sn_right": args.robot_sn_right,
             "load_gripper_left": str(args.load_gripper_left).lower(),
@@ -237,9 +226,7 @@ if __name__ == "__main__":
         if args.robot_sn_left and args.robot_sn_right:
             file_name = f"aico2_{args.robot_sn_left}_{args.robot_sn_right}"
 
-        print(
-            f"Generating URDF for AICO2 with {args.rizon_type_left} and {args.rizon_type_right}..."
-        )
+        print(f"Generating URDF for AICO2-{args.platform_type}...")
         urdf_generation(os.getcwd(), xacro_file, file_name, mappings, args.output_path)
 
     elif args.dual:

@@ -102,16 +102,16 @@ Generate URDF for Dual Arm setup:
 ./scripts/create_urdf.sh --dual --rizon_type_left Rizon4 --rizon_type_right Rizon4R --robot_sn_left Rizon4-123456 --robot_sn_right Rizon4R-654321
 ```
 
-Generate URDF for AICO1-X1:
+Generate URDF for AICO1-X1 (supporting Rizon4 and Rizon4s only):
 
 ```bash
 ./scripts/create_urdf.sh --aico1 --platform_type X1 --rizon_type Rizon4 --robot_sn Rizon4-123456
 ```
 
-Generate URDF for AICO2-X1:
+Generate URDF for AICO2-X1 (supporting Rizon4 and Rizon4R only):
 
 ```bash
-./scripts/create_urdf.sh --aico2 --platform_type X1 --rizon_type_left Rizon4 --rizon_type_right Rizon4R --robot_sn_left Rizon4-123456 --robot_sn_right Rizon4R-654321
+./scripts/create_urdf.sh --aico2 --platform_type X1 --robot_sn_left Rizon4-123456 --robot_sn_right Rizon4R-654321
 ```
 
 ## Visualize in RViz
@@ -156,8 +156,6 @@ AICO2 Arguments (use with --aico2):
   platform_prefix:=PREFIX             Prefix for the platform links and joints. (default: '')
   robot_sn_left:=SN                   Serial number of the left robot.
   robot_sn_right:=SN                  Serial number of the right robot.
-  rizon_type_left:=TYPE               Type of the left robot. (default: 'Rizon4')
-  rizon_type_right:=TYPE              Type of the right robot. (default: 'Rizon4')
   load_gripper_left:=BOOL             Load gripper for left robot. (default: 'False')
   load_gripper_right:=BOOL            Load gripper for right robot. (default: 'False')
   gripper_name_left:=NAME             Gripper name for left robot. (default: 'Flexiv-GN01')
@@ -181,16 +179,16 @@ Visualize dual robots:
 ./scripts/visualize_rizon.sh --dual robot_sn_left:=Rizon4-123456 robot_sn_right:=Rizon4R-654321 gui:=True
 ```
 
-Visualize AICO1-X1:
+Visualize AICO1-X1 (supporting Rizon4 and Rizon4s only):
 
 ```bash
 ./scripts/visualize_rizon.sh --aico1 platform_type:=X1 rizon_type:=Rizon4 robot_sn:=Rizon4-123456 gui:=True
 ```
 
-Visualize AICO2-X1:
+Visualize AICO2-X1 (supporting Rizon4 and Rizon4R only):
 
 ```bash
-./scripts/visualize_rizon.sh --aico2 platform_type:=X1 rizon_type_left:=Rizon4 rizon_type_right:=Rizon4R robot_sn_left:=Rizon4-123456 robot_sn_right:=Rizon4R-654321 gui:=True
+./scripts/visualize_rizon.sh --aico2 platform_type:=X1 robot_sn_left:=Rizon4-123456 robot_sn_right:=Rizon4R-654321 gui:=True
 ```
 
 The translation of the two robots in the world frame can be configured in the `config/dual_arm_translations.yaml` file.
