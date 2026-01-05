@@ -30,13 +30,16 @@ def save_urdf_to_file(package_path, urdf_file, file_name):
     print(f"Created {output_path}")
 
 
-def urdf_generation(package_path, xacro_file, file_name, mappings):
+def urdf_generation(package_path, xacro_file, file_name, mappings, output_path=None):
     """Generate URDF file and save it."""
     full_xacro_path = os.path.join(package_path, xacro_file)
     try:
         urdf_file = convert_xacro_to_urdf(full_xacro_path, mappings)
+
+        target_path = output_path if output_path else package_path
+
         urdf_file = convert_package_name_to_absolute_path(
-            "flexiv_description", package_path, urdf_file
+            "flexiv_description", target_path, urdf_file
         )
         save_urdf_to_file(package_path, urdf_file, file_name)
     except Exception as e:
@@ -75,6 +78,29 @@ if __name__ == "__main__":
         "--dual",
         action="store_true",
         help="Generate URDF for dual arm setup.",
+    )
+    parser.add_argument(
+        "--aico1",
+        action="store_true",
+        help="Generate URDF for AICO1 setup.",
+    )
+    parser.add_argument(
+        "--aico2",
+        action="store_true",
+        help="Generate URDF for AICO2 setup.",
+    )
+    parser.add_argument(
+        "--platform_type",
+        type=str,
+        default="X1",
+        help="Platform type (X1 or X2).",
+        choices=["X1", "X2"],
+    )
+    parser.add_argument(
+        "--platform_prefix",
+        type=str,
+        default="",
+        help="Platform prefix.",
     )
     parser.add_argument(
         "--rizon_type",
@@ -140,10 +166,70 @@ if __name__ == "__main__":
         action="store_true",
         help="Load mounted FT sensor for right robot.",
     )
+    parser.add_argument(
+        "--output_path",
+        type=str,
+        default="",
+        help="Absolute path to replace package://flexiv_description with.",
+    )
 
     args = parser.parse_args()
 
-    if args.dual:
+    if args.aico1:
+        if not args.rizon_type:
+            print("Error: --rizon_type is required for AICO1 generation.")
+            exit(1)
+        if args.rizon_type not in ["Rizon4", "Rizon4s"]:
+            print(
+                f"Invalid rizon_type: {args.rizon_type}. AICO1 only supports Rizon4 and Rizon4s."
+            )
+            exit(1)
+
+        xacro_file = "urdf/aico1.urdf.xacro"
+        mappings = {
+            "platform_type": args.platform_type,
+            "platform_prefix": args.platform_prefix,
+            "robot_sn": args.robot_sn,
+            "rizon_type": args.rizon_type,
+            "load_gripper": str(args.load_gripper).lower(),
+            "gripper_name": args.gripper_name,
+            "load_mounted_ft_sensor": str(args.load_mounted_ft_sensor).lower(),
+        }
+
+        file_name = "aico1"
+        if args.robot_sn:
+            file_name = f"aico1_{args.robot_sn}"
+
+        print(f"Generating URDF for AICO1 with {args.rizon_type}...")
+        urdf_generation(os.getcwd(), xacro_file, file_name, mappings, args.output_path)
+
+    elif args.aico2:
+        xacro_file = "urdf/aico2.urdf.xacro"
+        mappings = {
+            "platform_type": args.platform_type,
+            "platform_prefix": args.platform_prefix,
+            "robot_sn_left": args.robot_sn_left,
+            "robot_sn_right": args.robot_sn_right,
+            "load_gripper_left": str(args.load_gripper_left).lower(),
+            "load_gripper_right": str(args.load_gripper_right).lower(),
+            "gripper_name_left": args.gripper_name_left,
+            "gripper_name_right": args.gripper_name_right,
+            "load_mounted_ft_sensor_left": str(
+                args.load_mounted_ft_sensor_left
+            ).lower(),
+            "load_mounted_ft_sensor_right": str(
+                args.load_mounted_ft_sensor_right
+            ).lower(),
+        }
+
+        file_name = "aico2"
+        if args.robot_sn_left and args.robot_sn_right:
+            file_name = f"aico2_{args.robot_sn_left}_{args.robot_sn_right}"
+
+        print(f"Generating URDF for AICO2-{args.platform_type}...")
+        urdf_generation(os.getcwd(), xacro_file, file_name, mappings, args.output_path)
+
+    elif args.dual:
         if args.rizon_type_left not in RIZON_TYPES:
             print(
                 f"Invalid rizon_type_left: {args.rizon_type_left}. Available: {RIZON_TYPES}"
@@ -180,7 +266,7 @@ if __name__ == "__main__":
         print(
             f"Generating Dual URDF for {args.rizon_type_left} and {args.rizon_type_right}..."
         )
-        urdf_generation(os.getcwd(), xacro_file, file_name, mappings)
+        urdf_generation(os.getcwd(), xacro_file, file_name, mappings, args.output_path)
 
     else:
         if not args.rizon_type:
@@ -214,4 +300,4 @@ if __name__ == "__main__":
             file_name += f"_{args.gripper_name}"
 
         print(f"Generating URDF for {rizon_type}...")
-        urdf_generation(os.getcwd(), xacro_file, file_name, mappings)
+        urdf_generation(os.getcwd(), xacro_file, file_name, mappings, args.output_path)
