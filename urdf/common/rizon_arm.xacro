@@ -12,6 +12,7 @@
     visual_parameters_file
     load_mounted_ft_sensor:=false
     add_world_link:=true
+    create_base_joint:=true
     base_xyz:='0.0 0.0 0.0'
     base_rpy:='0.0 0.0 0.0'
     ">
@@ -29,11 +30,13 @@
     />
 
     <!-- JOINTS -->
-    <joint name="${prefix}base_joint" type="fixed">
-      <parent link="world" />
-      <child link="${prefix}base_link" />
-      <origin xyz="${base_xyz}" rpy="${base_rpy}" />
-    </joint>
+    <xacro:if value="${create_base_joint}">
+      <joint name="${prefix}base_joint" type="fixed">
+        <parent link="world" />
+        <child link="${prefix}base_link" />
+        <origin xyz="${base_xyz}" rpy="${base_rpy}" />
+      </joint>
+    </xacro:if>
 
     <joint name="${prefix}joint1" type="revolute">
       <parent link="${prefix}base_link" />

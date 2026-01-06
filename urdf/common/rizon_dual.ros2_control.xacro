@@ -18,6 +18,9 @@
     translation_right_x:=0.0
     translation_right_y:=0.0
     translation_right_z:=0.0
+    platform_name:=''
+    platform_type:=''
+    platform_prefix:=''
     ">
 
     <xacro:property name="initial_positions_left" value="${xacro.load_yaml(initial_positions_file_left)['initial_positions']}"/>
@@ -66,6 +69,54 @@
       <xacro:configure_joint joint_name="${prefix_left}joint5" initial_pos="${initial_positions_left['joint5']}" />
       <xacro:configure_joint joint_name="${prefix_left}joint6" initial_pos="${initial_positions_left['joint6']}" />
       <xacro:configure_joint joint_name="${prefix_left}joint7" initial_pos="${initial_positions_left['joint7']}" />
+
+      <!-- Platform joints -->
+      <xacro:if value="${platform_name == 'aico2'}">
+        <xacro:if value="${platform_type == 'X1'}">
+          <joint name="${platform_prefix}aico2_x1_joint1">
+            <command_interface name="position" />
+            <command_interface name="velocity" />
+            <command_interface name="effort" />
+            <state_interface name="position">
+              <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity" />
+            <state_interface name="effort" />
+          </joint>
+          <joint name="${platform_prefix}aico2_x1_joint2">
+            <command_interface name="position" />
+            <command_interface name="velocity" />
+            <command_interface name="effort" />
+            <state_interface name="position">
+              <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity" />
+            <state_interface name="effort" />
+          </joint>
+        </xacro:if>
+        <xacro:if value="${platform_type == 'X2'}">
+          <joint name="${platform_prefix}aico2_x2_joint1">
+            <command_interface name="position" />
+            <command_interface name="velocity" />
+            <command_interface name="effort" />
+            <state_interface name="position">
+              <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity" />
+            <state_interface name="effort" />
+          </joint>
+          <joint name="${platform_prefix}aico2_x2_joint2">
+            <command_interface name="position" />
+            <command_interface name="velocity" />
+            <command_interface name="effort" />
+            <state_interface name="position">
+              <param name="initial_value">0.0</param>
+            </state_interface>
+            <state_interface name="velocity" />
+            <state_interface name="effort" />
+          </joint>
+        </xacro:if>
+      </xacro:if>
 
       <xacro:configure_joint joint_name="${prefix_right}joint1" initial_pos="${initial_positions_right['joint1']}" />
       <xacro:configure_joint joint_name="${prefix_right}joint2" initial_pos="${initial_positions_right['joint2']}" />
