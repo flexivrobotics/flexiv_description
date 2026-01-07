@@ -47,7 +47,7 @@
       mesh_prefix_path="package://flexiv_description/" />
     <joint name="world_to_platform" type="fixed">
       <parent link="world" />
-      <child link="$(arg external_axis_prefix)aico1_4_v2_base_link" />
+      <child link="$(arg external_axis_prefix)aico1_4_v2_agv" />
       <origin xyz="0 0 0" rpy="0 0 0" />
     </joint>
   </xacro:if>

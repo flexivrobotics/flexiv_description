@@ -7,6 +7,7 @@ from launch.substitutions import (
     FindExecutable,
     LaunchConfiguration,
     PathJoinSubstitution,
+    PythonExpression,
 )
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
@@ -38,7 +39,9 @@ def generate_launch_description():
                 ),
                 " ",
                 "external_axis_type:=",
-                external_axis_type,
+                PythonExpression(
+                    ["'", external_axis_type, "'.lower().replace('-', '_')"]
+                ),
                 " ",
                 "external_axis_prefix:=",
                 external_axis_prefix,

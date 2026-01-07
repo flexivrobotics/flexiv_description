@@ -204,6 +204,15 @@ if __name__ == "__main__":
         urdf_generation(os.getcwd(), xacro_file, file_name, mappings, args.output_path)
 
     elif args.aico2:
+        if not args.rizon_type:
+            print("Error: --rizon_type is required for AICO2 generation.")
+            exit(1)
+        if args.rizon_type not in ["Rizon4", "Rizon10"]:
+            print(
+                f"Invalid rizon_type: {args.rizon_type}. AICO2 only supports Rizon4 and Rizon10 pairs."
+            )
+            exit(1)
+
         xacro_file = "urdf/aico2.urdf.xacro"
         mappings = {
             "rizon_type": args.rizon_type,
