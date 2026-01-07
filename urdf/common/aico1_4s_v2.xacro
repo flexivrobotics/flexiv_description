@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <robot xmlns:xacro="http://wiki.ros.org/xacro">
 
-  <xacro:macro name="aico1_platform_x2" params="prefix arm_prefix mesh_prefix_path">
+  <xacro:macro name="aico1_4s_v2" params="prefix arm_prefix mesh_prefix_path">
 
-    <joint name="${prefix}aico1_x2_base_to_agv" type="fixed">
+    <joint name="${prefix}aico1_4s_v2_base_to_agv" type="fixed">
       <origin xyz="0.004 0.1255 0.695" rpy="0.0 0.0 0.0" />
-      <parent link="${prefix}aico1_x2_agv" />
-      <child link="${prefix}aico1_x2_base_link" />
+      <parent link="${prefix}aico1_4s_v2_agv" />
+      <child link="${prefix}aico1_4s_v2_base_link" />
       <axis xyz="0 0 0" />
     </joint>
 
-    <joint name="${prefix}aico1_x2_joint1" type="revolute">
+    <joint name="${prefix}aico1_4s_v2_joint1" type="revolute">
       <origin xyz="-0.122 0.1066 0.164" rpy="0 0 0" />
-      <parent link="${prefix}aico1_x2_base_link" />
-      <child link="${prefix}aico1_x2_link1" />
+      <parent link="${prefix}aico1_4s_v2_base_link" />
+      <child link="${prefix}aico1_4s_v2_link1" />
       <axis xyz="0 1 0" />
       <limit lower="-0.523598775598" upper="1.57079632679" effort="1000"
         velocity="1" />
     </joint>
 
-    <joint name="${prefix}aico1_x2_joint2" type="revolute">
+    <joint name="${prefix}aico1_4s_v2_joint2" type="revolute">
       <origin xyz="-0.005 -0.0991 0.47875" rpy="0 0 0" />
-      <parent link="${prefix}aico1_x2_link1" />
-      <child link="${prefix}aico1_x2_neck_link" />
+      <parent link="${prefix}aico1_4s_v2_link1" />
+      <child link="${prefix}aico1_4s_v2_neck_link" />
       <axis xyz="0 0 1" />
       <limit lower="-1.57079632679" upper="1.57079632679" effort="50" velocity="1" />
     </joint>
 
-    <joint name="${prefix}aico1_x2_joint_head" type="revolute">
+    <joint name="${prefix}aico1_4s_v2_joint_head" type="revolute">
       <origin xyz="-0.025 0 0.088" rpy="0 0 0" />
-      <parent link="${prefix}aico1_x2_neck_link" />
-      <child link="${prefix}aico1_x2_head_link" />
+      <parent link="${prefix}aico1_4s_v2_neck_link" />
+      <child link="${prefix}aico1_4s_v2_head_link" />
       <axis xyz="0 1 0" />
       <limit lower="0" upper="0.436332312999" effort="80" velocity="1" />
     </joint>
 
-    <joint name="${prefix}aico1_x2_arm_adapter" type="fixed">
-      <parent link="${prefix}aico1_x2_link1" />
+    <joint name="${prefix}aico1_4s_v2_arm_adapter" type="fixed">
+      <parent link="${prefix}aico1_4s_v2_link1" />
       <child link="${arm_prefix}base_link" />
       <origin xyz="0.0 0.016 0.320" rpy="1.57079632679 0.0 0.0" />
     </joint>
 
-    <link name="${prefix}aico1_x2_agv">
+    <link name="${prefix}aico1_4s_v2_agv">
       <inertial>
         <origin xyz="0 0 0" rpy="0 0 0" />
         <mass value="60" />
@@ -51,7 +51,7 @@
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="${mesh_prefix_path}meshes/AICO1-X2/visual/agv.obj" />
+            filename="${mesh_prefix_path}meshes/AICO1-4s-V2/visual/agv.obj" />
         </geometry>
         <material name="">
           <color rgba="0.75294 0.75294 0.75294 1" />
@@ -61,12 +61,12 @@
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="${mesh_prefix_path}meshes/AICO1-X2/collision/agv.stl" />
+            filename="${mesh_prefix_path}meshes/AICO1-4s-V2/collision/agv.stl" />
         </geometry>
       </collision>
     </link>
 
-    <link name="${prefix}aico1_x2_base_link">
+    <link name="${prefix}aico1_4s_v2_base_link">
       <inertial>
         <origin xyz="-0.0372 -0.00251 0.0448" rpy="0 0 0" />
         <mass value="3.9" />
@@ -76,7 +76,7 @@
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="${mesh_prefix_path}meshes/AICO1-X2/visual/base_link.obj" />
+            filename="${mesh_prefix_path}meshes/AICO1-4s-V2/visual/base_link.obj" />
         </geometry>
         <material name="">
           <color rgba="0.75294 0.75294 0.75294 1" />
@@ -86,12 +86,12 @@
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="${mesh_prefix_path}meshes/AICO1-X2/collision/base_link.stl" />
+            filename="${mesh_prefix_path}meshes/AICO1-4s-V2/collision/base_link.stl" />
         </geometry>
       </collision>
     </link>
 
-    <link name="${prefix}aico1_x2_link1">
+    <link name="${prefix}aico1_4s_v2_link1">
       <inertial>
         <origin xyz="-0.00141 -0.0922 0.106" rpy="0 0 0" />
         <mass value="2.76" />
@@ -101,7 +101,7 @@
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="${mesh_prefix_path}meshes/AICO1-X2/visual/link1.obj" />
+            filename="${mesh_prefix_path}meshes/AICO1-4s-V2/visual/link1.obj" />
         </geometry>
         <material name="">
           <color rgba="0.75294 0.75294 0.75294 1" />
@@ -111,12 +111,12 @@
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="${mesh_prefix_path}meshes/AICO1-X2/collision/link1.stl" />
+            filename="${mesh_prefix_path}meshes/AICO1-4s-V2/collision/link1.stl" />
         </geometry>
       </collision>
     </link>
 
-    <link name="${prefix}aico1_x2_neck_link">
+    <link name="${prefix}aico1_4s_v2_neck_link">
       <inertial>
         <origin xyz="-0.0149 7E-07 0.0547" rpy="0 0 0" />
         <mass value="0.078" />
@@ -126,7 +126,7 @@
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="${mesh_prefix_path}meshes/AICO1-X2/visual/neck_link.obj" />
+            filename="${mesh_prefix_path}meshes/AICO1-4s-V2/visual/neck_link.obj" />
         </geometry>
         <material name="">
           <color rgba="0.75294 0.75294 0.75294 1" />
@@ -136,12 +136,12 @@
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="${mesh_prefix_path}meshes/AICO1-X2/collision/neck_link.stl" />
+            filename="${mesh_prefix_path}meshes/AICO1-4s-V2/collision/neck_link.stl" />
         </geometry>
       </collision>
     </link>
 
-    <link name="${prefix}aico1_x2_head_link">
+    <link name="${prefix}aico1_4s_v2_head_link">
       <inertial>
         <origin xyz="0.017 0.000125 0.0594" rpy="0 0 0" />
         <mass value="6.97" />
@@ -151,7 +151,7 @@
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="${mesh_prefix_path}meshes/AICO1-X2/visual/head_link.obj" />
+            filename="${mesh_prefix_path}meshes/AICO1-4s-V2/visual/head_link.obj" />
         </geometry>
         <material name="">
           <color rgba="0.31765 1 0.92549 1" />
@@ -161,7 +161,7 @@
         <origin xyz="0 0 0" rpy="0 0 0" />
         <geometry>
           <mesh
-            filename="${mesh_prefix_path}meshes/AICO1-X2/collision/head_link.stl" />
+            filename="${mesh_prefix_path}meshes/AICO1-4s-V2/collision/head_link.stl" />
         </geometry>
       </collision>
     </link>
