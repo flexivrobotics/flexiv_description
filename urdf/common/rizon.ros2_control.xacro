@@ -9,9 +9,8 @@
     use_fake_hardware:=false
     fake_sensor_commands:=false
     initial_positions_file
-    platform_name:=''
-    platform_type:=''
-    platform_prefix:=''
+    external_axis_type:=''
+    external_axis_prefix:=''
     ">
 
     <xacro:property name="initial_positions" value="${xacro.load_yaml(initial_positions_file)['initial_positions']}"/>
@@ -102,52 +101,50 @@
         <state_interface name="effort" />
       </joint>
 
-      <!-- Platform joints -->
-      <xacro:if value="${platform_name == 'aico1'}">
-        <xacro:if value="${platform_type == 'X1'}">
-          <joint name="${platform_prefix}aico1_x1_joint2">
-            <command_interface name="position" />
-            <command_interface name="velocity" />
-            <command_interface name="effort" />
-            <state_interface name="position">
-              <param name="initial_value">0.0</param>
-            </state_interface>
-            <state_interface name="velocity" />
-            <state_interface name="effort" />
-          </joint>
-        </xacro:if>
-        <xacro:if value="${platform_type == 'X2'}">
-          <joint name="${platform_prefix}aico1_x2_joint1">
-            <command_interface name="position" />
-            <command_interface name="velocity" />
-            <command_interface name="effort" />
-            <state_interface name="position">
-              <param name="initial_value">0.0</param>
-            </state_interface>
-            <state_interface name="velocity" />
-            <state_interface name="effort" />
-          </joint>
-          <joint name="${platform_prefix}aico1_x2_joint2">
-            <command_interface name="position" />
-            <command_interface name="velocity" />
-            <command_interface name="effort" />
-            <state_interface name="position">
-              <param name="initial_value">0.0</param>
-            </state_interface>
-            <state_interface name="velocity" />
-            <state_interface name="effort" />
-          </joint>
-          <joint name="${platform_prefix}aico1_x2_joint_head">
-            <command_interface name="position" />
-            <command_interface name="velocity" />
-            <command_interface name="effort" />
-            <state_interface name="position">
-              <param name="initial_value">0.0</param>
-            </state_interface>
-            <state_interface name="velocity" />
-            <state_interface name="effort" />
-          </joint>
-        </xacro:if>
+      <!-- External axis joints -->
+      <xacro:if value="${external_axis_type == 'aico1_4_v1'}">
+        <joint name="${external_axis_prefix}aico1_4_v1_joint2">
+          <command_interface name="position" />
+          <command_interface name="velocity" />
+          <command_interface name="effort" />
+          <state_interface name="position">
+            <param name="initial_value">0.0</param>
+          </state_interface>
+          <state_interface name="velocity" />
+          <state_interface name="effort" />
+        </joint>
+      </xacro:if>
+      <xacro:if value="${external_axis_type == 'aico1_4_v2'}">
+        <joint name="${external_axis_prefix}aico1_4_v2_joint1">
+          <command_interface name="position" />
+          <command_interface name="velocity" />
+          <command_interface name="effort" />
+          <state_interface name="position">
+            <param name="initial_value">0.0</param>
+          </state_interface>
+          <state_interface name="velocity" />
+          <state_interface name="effort" />
+        </joint>
+        <joint name="${external_axis_prefix}aico1_4_v2_joint2">
+          <command_interface name="position" />
+          <command_interface name="velocity" />
+          <command_interface name="effort" />
+          <state_interface name="position">
+            <param name="initial_value">0.0</param>
+          </state_interface>
+          <state_interface name="velocity" />
+          <state_interface name="effort" />
+        </joint>
+        <joint name="${external_axis_prefix}aico1_4_v2_joint_head">
+          <command_interface name="position" />
+          <command_interface name="velocity" />
+          <command_interface name="effort" />
+          <state_interface name="position">
+            <param name="initial_value">0.0</param>
+          </state_interface>
+          <state_interface name="velocity" />
+          <state_interface name="effort" />
+        </joint>
       </xacro:if>
 
       <!-- 18 digital IO ports (16 on control box + 2 inside the wrist connector) -->

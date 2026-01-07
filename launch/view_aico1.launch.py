@@ -16,8 +16,8 @@ def generate_launch_description():
     pkg_share = FindPackageShare("flexiv_description")
 
     # Arguments
-    platform_type = LaunchConfiguration("platform_type")
-    platform_prefix = LaunchConfiguration("platform_prefix")
+    external_axis_type = LaunchConfiguration("external_axis_type")
+    external_axis_prefix = LaunchConfiguration("external_axis_prefix")
     robot_sn = LaunchConfiguration("robot_sn")
     rizon_type = LaunchConfiguration("rizon_type")
     load_gripper = LaunchConfiguration("load_gripper")
@@ -37,11 +37,11 @@ def generate_launch_description():
                     [FindPackageShare("flexiv_description"), "urdf", "aico1.urdf.xacro"]
                 ),
                 " ",
-                "platform_type:=",
-                platform_type,
+                "external_axis_type:=",
+                external_axis_type,
                 " ",
-                "platform_prefix:=",
-                platform_prefix,
+                "external_axis_prefix:=",
+                external_axis_prefix,
                 " ",
                 "robot_sn:=",
                 robot_sn,
@@ -97,15 +97,15 @@ def generate_launch_description():
     return LaunchDescription(
         [
             DeclareLaunchArgument(
-                name="platform_type",
-                default_value="X1",
-                description="Type of the AICO platform (X1 or X2)",
-                choices=["X1", "X2"],
+                name="external_axis_type",
+                default_value="AICO1-4-V1",
+                description="Type of the AICO platform (AICO1-4-V1 or AICO1-4-V2)",
+                choices=["AICO1-4-V1", "AICO1-4-V2"],
             ),
             DeclareLaunchArgument(
-                name="platform_prefix",
+                name="external_axis_prefix",
                 default_value="",
-                description="Prefix for the platform links and joints",
+                description="Prefix for the external axis links and joints",
             ),
             DeclareLaunchArgument(
                 name="robot_sn",

@@ -16,8 +16,8 @@ def generate_launch_description():
     pkg_share = FindPackageShare("flexiv_description")
 
     # Arguments
-    platform_type = LaunchConfiguration("platform_type")
-    platform_prefix = LaunchConfiguration("platform_prefix")
+    rizon_type = LaunchConfiguration("rizon_type")
+    external_axis_prefix = LaunchConfiguration("external_axis_prefix")
 
     robot_sn_left = LaunchConfiguration("robot_sn_left")
     load_gripper_left = LaunchConfiguration("load_gripper_left")
@@ -42,11 +42,11 @@ def generate_launch_description():
                     [FindPackageShare("flexiv_description"), "urdf", "aico2.urdf.xacro"]
                 ),
                 " ",
-                "platform_type:=",
-                platform_type,
+                "rizon_type:=",
+                rizon_type,
                 " ",
-                "platform_prefix:=",
-                platform_prefix,
+                "external_axis_prefix:=",
+                external_axis_prefix,
                 " ",
                 "robot_sn_left:=",
                 robot_sn_left,
@@ -111,15 +111,15 @@ def generate_launch_description():
     return LaunchDescription(
         [
             DeclareLaunchArgument(
-                name="platform_type",
-                default_value="X1",
-                description="Type of the AICO platform (X1 or X2)",
-                choices=["X1", "X2"],
+                name="rizon_type",
+                default_value="Rizon4",
+                description="Type of the Rizon robot of the AICO2 platform (Rizon4 or Rizon10)",
+                choices=["Rizon4", "Rizon10"],
             ),
             DeclareLaunchArgument(
-                name="platform_prefix",
+                name="external_axis_prefix",
                 default_value="",
-                description="Prefix for the platform links and joints",
+                description="Prefix for the external axis links and joints",
             ),
             # Left Robot
             DeclareLaunchArgument(

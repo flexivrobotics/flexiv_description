@@ -90,17 +90,17 @@ if __name__ == "__main__":
         help="Generate URDF for AICO2 setup.",
     )
     parser.add_argument(
-        "--platform_type",
-        type=str,
-        default="X1",
-        help="Platform type (X1 or X2).",
-        choices=["X1", "X2"],
-    )
-    parser.add_argument(
-        "--platform_prefix",
+        "--external_axis_type",
         type=str,
         default="",
-        help="Platform prefix.",
+        help="External axis type.",
+        choices=["AICO1-4-V1", "AICO1-4-V2", "AICO2-4-V2", "AICO2-10-V1"],
+    )
+    parser.add_argument(
+        "--external_axis_prefix",
+        type=str,
+        default="",
+        help="External axis prefix.",
     )
     parser.add_argument(
         "--rizon_type",
@@ -187,8 +187,8 @@ if __name__ == "__main__":
 
         xacro_file = "urdf/aico1.urdf.xacro"
         mappings = {
-            "platform_type": args.platform_type,
-            "platform_prefix": args.platform_prefix,
+            "external_axis_type": args.external_axis_type,
+            "external_axis_prefix": args.external_axis_prefix,
             "robot_sn": args.robot_sn,
             "rizon_type": args.rizon_type,
             "load_gripper": str(args.load_gripper).lower(),
@@ -206,8 +206,8 @@ if __name__ == "__main__":
     elif args.aico2:
         xacro_file = "urdf/aico2.urdf.xacro"
         mappings = {
-            "platform_type": args.platform_type,
-            "platform_prefix": args.platform_prefix,
+            "rizon_type": args.rizon_type,
+            "external_axis_prefix": args.external_axis_prefix,
             "robot_sn_left": args.robot_sn_left,
             "robot_sn_right": args.robot_sn_right,
             "load_gripper_left": str(args.load_gripper_left).lower(),
@@ -226,7 +226,7 @@ if __name__ == "__main__":
         if args.robot_sn_left and args.robot_sn_right:
             file_name = f"aico2_{args.robot_sn_left}_{args.robot_sn_right}"
 
-        print(f"Generating URDF for AICO2-{args.platform_type}...")
+        print(f"Generating URDF for AICO2 with {args.rizon_type}...")
         urdf_generation(os.getcwd(), xacro_file, file_name, mappings, args.output_path)
 
     elif args.dual:
