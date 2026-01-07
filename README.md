@@ -56,10 +56,10 @@ optional arguments:
                         Load mounted FT sensor. (default: False)
 
 AICO arguments:
-  --platform_type {X1,X2}
-                        Platform type (X1 or X2). (default: 'X1')
-  --platform_prefix PLATFORM_PREFIX
-                        Platform prefix. (default: '')
+  --external_axis_type EXTERNAL_AXIS_TYPE
+                        External axis type. Options: ['AICO1-4-V1', 'AICO1-4-V2', 'AICO2-4-V2', 'AICO2-10-V1'].
+  --external_axis_prefix EXTERNAL_AXIS_PREFIX
+                        External axis prefix. (default: '')
 
 Dual arm or AICO2 arguments:
   --rizon_type_left RIZON_TYPE_LEFT
@@ -102,16 +102,16 @@ Generate URDF for Dual Arm setup:
 ./scripts/create_urdf.sh --dual --rizon_type_left Rizon4 --rizon_type_right Rizon4R --robot_sn_left Rizon4-123456 --robot_sn_right Rizon4R-654321
 ```
 
-Generate URDF for AICO1-X1 (supporting Rizon4 and Rizon4s only):
+Generate URDF for AICO1-4:
 
 ```bash
-./scripts/create_urdf.sh --aico1 --platform_type X1 --rizon_type Rizon4 --robot_sn Rizon4-123456
+./scripts/create_urdf.sh --aico1 --rizon_type Rizon4 --robot_sn Rizon4-123456 --external_axis_type AICO1-4-V1
 ```
 
-Generate URDF for AICO2-X1 (supporting Rizon4 and Rizon4R only):
+Generate URDF for AICO2-4:
 
 ```bash
-./scripts/create_urdf.sh --aico2 --platform_type X1 --robot_sn_left Rizon4-123456 --robot_sn_right Rizon4R-654321
+./scripts/create_urdf.sh --aico2 --rizon_type Rizon4 --robot_sn_left Rizon4-123456 --robot_sn_right Rizon4R-654321
 ```
 
 ## Visualize in RViz
@@ -143,8 +143,8 @@ Dual Arm Arguments (use with --dual):
   load_mounted_ft_sensor_right:=BOOL  Load FT sensor for right robot. (default: 'False')
 
 AICO1 Arguments (use with --aico1):
-  platform_type:=TYPE           Type of the AICO platform (X1 or X2). (default: 'X1')
-  platform_prefix:=PREFIX       Prefix for the platform links and joints. (default: '')
+  external_axis_type:=TYPE      Type of the AICO platform (AICO1-4-V1 or AICO1-4-V2). (default: 'AICO1-4-V1')
+  external_axis_prefix:=PREFIX  Prefix for the external axis links and joints. (default: '')
   robot_sn:=ROBOT_SN            Serial number of the robot.
   rizon_type:=TYPE              Type of the Flexiv Rizon robot. (default: 'Rizon4')
   load_gripper:=BOOL            Flag to load the Flexiv Grav gripper. (default: 'False')
@@ -152,8 +152,8 @@ AICO1 Arguments (use with --aico1):
   load_mounted_ft_sensor:=BOOL  Flag to load the mounted force torque sensor. (default: 'False')
 
 AICO2 Arguments (use with --aico2):
-  platform_type:=TYPE                 Type of the AICO platform (X1 or X2). (default: 'X1')
-  platform_prefix:=PREFIX             Prefix for the platform links and joints. (default: '')
+  rizon_type:=TYPE                    Type of the Flexiv Rizon robot. (default: 'Rizon4')
+  external_axis_prefix:=PREFIX        Prefix for the external axis links and joints. (default: '')
   robot_sn_left:=SN                   Serial number of the left robot.
   robot_sn_right:=SN                  Serial number of the right robot.
   load_gripper_left:=BOOL             Load gripper for left robot. (default: 'False')
@@ -179,16 +179,16 @@ Visualize dual robots:
 ./scripts/visualize_rizon.sh --dual robot_sn_left:=Rizon4-123456 robot_sn_right:=Rizon4R-654321 gui:=True
 ```
 
-Visualize AICO1-X1 (supporting Rizon4 and Rizon4s only):
+Visualize AICO1-4:
 
 ```bash
-./scripts/visualize_rizon.sh --aico1 platform_type:=X1 rizon_type:=Rizon4 robot_sn:=Rizon4-123456 gui:=True
+./scripts/visualize_rizon.sh --aico1 rizon_type:=Rizon4 robot_sn:=Rizon4-123456 external_axis_type:=AICO1-4-V1 gui:=True
 ```
 
-Visualize AICO2-X1 (supporting Rizon4 and Rizon4R only):
+Visualize AICO2-4:
 
 ```bash
-./scripts/visualize_rizon.sh --aico2 platform_type:=X1 robot_sn_left:=Rizon4-123456 robot_sn_right:=Rizon4R-654321 gui:=True
+./scripts/visualize_rizon.sh --aico2 rizon_type:=Rizon4 robot_sn_left:=Rizon4-123456 robot_sn_right:=Rizon4R-654321 gui:=True
 ```
 
 The translation of the two robots in the world frame can be configured in the `config/dual_arm_translations.yaml` file.
