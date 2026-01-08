@@ -90,17 +90,22 @@ if __name__ == "__main__":
         help="Generate URDF for AICO2 setup.",
     )
     parser.add_argument(
-        "--platform_type",
-        type=str,
-        default="X1",
-        help="Platform type (X1 or X2).",
-        choices=["X1", "X2"],
-    )
-    parser.add_argument(
-        "--platform_prefix",
+        "--external_axis_type",
         type=str,
         default="",
-        help="Platform prefix.",
+        help="External axis type for AICO robots.",
+        choices=[
+            "AICO1-platform-X1",
+            "AICO1-platform-X2",
+            "AICO2-platform-X1",
+            "AICO2-platform-X2",
+        ],
+    )
+    parser.add_argument(
+        "--external_axis_prefix",
+        type=str,
+        default="",
+        help="External axis prefix.",
     )
     parser.add_argument(
         "--rizon_type",
@@ -187,8 +192,8 @@ if __name__ == "__main__":
 
         xacro_file = "urdf/aico1.urdf.xacro"
         mappings = {
-            "platform_type": args.platform_type,
-            "platform_prefix": args.platform_prefix,
+            "external_axis_type": args.external_axis_type.replace("-", "_").lower(),
+            "external_axis_prefix": args.external_axis_prefix,
             "robot_sn": args.robot_sn,
             "rizon_type": args.rizon_type,
             "load_gripper": str(args.load_gripper).lower(),
@@ -200,14 +205,43 @@ if __name__ == "__main__":
         if args.robot_sn:
             file_name = f"aico1_{args.robot_sn}"
 
-        print(f"Generating URDF for AICO1 with {args.rizon_type}...")
+        print(
+            f"Generating URDF for {args.external_axis_type} with {args.rizon_type}..."
+        )
         urdf_generation(os.getcwd(), xacro_file, file_name, mappings, args.output_path)
 
     elif args.aico2:
+        if not args.rizon_type:
+            print("Error: --rizon_type is required for AICO2 generation.")
+            exit(1)
+        if args.rizon_type not in ["Rizon4", "Rizon10"]:
+            print(
+                f"Invalid rizon_type: {args.rizon_type}. AICO2 only supports Rizon4 and Rizon10 pairs."
+            )
+            exit(1)
+
+        if (
+            args.rizon_type == "Rizon4"
+            and args.external_axis_type != "AICO2-platform-X1"
+        ):
+            print(
+                f"Invalid external_axis_type: {args.external_axis_type}. AICO2 with Rizon4 only supports AICO2-platform-X1."
+            )
+            exit(1)
+        if (
+            args.rizon_type == "Rizon10"
+            and args.external_axis_type != "AICO2-platform-X2"
+        ):
+            print(
+                f"Invalid external_axis_type: {args.external_axis_type}. AICO2 with Rizon10 only supports AICO2-platform-X2."
+            )
+            exit(1)
+
         xacro_file = "urdf/aico2.urdf.xacro"
         mappings = {
-            "platform_type": args.platform_type,
-            "platform_prefix": args.platform_prefix,
+            "external_axis_type": args.external_axis_type.replace("-", "_").lower(),
+            "external_axis_prefix": args.external_axis_prefix,
+            "rizon_type": args.rizon_type,
             "robot_sn_left": args.robot_sn_left,
             "robot_sn_right": args.robot_sn_right,
             "load_gripper_left": str(args.load_gripper_left).lower(),
@@ -226,7 +260,9 @@ if __name__ == "__main__":
         if args.robot_sn_left and args.robot_sn_right:
             file_name = f"aico2_{args.robot_sn_left}_{args.robot_sn_right}"
 
-        print(f"Generating URDF for AICO2-{args.platform_type}...")
+        print(
+            f"Generating URDF for {args.external_axis_type} with {args.rizon_type}..."
+        )
         urdf_generation(os.getcwd(), xacro_file, file_name, mappings, args.output_path)
 
     elif args.dual:

@@ -2,8 +2,8 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="aico1">
 
   <!-- Parameters -->
-  <xacro:arg name="platform_type" default="X1" />
-  <xacro:arg name="platform_prefix" default="" />
+  <xacro:arg name="external_axis_type" default="aico1_platform_x1" />
+  <xacro:arg name="external_axis_prefix" default="" />
   <xacro:arg name="arm_prefix" default="" />
   <xacro:arg name="robot_sn" default="" />
   <xacro:arg name="rizon_type" default="Rizon4" />
@@ -18,8 +18,8 @@
     default="$(find flexiv_description)/config/initial_positions.yaml" />
 
   <!-- Validate rizon_type -->
-  <xacro:if value="${'$(arg rizon_type)' != 'Rizon4' and '$(arg rizon_type)' != 'Rizon4s'}">
-    ${xacro.warning('AICO1 only supports Rizon4 and Rizon4s. You selected $(arg rizon_type).')}
+  <xacro:if value="${'$(arg rizon_type)' != 'Rizon4' and '$(arg rizon_type)' != 'Rizon4s' and '$(arg rizon_type)' != 'Rizon4R'}">
+    ${xacro.warning('AICO1 only supports Rizon4, Rizon4s and Rizon4R. You selected $(arg rizon_type).')}
   </xacro:if>
 
   <xacro:include filename="$(find flexiv_description)/urdf/common/aico1_platform_x1.xacro" />
@@ -30,24 +30,24 @@
   <xacro:property name="calculated_arm_prefix"
     value="${('$(arg arm_prefix)' + '_' + '$(arg robot_sn)' + '_') if '$(arg arm_prefix)' != '' and '$(arg robot_sn)' != '' else ('$(arg arm_prefix)' + '$(arg robot_sn)' + '_') if ('$(arg arm_prefix)' + '$(arg robot_sn)') != '' else ''}" />
 
-  <!-- Instantiate Platform -->
+  <!-- Instantiate External Axis -->
   <link name="world" />
 
-  <xacro:if value="${'$(arg platform_type)' == 'X1'}">
-    <xacro:aico1_platform_x1 prefix="$(arg platform_prefix)" arm_prefix="${calculated_arm_prefix}"
+  <xacro:if value="${'$(arg external_axis_type)' == 'aico1_platform_x1'}">
+    <xacro:aico1_platform_x1 prefix="$(arg external_axis_prefix)" arm_prefix="${calculated_arm_prefix}"
       mesh_prefix_path="package://flexiv_description/" />
     <joint name="world_to_platform" type="fixed">
       <parent link="world" />
-      <child link="$(arg platform_prefix)aico1_x1_base_link" />
+      <child link="$(arg external_axis_prefix)aico1_x1_base_link" />
       <origin xyz="0 0 0" rpy="0 0 0" />
     </joint>
   </xacro:if>
-  <xacro:if value="${'$(arg platform_type)' == 'X2'}">
-    <xacro:aico1_platform_x2 prefix="$(arg platform_prefix)" arm_prefix="${calculated_arm_prefix}"
+  <xacro:if value="${'$(arg external_axis_type)' == 'aico1_platform_x2'}">
+    <xacro:aico1_platform_x2 prefix="$(arg external_axis_prefix)" arm_prefix="${calculated_arm_prefix}"
       mesh_prefix_path="package://flexiv_description/" />
     <joint name="world_to_platform" type="fixed">
       <parent link="world" />
-      <child link="$(arg platform_prefix)aico1_x2_agv" />
+      <child link="$(arg external_axis_prefix)aico1_x2_agv" />
       <origin xyz="0 0 0" rpy="0 0 0" />
     </joint>
   </xacro:if>
@@ -71,9 +71,8 @@
     initial_positions_file="$(arg initial_positions_file)"
     add_world_link="false"
     create_base_joint="false"
-    platform_name="aico1"
-    platform_type="$(arg platform_type)"
-    platform_prefix="$(arg platform_prefix)"
+    external_axis_type="$(arg external_axis_type)"
+    external_axis_prefix="$(arg external_axis_prefix)"
   />
 
 </robot>

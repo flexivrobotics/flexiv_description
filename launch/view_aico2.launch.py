@@ -7,6 +7,7 @@ from launch.substitutions import (
     FindExecutable,
     LaunchConfiguration,
     PathJoinSubstitution,
+    PythonExpression,
 )
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
@@ -16,8 +17,9 @@ def generate_launch_description():
     pkg_share = FindPackageShare("flexiv_description")
 
     # Arguments
-    platform_type = LaunchConfiguration("platform_type")
-    platform_prefix = LaunchConfiguration("platform_prefix")
+    external_axis_type = LaunchConfiguration("external_axis_type")
+    external_axis_prefix = LaunchConfiguration("external_axis_prefix")
+    rizon_type = LaunchConfiguration("rizon_type")
 
     robot_sn_left = LaunchConfiguration("robot_sn_left")
     load_gripper_left = LaunchConfiguration("load_gripper_left")
@@ -42,11 +44,16 @@ def generate_launch_description():
                     [FindPackageShare("flexiv_description"), "urdf", "aico2.urdf.xacro"]
                 ),
                 " ",
-                "platform_type:=",
-                platform_type,
+                "external_axis_type:=",
+                PythonExpression(
+                    ["'", external_axis_type, "'.lower().replace('-', '_')"]
+                ),
                 " ",
-                "platform_prefix:=",
-                platform_prefix,
+                "external_axis_prefix:=",
+                external_axis_prefix,
+                " ",
+                "rizon_type:=",
+                rizon_type,
                 " ",
                 "robot_sn_left:=",
                 robot_sn_left,
@@ -111,15 +118,21 @@ def generate_launch_description():
     return LaunchDescription(
         [
             DeclareLaunchArgument(
-                name="platform_type",
-                default_value="X1",
-                description="Type of the AICO platform (X1 or X2)",
-                choices=["X1", "X2"],
+                name="external_axis_type",
+                default_value="AICO2-platform-X1",
+                description="Type of the AICO2 platform.",
+                choices=["AICO2-platform-X1", "AICO2-platform-X2"],
             ),
             DeclareLaunchArgument(
-                name="platform_prefix",
+                name="external_axis_prefix",
                 default_value="",
-                description="Prefix for the platform links and joints",
+                description="Prefix for the external axis links and joints",
+            ),
+            DeclareLaunchArgument(
+                name="rizon_type",
+                default_value="Rizon4",
+                description="Type of the Rizon robot of the AICO2 platform (Rizon4 or Rizon10)",
+                choices=["Rizon4", "Rizon10"],
             ),
             # Left Robot
             DeclareLaunchArgument(
