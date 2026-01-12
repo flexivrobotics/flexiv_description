@@ -95,10 +95,11 @@ if __name__ == "__main__":
         default="",
         help="External axis type for AICO robots.",
         choices=[
-            "AICO1-platform-X1",
-            "AICO1-platform-X2",
-            "AICO2-platform-X1",
-            "AICO2-platform-X2",
+            "AICO1-4-V1",
+            "AICO1-4-V2",
+            "AICO2-4-V1",
+            "AICO2-4-V2",
+            "AICO2-10-V1",
         ],
     )
     parser.add_argument(
@@ -222,18 +223,16 @@ if __name__ == "__main__":
 
         if (
             args.rizon_type == "Rizon4"
-            and args.external_axis_type != "AICO2-platform-X1"
+            and args.external_axis_type != "AICO2-4-V1"
+            and args.external_axis_type != "AICO2-4-V2"
         ):
             print(
-                f"Invalid external_axis_type: {args.external_axis_type}. AICO2 with Rizon4 only supports AICO2-platform-X1."
+                f"Invalid external_axis_type: {args.external_axis_type}. AICO2 with Rizon4 only supports AICO2-4-V1 and AICO2-4-V2."
             )
             exit(1)
-        if (
-            args.rizon_type == "Rizon10"
-            and args.external_axis_type != "AICO2-platform-X2"
-        ):
+        if args.rizon_type == "Rizon10" and args.external_axis_type != "AICO2-10-V1":
             print(
-                f"Invalid external_axis_type: {args.external_axis_type}. AICO2 with Rizon10 only supports AICO2-platform-X2."
+                f"Invalid external_axis_type: {args.external_axis_type}. AICO2 with Rizon10 only supports AICO2-10-V1."
             )
             exit(1)
 

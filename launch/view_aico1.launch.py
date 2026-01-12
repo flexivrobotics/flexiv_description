@@ -101,9 +101,9 @@ def generate_launch_description():
         [
             DeclareLaunchArgument(
                 name="external_axis_type",
-                default_value="AICO1-platform-X1",
+                default_value="AICO1-4-V1",
                 description="Type of the AICO1 platform.",
-                choices=["AICO1-platform-X1", "AICO1-platform-X2"],
+                choices=["AICO1-4-V1", "AICO1-4-V2"],
             ),
             DeclareLaunchArgument(
                 name="external_axis_prefix",

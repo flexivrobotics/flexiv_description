@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="aico2">
 
-  <xacro:arg name="external_axis_type" default="aico2_platform_x1" />
+  <xacro:arg name="external_axis_type" default="aico2_4_v1" />
   <xacro:arg name="external_axis_prefix" default="" />
   <xacro:arg name="rizon_type" default="Rizon4" />
   <xacro:arg name="robot_sn_left" default="" />
@@ -11,15 +11,15 @@
   <xacro:if value="${'$(arg rizon_type)' == 'Rizon4'}">
     <xacro:property name="rizon_type_left" value="Rizon4" />
     <xacro:property name="rizon_type_right" value="Rizon4R" />
-    <xacro:if value="${'$(arg external_axis_type)' != 'aico2_platform_x1'}">
-      ${xacro.warning('AICO2 with Rizon4 configuration only supports aico2_platform_x1 external axis. You selected $(arg external_axis_type).')}
+    <xacro:if value="${'$(arg external_axis_type)' != 'aico2_4_v1' and '$(arg external_axis_type)' != 'aico2_4_v2'}">
+      ${xacro.warning('AICO2 with Rizon4 configuration only supports AICO2-4-V1 or AICO2-4-V2 external axis. You selected $(arg external_axis_type).')}
     </xacro:if>
   </xacro:if>
   <xacro:if value="${'$(arg rizon_type)' == 'Rizon10'}">
     <xacro:property name="rizon_type_left" value="Rizon10" />
     <xacro:property name="rizon_type_right" value="Rizon10" />
-    <xacro:if value="${'$(arg external_axis_type)' != 'aico2_platform_x2'}">
-      ${xacro.warning('AICO2 with Rizon10 configuration only supports aico2_platform_x2 external axis. You selected $(arg external_axis_type).')}
+    <xacro:if value="${'$(arg external_axis_type)' != 'aico2_10_v1'}">
+      ${xacro.warning('AICO2 with Rizon10 configuration only supports AICO2-10-V1 external axis. You selected $(arg external_axis_type).')}
     </xacro:if>
   </xacro:if>
 
@@ -40,8 +40,8 @@
   <xacro:arg name="initial_positions_file_right"
     default="$(find flexiv_description)/config/right_initial_positions.yaml" />
 
-  <xacro:include filename="$(find flexiv_description)/urdf/common/aico2_platform_x1.xacro" />
-  <xacro:include filename="$(find flexiv_description)/urdf/common/aico2_platform_x2.xacro" />
+  <xacro:include filename="$(find flexiv_description)/urdf/common/aico2_4_v1.xacro" />
+  <xacro:include filename="$(find flexiv_description)/urdf/common/aico2_10_v1.xacro" />
   <xacro:include filename="$(find flexiv_description)/urdf/common/rizon_robot.xacro" />
   <xacro:include filename="$(find flexiv_description)/urdf/common/rizon_dual.ros2_control.xacro" />
 
@@ -58,25 +58,25 @@
   <!-- Instantiate External Axis -->
   <link name="world" />
 
-  <xacro:if value="${'$(arg external_axis_type)' == 'aico2_platform_x1'}">
-    <xacro:aico2_platform_x1 prefix="$(arg external_axis_prefix)"
+  <xacro:if value="${'$(arg external_axis_type)' == 'aico2_4_v1'}">
+    <xacro:aico2_4_v1 prefix="$(arg external_axis_prefix)"
       left_arm_prefix="${calculated_left_arm_prefix}"
       right_arm_prefix="${calculated_right_arm_prefix}"
       mesh_prefix_path="package://flexiv_description/" />
     <joint name="world_to_platform" type="fixed">
       <parent link="world" />
-      <child link="$(arg external_axis_prefix)aico2_x1_base_link" />
+      <child link="$(arg external_axis_prefix)aico2_4_v1_base_link" />
       <origin xyz="0 0 0" rpy="0 0 0" />
     </joint>
   </xacro:if>
-  <xacro:if value="${'$(arg external_axis_type)' == 'aico2_platform_x2'}">
-    <xacro:aico2_platform_x2 prefix="$(arg external_axis_prefix)"
+  <xacro:if value="${'$(arg external_axis_type)' == 'aico2_10_v1'}">
+    <xacro:aico2_10_v1 prefix="$(arg external_axis_prefix)"
       left_arm_prefix="${calculated_left_arm_prefix}"
       right_arm_prefix="${calculated_right_arm_prefix}"
       mesh_prefix_path="package://flexiv_description/" />
     <joint name="world_to_platform" type="fixed">
       <parent link="world" />
-      <child link="$(arg external_axis_prefix)aico2_x2_base_link" />
+      <child link="$(arg external_axis_prefix)aico2_10_v1_base_link" />
       <origin xyz="0 0 0" rpy="0 0 0" />
     </joint>
   </xacro:if>
