@@ -41,6 +41,7 @@
     default="$(find flexiv_description)/config/right_initial_positions.yaml" />
 
   <xacro:include filename="$(find flexiv_description)/urdf/common/aico2_4_v1.xacro" />
+  <xacro:include filename="$(find flexiv_description)/urdf/common/aico2_4_v2.xacro" />
   <xacro:include filename="$(find flexiv_description)/urdf/common/aico2_10_v1.xacro" />
   <xacro:include filename="$(find flexiv_description)/urdf/common/rizon_robot.xacro" />
   <xacro:include filename="$(find flexiv_description)/urdf/common/rizon_dual.ros2_control.xacro" />
@@ -66,6 +67,17 @@
     <joint name="world_to_platform" type="fixed">
       <parent link="world" />
       <child link="$(arg external_axis_prefix)aico2_4_v1_base_link" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+  </xacro:if>
+  <xacro:if value="${'$(arg external_axis_type)' == 'aico2_4_v2'}">
+    <xacro:aico2_4_v2 prefix="$(arg external_axis_prefix)"
+      left_arm_prefix="${calculated_left_arm_prefix}"
+      right_arm_prefix="${calculated_right_arm_prefix}"
+      mesh_prefix_path="package://flexiv_description/" />
+    <joint name="world_to_platform" type="fixed">
+      <parent link="world" />
+      <child link="$(arg external_axis_prefix)aico2_4_v2_base_link" />
       <origin xyz="0 0 0" rpy="0 0 0" />
     </joint>
   </xacro:if>
