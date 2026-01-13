@@ -102,16 +102,16 @@ Generate URDF for Dual Arm setup:
 ./scripts/create_urdf.sh --dual --rizon_type_left Rizon4 --rizon_type_right Rizon4R --robot_sn_left Rizon4-123456 --robot_sn_right Rizon4R-654321
 ```
 
-Generate URDF for AICO1-4:
+Generate URDF for AICO1-4-V1:
 
 ```bash
-./scripts/create_urdf.sh --aico1 --external_axis_type AICO1-platform-X1 --rizon_type Rizon4 --robot_sn Rizon4-123456
+./scripts/create_urdf.sh --aico1 --external_axis_type AICO1-4-V1 --rizon_type Rizon4 --robot_sn Rizon4-123456
 ```
 
-Generate URDF for AICO2-4:
+Generate URDF for AICO2-4-V1:
 
 ```bash
-./scripts/create_urdf.sh --aico2 --external_axis_type AICO2-platform-X1 --rizon_type Rizon4 --robot_sn_left Rizon4-123456 --robot_sn_right Rizon4R-654321
+./scripts/create_urdf.sh --aico2 --external_axis_type AICO2-4-V1 --rizon_type Rizon4 --robot_sn_left Rizon4-123456 --robot_sn_right Rizon4R-654321
 ```
 
 ## Visualize in RViz
@@ -143,7 +143,7 @@ Dual Arm Arguments (use with --dual):
   load_mounted_ft_sensor_right:=BOOL  Load FT sensor for right robot. (default: 'False')
 
 AICO1 Arguments (use with --aico1):
-  external_axis_type:=TYPE      Type of the AICO platform (default: 'AICO1-platform-X1', 'AICO1-platform-X2').
+  external_axis_type:=TYPE      Type of the AICO platform (default: 'AICO1-4-V1').
   external_axis_prefix:=PREFIX  Prefix for the platform links and joints. (default: '')
   robot_sn:=ROBOT_SN            Serial number of the robot.
   rizon_type:=TYPE              Type of the Flexiv Rizon robot. (default: 'Rizon4')
@@ -152,7 +152,7 @@ AICO1 Arguments (use with --aico1):
   load_mounted_ft_sensor:=BOOL  Flag to load the mounted force torque sensor. (default: 'False')
 
 AICO2 Arguments (use with --aico2):
-  external_axis_type:=TYPE            Type of the AICO platform (default: 'AICO2-platform-X1', 'AICO2-platform-X2').
+  external_axis_type:=TYPE            Type of the AICO platform (default: 'AICO2-4-V1').
   external_axis_prefix:=PREFIX        Prefix for the platform links and joints. (default: '')
   rizon_type:=TYPE                    Type of the Flexiv Rizon robot. (default: 'Rizon4')
   robot_sn_left:=SN                   Serial number of the left robot.
@@ -180,16 +180,16 @@ Visualize dual robots:
 ./scripts/visualize_rizon.sh --dual robot_sn_left:=Rizon4-123456 robot_sn_right:=Rizon4R-654321 gui:=True
 ```
 
-Visualize AICO1-4:
+Visualize AICO1-4-V1:
 
 ```bash
-./scripts/visualize_rizon.sh --aico1 external_axis_type:=AICO1-platform-X1 rizon_type:=Rizon4 robot_sn:=Rizon4-123456 gui:=True
+./scripts/visualize_rizon.sh --aico1 external_axis_type:=AICO1-4-V1 rizon_type:=Rizon4 robot_sn:=Rizon4-123456 gui:=True
 ```
 
-Visualize AICO2-4:
+Visualize AICO2-4-V1:
 
 ```bash
-./scripts/visualize_rizon.sh --aico2 external_axis_type:=AICO2-platform-X1 rizon_type:=Rizon4 robot_sn_left:=Rizon4-123456 robot_sn_right:=Rizon4R-654321 gui:=True
+./scripts/visualize_rizon.sh --aico2 external_axis_type:=AICO2-4-V1 rizon_type:=Rizon4 robot_sn_left:=Rizon4-123456 robot_sn_right:=Rizon4R-654321 gui:=True
 ```
 
 The translation of the two robots in the world frame can be configured in the `config/dual_arm_translations.yaml` file.
