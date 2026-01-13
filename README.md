@@ -102,13 +102,13 @@ Generate URDF for Dual Arm setup:
 ./scripts/create_urdf.sh --dual --rizon_type_left Rizon4 --rizon_type_right Rizon4R --robot_sn_left Rizon4-123456 --robot_sn_right Rizon4R-654321
 ```
 
-Generate URDF for AICO1-4:
+Generate URDF for AICO1-4-V1:
 
 ```bash
 ./scripts/create_urdf.sh --aico1 --external_axis_type AICO1-4-V1 --rizon_type Rizon4 --robot_sn Rizon4-123456
 ```
 
-Generate URDF for AICO2-4:
+Generate URDF for AICO2-4-V1:
 
 ```bash
 ./scripts/create_urdf.sh --aico2 --external_axis_type AICO2-4-V1 --rizon_type Rizon4 --robot_sn_left Rizon4-123456 --robot_sn_right Rizon4R-654321
@@ -180,13 +180,13 @@ Visualize dual robots:
 ./scripts/visualize_rizon.sh --dual robot_sn_left:=Rizon4-123456 robot_sn_right:=Rizon4R-654321 gui:=True
 ```
 
-Visualize AICO1-4:
+Visualize AICO1-4-V1:
 
 ```bash
 ./scripts/visualize_rizon.sh --aico1 external_axis_type:=AICO1-4-V1 rizon_type:=Rizon4 robot_sn:=Rizon4-123456 gui:=True
 ```
 
-Visualize AICO2-4:
+Visualize AICO2-4-V1:
 
 ```bash
 ./scripts/visualize_rizon.sh --aico2 external_axis_type:=AICO2-4-V1 rizon_type:=Rizon4 robot_sn_left:=Rizon4-123456 robot_sn_right:=Rizon4R-654321 gui:=True
