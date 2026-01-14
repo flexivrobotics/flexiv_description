@@ -8,4 +8,4 @@ docker run -u $(id -u) \
     -v $(pwd):/workspaces/src/flexiv_description \
     -w /workspaces/src/flexiv_description \
     urdf_creation \
-    .docker/create_urdf.entrypoint.sh $*
+    .docker/create_urdf.entrypoint.sh $* --output_path $(pwd)

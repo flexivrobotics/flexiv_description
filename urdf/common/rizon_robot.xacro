@@ -18,9 +18,12 @@
     use_fake_hardware:=false
     fake_sensor_commands:=false
     add_world_link:=true
+    create_base_joint:=true
     initial_positions_file:='$(find flexiv_description)/config/initial_positions.yaml'
     base_xyz:='0.0 0.0 0.0'
     base_rpy:='0.0 0.0 0.0'
+    external_axis_type:=''
+    external_axis_prefix:=''
     ">
 
     <!-- Prefix defaults to 'arm_prefix_robot_sn' -->
@@ -46,6 +49,7 @@
       inertia_parameters_file="${inertia_parameters_file}"
       visual_parameters_file="${visual_parameters_file}"
       add_world_link="${add_world_link}"
+      create_base_joint="${create_base_joint}"
       base_xyz="${base_xyz}"
       base_rpy="${base_rpy}"
     />
@@ -58,6 +62,8 @@
         use_fake_hardware="${use_fake_hardware}"
         fake_sensor_commands="${fake_sensor_commands}"
         initial_positions_file="${initial_positions_file}"
+        external_axis_type="${external_axis_type}"
+        external_axis_prefix="${external_axis_prefix}"
       />
     </xacro:if>
 
