@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="aico2">
+
+  <xacro:arg name="external_axis_type" default="aico2_4_v1" />
+  <xacro:arg name="external_axis_prefix" default="" />
+  <xacro:arg name="rizon_type" default="Rizon4" />
+  <xacro:arg name="robot_sn_left" default="" />
+  <xacro:arg name="robot_sn_right" default="" />
+
+  <!-- Determine Rizon left and right types based on rizon_type -->
+  <xacro:if value="${'$(arg rizon_type)' == 'Rizon4'}">
+    <xacro:property name="rizon_type_left" value="Rizon4" />
+    <xacro:property name="rizon_type_right" value="Rizon4R" />
+    <xacro:if value="${'$(arg external_axis_type)' != 'aico2_4_v1' and '$(arg external_axis_type)' != 'aico2_4_v2'}">
+      ${xacro.warning('AICO2 with Rizon4 configuration only supports AICO2-4-V1 or AICO2-4-V2 external axis. You selected $(arg external_axis_type).')}
+    </xacro:if>
+  </xacro:if>
+  <xacro:if value="${'$(arg rizon_type)' == 'Rizon10'}">
+    <xacro:property name="rizon_type_left" value="Rizon10" />
+    <xacro:property name="rizon_type_right" value="Rizon10" />
+    <xacro:if value="${'$(arg external_axis_type)' != 'aico2_10_v1'}">
+      ${xacro.warning('AICO2 with Rizon10 configuration only supports AICO2-10-V1 external axis. You selected $(arg external_axis_type).')}
+    </xacro:if>
+  </xacro:if>
+
+  <xacro:arg name="load_gripper_left" default="false" />
+  <xacro:arg name="gripper_name_left" default="Flexiv-GN01" />
+  <xacro:arg name="load_mounted_ft_sensor_left" default="false" />
+
+  <xacro:arg name="load_gripper_right" default="false" />
+  <xacro:arg name="gripper_name_right" default="Flexiv-GN01" />
+  <xacro:arg name="load_mounted_ft_sensor_right" default="false" />
+
+  <xacro:arg name="ros2_control" default="false" />
+  <xacro:arg name="rdk_control_mode" default="joint_position" />
+  <xacro:arg name="use_fake_hardware" default="false" />
+  <xacro:arg name="fake_sensor_commands" default="false" />
+  <xacro:arg name="initial_positions_file_left"
+    default="$(find flexiv_description)/config/left_initial_positions.yaml" />
+  <xacro:arg name="initial_positions_file_right"
+    default="$(find flexiv_description)/config/right_initial_positions.yaml" />
+
+  <xacro:include filename="$(find flexiv_description)/urdf/common/aico2_4_v1.xacro" />
+  <xacro:include filename="$(find flexiv_description)/urdf/common/aico2_4_v2.xacro" />
+  <xacro:include filename="$(find flexiv_description)/urdf/common/aico2_10_v1.xacro" />
+  <xacro:include filename="$(find flexiv_description)/urdf/common/rizon_robot.xacro" />
+  <xacro:include filename="$(find flexiv_description)/urdf/common/rizon_dual.ros2_control.xacro" />
+
+  <!-- Define prefixes -->
+  <xacro:property name="left_arm_prefix_arg" value="left" />
+  <xacro:property name="right_arm_prefix_arg" value="right" />
+
+  <!-- Calculate the actual prefixes rizon_robot will use -->
+  <xacro:property name="calculated_left_arm_prefix"
+    value="${(left_arm_prefix_arg + '_' + '$(arg robot_sn_left)' + '_') if left_arm_prefix_arg != '' and '$(arg robot_sn_left)' != '' else (left_arm_prefix_arg + '$(arg robot_sn_left)' + '_') if (left_arm_prefix_arg + '$(arg robot_sn_left)') != '' else ''}" />
+  <xacro:property name="calculated_right_arm_prefix"
+    value="${(right_arm_prefix_arg + '_' + '$(arg robot_sn_right)' + '_') if right_arm_prefix_arg != '' and '$(arg robot_sn_right)' != '' else (right_arm_prefix_arg + '$(arg robot_sn_right)' + '_') if (right_arm_prefix_arg + '$(arg robot_sn_right)') != '' else ''}" />
+
+  <!-- Instantiate External Axis -->
+  <link name="world" />
+
+  <xacro:if value="${'$(arg external_axis_type)' == 'aico2_4_v1'}">
+    <xacro:aico2_4_v1 prefix="$(arg external_axis_prefix)"
+      left_arm_prefix="${calculated_left_arm_prefix}"
+      right_arm_prefix="${calculated_right_arm_prefix}"
+      mesh_prefix_path="package://flexiv_description/" />
+    <joint name="world_to_platform" type="fixed">
+      <parent link="world" />
+      <child link="$(arg external_axis_prefix)aico2_4_v1_base_link" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+  </xacro:if>
+  <xacro:if value="${'$(arg external_axis_type)' == 'aico2_4_v2'}">
+    <xacro:aico2_4_v2 prefix="$(arg external_axis_prefix)"
+      left_arm_prefix="${calculated_left_arm_prefix}"
+      right_arm_prefix="${calculated_right_arm_prefix}"
+      mesh_prefix_path="package://flexiv_description/" />
+    <joint name="world_to_platform" type="fixed">
+      <parent link="world" />
+      <child link="$(arg external_axis_prefix)aico2_4_v2_base_link" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+  </xacro:if>
+  <xacro:if value="${'$(arg external_axis_type)' == 'aico2_10_v1'}">
+    <xacro:aico2_10_v1 prefix="$(arg external_axis_prefix)"
+      left_arm_prefix="${calculated_left_arm_prefix}"
+      right_arm_prefix="${calculated_right_arm_prefix}"
+      mesh_prefix_path="package://flexiv_description/" />
+    <joint name="world_to_platform" type="fixed">
+      <parent link="world" />
+      <child link="$(arg external_axis_prefix)aico2_10_v1_base_link" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+  </xacro:if>
+
+  <!-- Left Robot -->
+  <xacro:rizon_robot
+    rizon_type="${rizon_type_left}"
+    robot_sn="$(arg robot_sn_left)"
+    joint_limits_parameters_file="$(find flexiv_description)/config/${rizon_type_left}/joint_limits.yaml"
+    kinematics_parameters_file="$(find flexiv_description)/config/${rizon_type_left}/default_kinematics.yaml"
+    inertia_parameters_file="$(find flexiv_description)/config/${rizon_type_left}/inertia_parameters.yaml"
+    visual_parameters_file="$(find flexiv_description)/config/${rizon_type_left}/visual_parameters.yaml"
+    arm_prefix="${left_arm_prefix_arg}"
+    load_gripper="$(arg load_gripper_left)"
+    gripper_name="$(arg gripper_name_left)"
+    load_mounted_ft_sensor="$(arg load_mounted_ft_sensor_left)"
+    ros2_control="false"
+    add_world_link="false"
+    create_base_joint="false"
+  />
+
+  <!-- Right Robot -->
+  <xacro:rizon_robot
+    rizon_type="${rizon_type_right}"
+    robot_sn="$(arg robot_sn_right)"
+    joint_limits_parameters_file="$(find flexiv_description)/config/${rizon_type_right}/joint_limits.yaml"
+    kinematics_parameters_file="$(find flexiv_description)/config/${rizon_type_right}/default_kinematics.yaml"
+    inertia_parameters_file="$(find flexiv_description)/config/${rizon_type_right}/inertia_parameters.yaml"
+    visual_parameters_file="$(find flexiv_description)/config/${rizon_type_right}/visual_parameters.yaml"
+    arm_prefix="${right_arm_prefix_arg}"
+    load_gripper="$(arg load_gripper_right)"
+    gripper_name="$(arg gripper_name_right)"
+    load_mounted_ft_sensor="$(arg load_mounted_ft_sensor_right)"
+    ros2_control="false"
+    add_world_link="false"
+    create_base_joint="false"
+  />
+
+  <!-- Dual ROS 2 Control -->
+  <xacro:if value="$(arg ros2_control)">
+    <xacro:rizon_dual_ros2_control
+      prefix_left="${calculated_left_arm_prefix}"
+      prefix_right="${calculated_right_arm_prefix}"
+      robot_sn_left="$(arg robot_sn_left)"
+      robot_sn_right="$(arg robot_sn_right)"
+      rdk_control_mode="$(arg rdk_control_mode)"
+      use_fake_hardware="$(arg use_fake_hardware)"
+      fake_sensor_commands="$(arg fake_sensor_commands)"
+      initial_positions_file_left="$(arg initial_positions_file_left)"
+      initial_positions_file_right="$(arg initial_positions_file_right)"
+      translation_left_x="0"
+      translation_left_y="0"
+      translation_left_z="0"
+      translation_right_x="0"
+      translation_right_y="0"
+      translation_right_z="0"
+      external_axis_type="$(arg external_axis_type)"
+      external_axis_prefix="$(arg external_axis_prefix)"
+    />
+  </xacro:if>
+
+</robot>

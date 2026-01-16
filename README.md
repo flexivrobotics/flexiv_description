@@ -21,8 +21,10 @@ Run the `create_urdf.sh` script from the package root directory:
 ### Parameters
 
 ```
-usage: create_urdf.py [-h] [--dual] [--rizon_type RIZON_TYPE]
+usage: create_urdf.py [-h] [--dual] [--aico1] [--aico2]
+                      [--rizon_type RIZON_TYPE]
                       [--arm_prefix ARM_PREFIX] [--robot_sn ROBOT_SN]
+                      [--external_axis_type EXTERNAL_AXIS_TYPE] [--external_axis_prefix EXTERNAL_AXIS_PREFIX]
                       [--load_gripper] [--gripper_name GRIPPER_NAME]
                       [--load_mounted_ft_sensor]
                       [--rizon_type_left RIZON_TYPE_LEFT]
@@ -40,6 +42,8 @@ Create URDF files from xacro for Flexiv robots.
 optional arguments:
   -h, --help            show this help message and exit
   --dual                Generate URDF for dual arm setup.
+  --aico1               Generate URDF for AICO1 setup.
+  --aico2               Generate URDF for AICO2 setup.
   --rizon_type RIZON_TYPE
                         Rizon robot type (Single arm). Options: ['Rizon4', 'Rizon4s', 'Rizon4M', 'Rizon4R', 'Rizon10', 'Rizon10s'].
   --arm_prefix ARM_PREFIX
@@ -51,7 +55,13 @@ optional arguments:
   --load_mounted_ft_sensor
                         Load mounted FT sensor. (default: False)
 
-Dual arm arguments:
+AICO arguments:
+  --external_axis_type EXTERNAL_AXIS_TYPE
+                        External axis type. Options: ['AICO1-4-V1', 'AICO1-4-V2', 'AICO2-4-V2', 'AICO2-10-V1'].
+  --external_axis_prefix EXTERNAL_AXIS_PREFIX
+                        External axis prefix. (default: '')
+
+Dual arm or AICO2 arguments:
   --rizon_type_left RIZON_TYPE_LEFT
                         Left Rizon robot type.
   --rizon_type_right RIZON_TYPE_RIGHT
@@ -92,12 +102,24 @@ Generate URDF for Dual Arm setup:
 ./scripts/create_urdf.sh --dual --rizon_type_left Rizon4 --rizon_type_right Rizon4R --robot_sn_left Rizon4-123456 --robot_sn_right Rizon4R-654321
 ```
 
+Generate URDF for AICO1-4-V1:
+
+```bash
+./scripts/create_urdf.sh --aico1 --external_axis_type AICO1-4-V1 --rizon_type Rizon4 --robot_sn Rizon4-123456
+```
+
+Generate URDF for AICO2-4-V1:
+
+```bash
+./scripts/create_urdf.sh --aico2 --external_axis_type AICO2-4-V1 --rizon_type Rizon4 --robot_sn_left Rizon4-123456 --robot_sn_right Rizon4R-654321
+```
+
 ## Visualize in RViz
 
 The robot models can be visualized in RViz using the provided script. This script runs inside a Docker container and requires a GUI environment.
 
 ```
-usage: visualize_rizon.sh [--dual] [OPTIONS]
+usage: visualize_rizon.sh [--dual | --aico1 | --aico2] [OPTIONS]
 
 Visualize Flexiv robots in RViz.
 
@@ -120,6 +142,28 @@ Dual Arm Arguments (use with --dual):
   load_mounted_ft_sensor_left:=BOOL   Load FT sensor for left robot. (default: 'False')
   load_mounted_ft_sensor_right:=BOOL  Load FT sensor for right robot. (default: 'False')
 
+AICO1 Arguments (use with --aico1):
+  external_axis_type:=TYPE      Type of the AICO platform (default: 'AICO1-4-V1').
+  external_axis_prefix:=PREFIX  Prefix for the platform links and joints. (default: '')
+  robot_sn:=ROBOT_SN            Serial number of the robot.
+  rizon_type:=TYPE              Type of the Flexiv Rizon robot. (default: 'Rizon4')
+  load_gripper:=BOOL            Flag to load the Flexiv Grav gripper. (default: 'False')
+  gripper_name:=NAME            Full name of the gripper to be controlled. (default: 'Flexiv-GN01')
+  load_mounted_ft_sensor:=BOOL  Flag to load the mounted force torque sensor. (default: 'False')
+
+AICO2 Arguments (use with --aico2):
+  external_axis_type:=TYPE            Type of the AICO platform (default: 'AICO2-4-V1').
+  external_axis_prefix:=PREFIX        Prefix for the platform links and joints. (default: '')
+  rizon_type:=TYPE                    Type of the Flexiv Rizon robot. (default: 'Rizon4')
+  robot_sn_left:=SN                   Serial number of the left robot.
+  robot_sn_right:=SN                  Serial number of the right robot.
+  load_gripper_left:=BOOL             Load gripper for left robot. (default: 'False')
+  load_gripper_right:=BOOL            Load gripper for right robot. (default: 'False')
+  gripper_name_left:=NAME             Gripper name for left robot. (default: 'Flexiv-GN01')
+  gripper_name_right:=NAME            Gripper name for right robot. (default: 'Flexiv-GN01')
+  load_mounted_ft_sensor_left:=BOOL   Load FT sensor for left robot. (default: 'False')
+  load_mounted_ft_sensor_right:=BOOL  Load FT sensor for right robot. (default: 'False')
+
 Common Arguments:
   gui:=BOOL                Flag to enable joint_state_publisher_gui. (default: 'False')
 ```
@@ -134,6 +178,18 @@ Visualize dual robots:
 
 ```bash
 ./scripts/visualize_rizon.sh --dual robot_sn_left:=Rizon4-123456 robot_sn_right:=Rizon4R-654321 gui:=True
+```
+
+Visualize AICO1-4-V1:
+
+```bash
+./scripts/visualize_rizon.sh --aico1 external_axis_type:=AICO1-4-V1 rizon_type:=Rizon4 robot_sn:=Rizon4-123456 gui:=True
+```
+
+Visualize AICO2-4-V1:
+
+```bash
+./scripts/visualize_rizon.sh --aico2 external_axis_type:=AICO2-4-V1 rizon_type:=Rizon4 robot_sn_left:=Rizon4-123456 robot_sn_right:=Rizon4R-654321 gui:=True
 ```
 
 The translation of the two robots in the world frame can be configured in the `config/dual_arm_translations.yaml` file.
