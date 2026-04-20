@@ -15,13 +15,12 @@ from launch_ros.substitutions import FindPackageShare
 def generate_launch_description():
     pkg_share = FindPackageShare("flexiv_description")
 
-    robot_sn_left = LaunchConfiguration("robot_sn_left")
+    robot_sn = LaunchConfiguration("robot_sn")
     rizon_type_left = LaunchConfiguration("rizon_type_left")
     load_gripper_left = LaunchConfiguration("load_gripper_left")
     gripper_name_left = LaunchConfiguration("gripper_name_left")
     load_mounted_ft_sensor_left = LaunchConfiguration("load_mounted_ft_sensor_left")
 
-    robot_sn_right = LaunchConfiguration("robot_sn_right")
     rizon_type_right = LaunchConfiguration("rizon_type_right")
     load_gripper_right = LaunchConfiguration("load_gripper_right")
     gripper_name_right = LaunchConfiguration("gripper_name_right")
@@ -44,11 +43,8 @@ def generate_launch_description():
                     ]
                 ),
                 " ",
-                "robot_sn_left:=",
-                robot_sn_left,
-                " ",
-                "robot_sn_right:=",
-                robot_sn_right,
+                "robot_sn:=",
+                robot_sn,
                 " ",
                 "rizon_type_left:=",
                 rizon_type_left,
@@ -113,12 +109,8 @@ def generate_launch_description():
     return LaunchDescription(
         [
             DeclareLaunchArgument(
-                name="robot_sn_left",
-                description="Serial number of the left robot.",
-            ),
-            DeclareLaunchArgument(
-                name="robot_sn_right",
-                description="Serial number of the right robot.",
+                name="robot_sn",
+                description="Serial number of the dual-arm robot/controller.",
             ),
             DeclareLaunchArgument(
                 name="rizon_type_left",

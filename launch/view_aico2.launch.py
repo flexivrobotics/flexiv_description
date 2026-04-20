@@ -21,12 +21,11 @@ def generate_launch_description():
     external_axis_prefix = LaunchConfiguration("external_axis_prefix")
     rizon_type = LaunchConfiguration("rizon_type")
 
-    robot_sn_left = LaunchConfiguration("robot_sn_left")
+    robot_sn = LaunchConfiguration("robot_sn")
     load_gripper_left = LaunchConfiguration("load_gripper_left")
     gripper_name_left = LaunchConfiguration("gripper_name_left")
     load_mounted_ft_sensor_left = LaunchConfiguration("load_mounted_ft_sensor_left")
 
-    robot_sn_right = LaunchConfiguration("robot_sn_right")
     load_gripper_right = LaunchConfiguration("load_gripper_right")
     gripper_name_right = LaunchConfiguration("gripper_name_right")
     load_mounted_ft_sensor_right = LaunchConfiguration("load_mounted_ft_sensor_right")
@@ -55,8 +54,8 @@ def generate_launch_description():
                 "rizon_type:=",
                 rizon_type,
                 " ",
-                "robot_sn_left:=",
-                robot_sn_left,
+                "robot_sn:=",
+                robot_sn,
                 " ",
                 "load_gripper_left:=",
                 load_gripper_left,
@@ -66,9 +65,6 @@ def generate_launch_description():
                 " ",
                 "load_mounted_ft_sensor_left:=",
                 load_mounted_ft_sensor_left,
-                " ",
-                "robot_sn_right:=",
-                robot_sn_right,
                 " ",
                 "load_gripper_right:=",
                 load_gripper_right,
@@ -136,8 +132,8 @@ def generate_launch_description():
             ),
             # Left Robot
             DeclareLaunchArgument(
-                name="robot_sn_left",
-                description="Serial number of the left robot.",
+                name="robot_sn",
+                description="Serial number of the dual-arm robot/controller.",
             ),
             DeclareLaunchArgument(
                 name="load_gripper_left",
@@ -153,11 +149,6 @@ def generate_launch_description():
                 name="load_mounted_ft_sensor_left",
                 default_value="False",
                 description="Flag to load the mounted force torque sensor for left robot",
-            ),
-            # Right Robot
-            DeclareLaunchArgument(
-                name="robot_sn_right",
-                description="Serial number of the right robot.",
             ),
             DeclareLaunchArgument(
                 name="load_gripper_right",

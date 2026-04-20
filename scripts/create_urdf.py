@@ -137,12 +137,6 @@ if __name__ == "__main__":
         help=f"Right Rizon robot type. Options: {RIZON_TYPES}.",
     )
     parser.add_argument(
-        "--robot_sn_left", type=str, default="", help="Left robot serial number."
-    )
-    parser.add_argument(
-        "--robot_sn_right", type=str, default="", help="Right robot serial number."
-    )
-    parser.add_argument(
         "--load_gripper_left", action="store_true", help="Load gripper for left robot."
     )
     parser.add_argument(
@@ -241,8 +235,7 @@ if __name__ == "__main__":
             "external_axis_type": args.external_axis_type.replace("-", "_").lower(),
             "external_axis_prefix": args.external_axis_prefix,
             "rizon_type": args.rizon_type,
-            "robot_sn_left": args.robot_sn_left,
-            "robot_sn_right": args.robot_sn_right,
+            "robot_sn": args.robot_sn,
             "load_gripper_left": str(args.load_gripper_left).lower(),
             "load_gripper_right": str(args.load_gripper_right).lower(),
             "gripper_name_left": args.gripper_name_left,
@@ -256,8 +249,8 @@ if __name__ == "__main__":
         }
 
         file_name = "aico2"
-        if args.robot_sn_left and args.robot_sn_right:
-            file_name = f"aico2_{args.robot_sn_left}_{args.robot_sn_right}"
+        if args.robot_sn:
+            file_name = f"aico2_{args.robot_sn}"
 
         print(
             f"Generating URDF for {args.external_axis_type} with {args.rizon_type}..."
@@ -280,8 +273,7 @@ if __name__ == "__main__":
         mappings = {
             "rizon_type_left": args.rizon_type_left,
             "rizon_type_right": args.rizon_type_right,
-            "robot_sn_left": args.robot_sn_left,
-            "robot_sn_right": args.robot_sn_right,
+            "robot_sn": args.robot_sn,
             "load_gripper_left": str(args.load_gripper_left).lower(),
             "load_gripper_right": str(args.load_gripper_right).lower(),
             "gripper_name_left": args.gripper_name_left,
@@ -295,8 +287,8 @@ if __name__ == "__main__":
         }
 
         file_name = "rizon_dual"
-        if args.robot_sn_left and args.robot_sn_right:
-            file_name = f"dual_{args.robot_sn_left}_{args.robot_sn_right}"
+        if args.robot_sn:
+            file_name = f"dual_{args.robot_sn}"
 
         print(
             f"Generating Dual URDF for {args.rizon_type_left} and {args.rizon_type_right}..."

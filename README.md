@@ -28,9 +28,7 @@ usage: create_urdf.py [-h] [--dual] [--aico1] [--aico2]
                       [--load_gripper] [--gripper_name GRIPPER_NAME]
                       [--load_mounted_ft_sensor]
                       [--rizon_type_left RIZON_TYPE_LEFT]
-                      [--rizon_type_right RIZON_TYPE_RIGHT]
-                      [--robot_sn_left ROBOT_SN_LEFT]
-                      [--robot_sn_right ROBOT_SN_RIGHT] [--load_gripper_left]
+                      [--rizon_type_right RIZON_TYPE_RIGHT] [--load_gripper_left]
                       [--load_gripper_right]
                       [--gripper_name_left GRIPPER_NAME_LEFT]
                       [--gripper_name_right GRIPPER_NAME_RIGHT]
@@ -66,10 +64,7 @@ Dual arm or AICO2 arguments:
                         Left Rizon robot type.
   --rizon_type_right RIZON_TYPE_RIGHT
                         Right Rizon robot type.
-  --robot_sn_left ROBOT_SN_LEFT
-                        Left robot serial number.
-  --robot_sn_right ROBOT_SN_RIGHT
-                        Right robot serial number.
+  --robot_sn ROBOT_SN   Shared robot serial number for the dual-arm controller.
   --load_gripper_left   Load gripper for left robot.
   --load_gripper_right  Load gripper for right robot.
   --gripper_name_left GRIPPER_NAME_LEFT
@@ -99,7 +94,7 @@ Generate URDF for Rizon4 with a specific serial number:
 Generate URDF for Dual Arm setup:
 
 ```bash
-./scripts/create_urdf.sh --dual --rizon_type_left Rizon4 --rizon_type_right Rizon4R --robot_sn_left Rizon4-123456 --robot_sn_right Rizon4R-654321
+./scripts/create_urdf.sh --dual --rizon_type_left Rizon4 --rizon_type_right Rizon4R --robot_sn DualArms-123456
 ```
 
 Generate URDF for AICO1-4-V1:
@@ -111,7 +106,7 @@ Generate URDF for AICO1-4-V1:
 Generate URDF for AICO2-4-V1:
 
 ```bash
-./scripts/create_urdf.sh --aico2 --external_axis_type AICO2-4-V1 --rizon_type Rizon4 --robot_sn_left Rizon4-123456 --robot_sn_right Rizon4R-654321
+./scripts/create_urdf.sh --aico2 --external_axis_type AICO2-4-V1 --rizon_type Rizon4 --robot_sn DualArms-123456
 ```
 
 ## Visualize in RViz
@@ -131,8 +126,7 @@ Single Arm Arguments:
   load_mounted_ft_sensor:=BOOL  Flag to load the mounted force torque sensor. (default: 'False')
 
 Dual Arm Arguments (use with --dual):
-  robot_sn_left:=SN                   Serial number of the left robot.
-  robot_sn_right:=SN                  Serial number of the right robot.
+  robot_sn:=SN                        Serial number of the dual-arm robot/controller.
   rizon_type_left:=TYPE               Type of the left robot. (default: 'Rizon4')
   rizon_type_right:=TYPE              Type of the right robot. (default: 'Rizon4')
   load_gripper_left:=BOOL             Load gripper for left robot. (default: 'False')
@@ -155,8 +149,7 @@ AICO2 Arguments (use with --aico2):
   external_axis_type:=TYPE            Type of the AICO platform (default: 'AICO2-4-V1').
   external_axis_prefix:=PREFIX        Prefix for the platform links and joints. (default: '')
   rizon_type:=TYPE                    Type of the Flexiv Rizon robot. (default: 'Rizon4')
-  robot_sn_left:=SN                   Serial number of the left robot.
-  robot_sn_right:=SN                  Serial number of the right robot.
+  robot_sn:=SN                        Serial number of the dual-arm robot/controller.
   load_gripper_left:=BOOL             Load gripper for left robot. (default: 'False')
   load_gripper_right:=BOOL            Load gripper for right robot. (default: 'False')
   gripper_name_left:=NAME             Gripper name for left robot. (default: 'Flexiv-GN01')
@@ -177,7 +170,7 @@ Visualize single robot:
 Visualize dual robots:
 
 ```bash
-./scripts/visualize_rizon.sh --dual robot_sn_left:=Rizon4-123456 robot_sn_right:=Rizon4R-654321 gui:=True
+./scripts/visualize_rizon.sh --dual robot_sn:=DualArms-123456 gui:=True
 ```
 
 Visualize AICO1-4-V1:
@@ -189,7 +182,7 @@ Visualize AICO1-4-V1:
 Visualize AICO2-4-V1:
 
 ```bash
-./scripts/visualize_rizon.sh --aico2 external_axis_type:=AICO2-4-V1 rizon_type:=Rizon4 robot_sn_left:=Rizon4-123456 robot_sn_right:=Rizon4R-654321 gui:=True
+./scripts/visualize_rizon.sh --aico2 external_axis_type:=AICO2-4-V1 rizon_type:=Rizon4 robot_sn:=DualArms-123456 gui:=True
 ```
 
 The translation of the two robots in the world frame can be configured in the `config/dual_arm_translations.yaml` file.
