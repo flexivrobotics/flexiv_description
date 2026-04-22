@@ -6,7 +6,7 @@ docker build -t urdf_creation \
 
 echo
 
-LAUNCH_FILE="view_rizon.launch.py"
+LAUNCH_FILE="view_flexiv.launch.py"
 ARGS=""
 
 for arg in "$@"
@@ -29,4 +29,4 @@ docker run -it -u $(id -u) \
     -w /workspaces/src/flexiv_description \
     -e LAUNCH_FILE=$LAUNCH_FILE \
     urdf_creation \
-    .docker/visualize_rizon.entrypoint.sh $ARGS
+    .docker/visualize_flexiv.entrypoint.sh $ARGS

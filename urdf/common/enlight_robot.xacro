@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:macro name="enlight_robot"
+    params="
+    robot_type
+    robot_sn
+    joint_limits_parameters_file
+    kinematics_parameters_file
+    inertia_parameters_file
+    visual_parameters_file
+    arm_prefix:=''
+    load_gripper:=false
+    gripper_name:='Flexiv-GN01'
+    load_mounted_ft_sensor:=false
+    ros2_control:=false
+    rdk_control_mode:='joint_position'
+    use_fake_hardware:=false
+    fake_sensor_commands:=false
+    add_world_link:=true
+    create_base_joint:=true
+    initial_positions_file:='$(find flexiv_description)/config/initial_positions.yaml'
+    base_xyz:='0.0 0.0 0.0'
+    base_rpy:='0.0 0.0 0.0'
+    external_axis_type:=''
+    external_axis_prefix:=''
+    ">
+
+    <xacro:property name="prefix"
+      value="${(arm_prefix + '_' + robot_sn + '_') if arm_prefix != '' and robot_sn != '' else (arm_prefix + robot_sn + '_') if (arm_prefix + robot_sn) != '' else ''}" />
+
+    <xacro:property name="load_mounted_ft_sensor" value="false" />
+
+    <xacro:if value="${load_gripper and gripper_name=='Flexiv-GN01'}">
+      <xacro:include filename="$(find flexiv_description)/urdf/common/grav_macro.xacro" />
+      <xacro:flexiv_GN01 prefix="${prefix}" mesh_prefix_path="package://flexiv_description/" />
+    </xacro:if>
+
+    <xacro:include filename="$(find flexiv_description)/urdf/common/enlight_arm.xacro" />
+    <xacro:enlight_arm prefix="${prefix}"
+      load_mounted_ft_sensor="${load_mounted_ft_sensor}"
+      joint_limits_parameters_file="${joint_limits_parameters_file}"
+      kinematics_parameters_file="${kinematics_parameters_file}"
+      inertia_parameters_file="${inertia_parameters_file}"
+      visual_parameters_file="${visual_parameters_file}"
+      add_world_link="${add_world_link}"
+      create_base_joint="${create_base_joint}"
+      base_xyz="${base_xyz}"
+      base_rpy="${base_rpy}"
+    />
+
+    <xacro:if value="${ros2_control}">
+      <xacro:include filename="$(find flexiv_description)/urdf/common/rizon.ros2_control.xacro" />
+      <xacro:rizon_ros2_control prefix="${prefix}" robot_sn="${robot_sn}"
+        rdk_control_mode="${rdk_control_mode}"
+        use_fake_hardware="${use_fake_hardware}"
+        fake_sensor_commands="${fake_sensor_commands}"
+        initial_positions_file="${initial_positions_file}"
+        external_axis_type="${external_axis_type}"
+        external_axis_prefix="${external_axis_prefix}"
+      />
+    </xacro:if>
+
+  </xacro:macro>
+
+</robot>

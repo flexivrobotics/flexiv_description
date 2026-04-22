@@ -13,14 +13,24 @@ from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
+    single_arm_robot_types = [
+        "Enlight",
+        "Rizon4",
+        "Rizon4M",
+        "Rizon4R",
+        "Rizon4s",
+        "Rizon10",
+        "Rizon10s",
+    ]
     pkg_share = FindPackageShare("flexiv_description")
     robot_sn = LaunchConfiguration("robot_sn")
     rizon_type = LaunchConfiguration("rizon_type")
+    robot_type = LaunchConfiguration("robot_type")
     load_gripper = LaunchConfiguration("load_gripper")
     gripper_name = LaunchConfiguration("gripper_name")
     load_mounted_ft_sensor = LaunchConfiguration("load_mounted_ft_sensor")
     default_rviz_config_path = PathJoinSubstitution(
-        [pkg_share, "rviz", "view_rizon.rviz"]
+        [pkg_share, "rviz", "view_flexiv.rviz"]
     )
     robot_description_content = ParameterValue(
         Command(
@@ -28,14 +38,18 @@ def generate_launch_description():
                 PathJoinSubstitution([FindExecutable(name="xacro")]),
                 " ",
                 PathJoinSubstitution(
-                    [FindPackageShare("flexiv_description"), "urdf", "rizon.urdf.xacro"]
+                    [
+                        FindPackageShare("flexiv_description"),
+                        "urdf",
+                        "flexiv.urdf.xacro",
+                    ]
                 ),
                 " ",
                 "robot_sn:=",
                 robot_sn,
                 " ",
-                "rizon_type:=",
-                rizon_type,
+                "robot_type:=",
+                robot_type,
                 " ",
                 "load_gripper:=",
                 load_gripper,
@@ -91,15 +105,14 @@ def generate_launch_description():
             DeclareLaunchArgument(
                 name="rizon_type",
                 default_value="Rizon4",
-                description="Type of the Flexiv Rizon robot.",
-                choices=[
-                    "Rizon4",
-                    "Rizon4M",
-                    "Rizon4R",
-                    "Rizon4s",
-                    "Rizon10",
-                    "Rizon10s",
-                ],
+                description="Deprecated alias for robot_type. Kept for compatibility with existing single-arm launch commands.",
+                choices=single_arm_robot_types,
+            ),
+            DeclareLaunchArgument(
+                name="robot_type",
+                default_value=rizon_type,
+                description="Type of the Flexiv single-arm robot.",
+                choices=single_arm_robot_types,
             ),
             DeclareLaunchArgument(
                 name="load_gripper",
