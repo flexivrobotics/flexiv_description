@@ -1,0 +1,129 @@
+inertia_parameters:
+  base_link:
+    mass: 2.5
+    origin:
+      x: 0.0
+      y: 0.0
+      z: 0.07
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.007
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 0.007
+      iyz: -0.0002
+      izz: 0.005
+  link1:
+    mass: 2.5
+    origin:
+      x: 0.0
+      y: 0.01
+      z: 0.08
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.01
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 0.01
+      iyz: 0.0007
+      izz: 0.003
+  link2:
+    mass: 2.7
+    origin:
+      x: 0.0
+      y: 0.09
+      z: -0.03
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.013
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 0.004
+      iyz: -0.0022
+      izz: 0.013
+  link3:
+    mass: 2.5
+    origin:
+      x: 0.0
+      y: -0.01
+      z: 0.073
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.009
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 0.009
+      iyz: -0.0007
+      izz: 0.0031
+  link4:
+    mass: 2.0
+    origin:
+      x: 0.0
+      y: -0.06
+      z: -0.02
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.009
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 0.003
+      iyz: 0.002
+      izz: 0.008
+  link5:
+    mass: 1.5
+    origin:
+      x: 0.0
+      y: 0.01
+      z: 0.08
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.005
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 0.005
+      iyz: 0.0003
+      izz: 0.001
+  link6:
+    mass: 1.4
+    origin:
+      x: 0.0
+      y: 0.07
+      z: -0.02
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.004
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 0.002
+      iyz: -0.0008
+      izz: 0.0039
+  link7:
+    mass: 0.4
+    origin:
+      x: 0.0
+      y: 0.0
+      z: 0.01
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.004
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 0.004
+      iyz: 0.0
+      izz: 0.0004
