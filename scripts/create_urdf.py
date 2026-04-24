@@ -70,7 +70,7 @@ if __name__ == "__main__":
             )
 
     RIZON_TYPES = ["Rizon4", "Rizon4s", "Rizon4M", "Rizon4R", "Rizon10", "Rizon10s"]
-    SINGLE_ARM_TYPES = ["Enlight", *RIZON_TYPES]
+    SINGLE_ARM_TYPES = ["EnlightL", *RIZON_TYPES]
 
     parser = argparse.ArgumentParser(
         description="Create URDF files from xacro for Flexiv robots."

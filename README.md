@@ -43,7 +43,7 @@ optional arguments:
   --aico1               Generate URDF for AICO1 setup.
   --aico2               Generate URDF for AICO2 setup.
   --robot_type ROBOT_TYPE
-                        Single-arm robot type. Options: ['Enlight', 'Rizon4', 'Rizon4s', 'Rizon4M', 'Rizon4R', 'Rizon10', 'Rizon10s'].
+                        Single-arm robot type. Options: ['EnlightL', 'Rizon4', 'Rizon4s', 'Rizon4M', 'Rizon4R', 'Rizon10', 'Rizon10s'].
   --rizon_type RIZON_TYPE
                         Rizon robot type. Required for AICO generation and accepted as a legacy alias for single-arm generation. Options: ['Rizon4', 'Rizon4s', 'Rizon4M', 'Rizon4R', 'Rizon10', 'Rizon10s'].
   --arm_prefix ARM_PREFIX
@@ -87,10 +87,10 @@ Generate URDF for Rizon4:
 ./scripts/create_urdf.sh --robot_type Rizon4
 ```
 
-Generate URDF for Enlight:
+Generate URDF for EnlightL:
 
 ```bash
-./scripts/create_urdf.sh --robot_type Enlight
+./scripts/create_urdf.sh --robot_type EnlightL
 ```
 
 Generate URDF for Rizon4 with a specific serial number:
@@ -175,10 +175,10 @@ Visualize single robot:
 ./scripts/visualize_flexiv.sh robot_type:=Rizon4 robot_sn:=Rizon4-123456 gui:=True
 ```
 
-Visualize Enlight:
+Visualize EnlightL:
 
 ```bash
-./scripts/visualize_flexiv.sh robot_type:=Enlight robot_sn:=Enlight-123456 gui:=True
+./scripts/visualize_flexiv.sh robot_type:=EnlightL robot_sn:=EnlightL-123456 gui:=True
 ```
 
 Visualize dual robots:

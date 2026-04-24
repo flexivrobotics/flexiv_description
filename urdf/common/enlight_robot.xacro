@@ -19,7 +19,7 @@
     fake_sensor_commands:=false
     add_world_link:=true
     create_base_joint:=true
-    initial_positions_file:='$(find flexiv_description)/config/initial_positions.yaml'
+    initial_positions_file:='$(find flexiv_description)/config/EnlightL/initial_positions.yaml'
     base_xyz:='0.0 0.0 0.0'
     base_rpy:='0.0 0.0 0.0'
     external_axis_type:=''
