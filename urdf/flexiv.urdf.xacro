@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="$(arg robot_type)">
+  <!-- 'robot_type' values: EnlightL, Rizon4, Rizon4s, Rizon4M, Rizon4R, Rizon10, Rizon10s -->
+  <xacro:arg name="rizon_type" default="Rizon4" />
+  <xacro:arg name="robot_type" default="$(arg rizon_type)" />
+
+  <!-- import model macros -->
+  <xacro:include filename="$(find flexiv_description)/urdf/common/rizon_robot.xacro" />
+  <xacro:include filename="$(find flexiv_description)/urdf/common/enlight_robot.xacro" />
+
+  <!-- parameters -->
+  <xacro:arg name="arm_prefix" default="" />
+  <xacro:arg name="robot_sn" default="" />
+  <xacro:arg name="joint_limits_parameters_file"
+    default="$(find flexiv_description)/config/$(arg robot_type)/joint_limits.yaml" />
+  <xacro:arg name="kinematics_parameters_file"
+    default="$(find flexiv_description)/config/$(arg robot_type)/default_kinematics.yaml" />
+  <xacro:arg name="inertia_parameters_file"
+    default="$(find flexiv_description)/config/$(arg robot_type)/inertia_parameters.yaml" />
+  <xacro:arg name="visual_parameters_file"
+    default="$(find flexiv_description)/config/$(arg robot_type)/visual_parameters.yaml" />
+  <xacro:arg name="load_gripper" default="false" />
+  <xacro:arg name="gripper_name" default="Flexiv-GN01" />
+  <xacro:arg name="load_mounted_ft_sensor" default="false" />
+  <!-- ros2_control related parameters -->
+  <xacro:arg name="ros2_control" default="false" />
+  <xacro:arg name="rdk_control_mode" default="joint_position" />
+  <xacro:arg name="use_fake_hardware" default="false" />
+  <xacro:arg name="fake_sensor_commands" default="false" />
+  <xacro:arg name="initial_positions_file" default="" />
+  <xacro:arg name="mounting_file" default="$(find flexiv_description)/config/single_robot_mounting.yaml" />
+
+  <xacro:property name="mounting" value="${xacro.load_yaml('$(arg mounting_file)')}" />
+
+  <xacro:if value="${'$(arg robot_type)' == 'EnlightL'}">
+    <xacro:if value="${'$(arg initial_positions_file)' == ''}">
+      <xacro:enlight_robot
+        robot_type="$(arg robot_type)"
+        robot_sn="$(arg robot_sn)"
+        joint_limits_parameters_file="$(arg joint_limits_parameters_file)"
+        kinematics_parameters_file="$(arg kinematics_parameters_file)"
+        inertia_parameters_file="$(arg inertia_parameters_file)"
+        visual_parameters_file="$(arg visual_parameters_file)"
+        arm_prefix="$(arg arm_prefix)"
+        load_gripper="$(arg load_gripper)"
+        gripper_name="$(arg gripper_name)"
+        load_mounted_ft_sensor="$(arg load_mounted_ft_sensor)"
+        ros2_control="$(arg ros2_control)"
+        rdk_control_mode="$(arg rdk_control_mode)"
+        use_fake_hardware="$(arg use_fake_hardware)"
+        fake_sensor_commands="$(arg fake_sensor_commands)"
+        initial_positions_file="$(find flexiv_description)/config/EnlightL/initial_positions.yaml"
+        base_rpy="${radians(mounting['orientation']['rx'])} ${radians(mounting['orientation']['ry'])} ${radians(mounting['orientation']['rz'])}">
+      </xacro:enlight_robot>
+    </xacro:if>
+
+    <xacro:unless value="${'$(arg initial_positions_file)' == ''}">
+      <xacro:enlight_robot
+        robot_type="$(arg robot_type)"
+        robot_sn="$(arg robot_sn)"
+        joint_limits_parameters_file="$(arg joint_limits_parameters_file)"
+        kinematics_parameters_file="$(arg kinematics_parameters_file)"
+        inertia_parameters_file="$(arg inertia_parameters_file)"
+        visual_parameters_file="$(arg visual_parameters_file)"
+        arm_prefix="$(arg arm_prefix)"
+        load_gripper="$(arg load_gripper)"
+        gripper_name="$(arg gripper_name)"
+        load_mounted_ft_sensor="$(arg load_mounted_ft_sensor)"
+        ros2_control="$(arg ros2_control)"
+        rdk_control_mode="$(arg rdk_control_mode)"
+        use_fake_hardware="$(arg use_fake_hardware)"
+        fake_sensor_commands="$(arg fake_sensor_commands)"
+        initial_positions_file="$(arg initial_positions_file)"
+        base_rpy="${radians(mounting['orientation']['rx'])} ${radians(mounting['orientation']['ry'])} ${radians(mounting['orientation']['rz'])}">
+      </xacro:enlight_robot>
+    </xacro:unless>
+  </xacro:if>
+
+  <xacro:unless value="${'$(arg robot_type)' == 'EnlightL'}">
+    <xacro:if value="${'$(arg initial_positions_file)' == ''}">
+      <xacro:rizon_robot
+        rizon_type="$(arg robot_type)"
+        robot_sn="$(arg robot_sn)"
+        joint_limits_parameters_file="$(arg joint_limits_parameters_file)"
+        kinematics_parameters_file="$(arg kinematics_parameters_file)"
+        inertia_parameters_file="$(arg inertia_parameters_file)"
+        visual_parameters_file="$(arg visual_parameters_file)"
+        arm_prefix="$(arg arm_prefix)"
+        load_gripper="$(arg load_gripper)"
+        gripper_name="$(arg gripper_name)"
+        load_mounted_ft_sensor="$(arg load_mounted_ft_sensor)"
+        ros2_control="$(arg ros2_control)"
+        rdk_control_mode="$(arg rdk_control_mode)"
+        use_fake_hardware="$(arg use_fake_hardware)"
+        fake_sensor_commands="$(arg fake_sensor_commands)"
+        initial_positions_file="$(find flexiv_description)/config/initial_positions.yaml"
+        base_rpy="${radians(mounting['orientation']['rx'])} ${radians(mounting['orientation']['ry'])} ${radians(mounting['orientation']['rz'])}">
+      </xacro:rizon_robot>
+    </xacro:if>
+
+    <xacro:unless value="${'$(arg initial_positions_file)' == ''}">
+      <xacro:rizon_robot
+        rizon_type="$(arg robot_type)"
+        robot_sn="$(arg robot_sn)"
+        joint_limits_parameters_file="$(arg joint_limits_parameters_file)"
+        kinematics_parameters_file="$(arg kinematics_parameters_file)"
+        inertia_parameters_file="$(arg inertia_parameters_file)"
+        visual_parameters_file="$(arg visual_parameters_file)"
+        arm_prefix="$(arg arm_prefix)"
+        load_gripper="$(arg load_gripper)"
+        gripper_name="$(arg gripper_name)"
+        load_mounted_ft_sensor="$(arg load_mounted_ft_sensor)"
+        ros2_control="$(arg ros2_control)"
+        rdk_control_mode="$(arg rdk_control_mode)"
+        use_fake_hardware="$(arg use_fake_hardware)"
+        fake_sensor_commands="$(arg fake_sensor_commands)"
+        initial_positions_file="$(arg initial_positions_file)"
+        base_rpy="${radians(mounting['orientation']['rx'])} ${radians(mounting['orientation']['ry'])} ${radians(mounting['orientation']['rz'])}">
+      </xacro:rizon_robot>
+    </xacro:unless>
+  </xacro:unless>
+
+</robot>

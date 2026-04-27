@@ -15,14 +15,14 @@ The URDF files for Flexiv robots can be generated from xacro files using the pro
 Run the `create_urdf.sh` script from the package root directory:
 
 ```bash
-./scripts/create_urdf.sh --rizon_type <RIZON_TYPE> [OPTIONS]
+./scripts/create_urdf.sh --robot_type <ROBOT_TYPE> [OPTIONS]
 ```
 
 ### Parameters
 
 ```
 usage: create_urdf.py [-h] [--dual] [--aico1] [--aico2]
-                      [--rizon_type RIZON_TYPE]
+                      [--robot_type ROBOT_TYPE] [--rizon_type RIZON_TYPE]
                       [--arm_prefix ARM_PREFIX] [--robot_sn ROBOT_SN]
                       [--external_axis_type EXTERNAL_AXIS_TYPE] [--external_axis_prefix EXTERNAL_AXIS_PREFIX]
                       [--load_gripper] [--gripper_name GRIPPER_NAME]
@@ -42,8 +42,10 @@ optional arguments:
   --dual                Generate URDF for dual arm setup.
   --aico1               Generate URDF for AICO1 setup.
   --aico2               Generate URDF for AICO2 setup.
+  --robot_type ROBOT_TYPE
+                        Single-arm robot type. Options: ['EnlightL', 'Rizon4', 'Rizon4s', 'Rizon4M', 'Rizon4R', 'Rizon10', 'Rizon10s'].
   --rizon_type RIZON_TYPE
-                        Rizon robot type (Single arm). Options: ['Rizon4', 'Rizon4s', 'Rizon4M', 'Rizon4R', 'Rizon10', 'Rizon10s'].
+                        Rizon robot type. Required for AICO generation and accepted as a legacy alias for single-arm generation. Options: ['Rizon4', 'Rizon4s', 'Rizon4M', 'Rizon4R', 'Rizon10', 'Rizon10s'].
   --arm_prefix ARM_PREFIX
                         Arm prefix. (default: '')
   --robot_sn ROBOT_SN   Robot serial number. (default: '')
@@ -82,13 +84,19 @@ Dual arm or AICO2 arguments:
 Generate URDF for Rizon4:
 
 ```bash
-./scripts/create_urdf.sh --rizon_type Rizon4
+./scripts/create_urdf.sh --robot_type Rizon4
+```
+
+Generate URDF for EnlightL:
+
+```bash
+./scripts/create_urdf.sh --robot_type EnlightL
 ```
 
 Generate URDF for Rizon4 with a specific serial number:
 
 ```bash
-./scripts/create_urdf.sh --rizon_type Rizon4 --robot_sn Rizon4-123456
+./scripts/create_urdf.sh --robot_type Rizon4 --robot_sn Rizon4-123456
 ```
 
 Generate URDF for Dual Arm setup:
@@ -114,13 +122,13 @@ Generate URDF for AICO2-4-V1:
 The robot models can be visualized in RViz using the provided script. This script runs inside a Docker container and requires a GUI environment.
 
 ```
-usage: visualize_rizon.sh [--dual | --aico1 | --aico2] [OPTIONS]
+usage: visualize_flexiv.sh [--dual | --aico1 | --aico2] [OPTIONS]
 
 Visualize Flexiv robots in RViz.
 
 Single Arm Arguments:
   robot_sn:=ROBOT_SN            Serial number of the robot to connect to.
-  rizon_type:=TYPE              Type of the Flexiv Rizon robot. (default: 'Rizon4')
+  robot_type:=TYPE              Type of the Flexiv single-arm robot. (default: 'Rizon4')
   load_gripper:=BOOL            Flag to load the Flexiv Grav gripper. (default: 'False')
   gripper_name:=NAME            Full name of the gripper to be controlled. (default: 'Flexiv-GN01')
   load_mounted_ft_sensor:=BOOL  Flag to load the mounted force torque sensor. (default: 'False')
@@ -164,28 +172,35 @@ Common Arguments:
 Visualize single robot:
 
 ```bash
-./scripts/visualize_rizon.sh rizon_type:=Rizon4 robot_sn:=Rizon4-123456 gui:=True
+./scripts/visualize_flexiv.sh robot_type:=Rizon4 robot_sn:=Rizon4-123456 gui:=True
+```
+
+Visualize EnlightL:
+
+```bash
+./scripts/visualize_flexiv.sh robot_type:=EnlightL robot_sn:=EnlightL-123456 gui:=True
 ```
 
 Visualize dual robots:
 
 ```bash
-./scripts/visualize_rizon.sh --dual robot_sn:=MICO-123456 gui:=True
+./scripts/visualize_flexiv.sh --dual robot_sn:=MICO-123456 gui:=True
 ```
 
 Visualize AICO1-4-V1:
 
 ```bash
-./scripts/visualize_rizon.sh --aico1 external_axis_type:=AICO1-4-V1 rizon_type:=Rizon4 robot_sn:=Rizon4-123456 gui:=True
+./scripts/visualize_flexiv.sh --aico1 external_axis_type:=AICO1-4-V1 rizon_type:=Rizon4 robot_sn:=Rizon4-123456 gui:=True
 ```
 
 Visualize AICO2-4-V1:
 
 ```bash
-./scripts/visualize_rizon.sh --aico2 external_axis_type:=AICO2-4-V1 rizon_type:=Rizon4 robot_sn:=AICO2-123456 gui:=True
+./scripts/visualize_flexiv.sh --aico2 external_axis_type:=AICO2-4-V1 rizon_type:=Rizon4 robot_sn:=AICO2-123456 gui:=True
 ```
 
 The translation of the two robots in the world frame can be configured in the `config/dual_arm_translations.yaml` file.
 
 > [!NOTE]
 > The launch files can also be run directly using `ros2 launch` if the package is built and sourced in your ROS2 workspace.
+> Single-arm launch files now prefer `robot_type`; dual-arm and AICO launch files remain Rizon-specific and continue to use `rizon_type` arguments.

@@ -26,7 +26,7 @@ def generate_launch_description():
     load_mounted_ft_sensor = LaunchConfiguration("load_mounted_ft_sensor")
 
     default_rviz_config_path = PathJoinSubstitution(
-        [pkg_share, "rviz", "view_rizon.rviz"]
+        [pkg_share, "rviz", "view_flexiv.rviz"]
     )
 
     robot_description_content = ParameterValue(
