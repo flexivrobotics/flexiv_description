@@ -11,12 +11,12 @@ visual_parameters:
         path: meshes/Rizon10/collision/link0.stl
     workspace:
       origin:
-        x: 0.0
-        y: 0.0
+        x: 0
+        y: 0
         z: 0.450
-        roll: 0.0
-        pitch: 0.0
-        yaw: 0.0
+        roll: 0
+        pitch: 0
+        yaw: 0
       sphere:
         radius: 0.955
   link1:
@@ -31,12 +31,12 @@ visual_parameters:
           path: meshes/Rizon10/visual/ring.obj
           scale: 0.079 0.079 0.002
         origin:
-          x: 0.0
-          y: 0.0
+          x: 0
+          y: 0
           z: -0.0025
-          roll: 0.0
-          pitch: 0.0
-          yaw: 0.0
+          roll: 0
+          pitch: 0
+          yaw: 0
     collision:
       mesh:
         package: flexiv_description
@@ -53,12 +53,12 @@ visual_parameters:
           path: meshes/Rizon10/visual/ring.obj
           scale: 0.079 0.079 0.002
         origin:
-          x: 0.0
+          x: 0
           y: -0.0025
-          z: 0.0
-          roll: 1.570796327
-          pitch: 0.0
-          yaw: 0.0
+          z: 0
+          roll: 1.5707963
+          pitch: 0
+          yaw: 0
     collision:
       mesh:
         package: flexiv_description
@@ -75,12 +75,12 @@ visual_parameters:
           path: meshes/Rizon10/visual/ring.obj
           scale: 0.062 0.062 0.002
         origin:
-          x: 0.0
-          y: 0.0
+          x: 0
+          y: 0
           z: -0.0025
-          roll: 0.0
-          pitch: 0.0
-          yaw: 0.0
+          roll: 0
+          pitch: 0
+          yaw: 0
     collision:
       mesh:
         package: flexiv_description
@@ -97,12 +97,12 @@ visual_parameters:
           path: meshes/Rizon10/visual/ring.obj
           scale: 0.062 0.062 0.002
         origin:
-          x: 0.0
+          x: 0
           y: -0.0025
-          z: 0.0
-          roll: 1.570796327
-          pitch: 0.0
-          yaw: 0.0
+          z: 0
+          roll: 1.5707963
+          pitch: 0
+          yaw: 0
     collision:
       mesh:
         package: flexiv_description
@@ -119,12 +119,12 @@ visual_parameters:
           path: meshes/Rizon10/visual/ring.obj
           scale: 0.051 0.051 0.002
         origin:
-          x: 0.0
-          y: 0.0
+          x: 0
+          y: 0
           z: -0.0025
-          roll: 0.0
-          pitch: 0.0
-          yaw: 0.0
+          roll: 0
+          pitch: 0
+          yaw: 0
     collision:
       mesh:
         package: flexiv_description
@@ -141,12 +141,12 @@ visual_parameters:
           path: meshes/Rizon10/visual/ring.obj
           scale: 0.051 0.051 0.002
         origin:
-          x: 0.0
+          x: 0
           y: -0.0025
-          z: 0.0
-          roll: 1.570796327
-          pitch: 0.0
-          yaw: 0.0
+          z: 0
+          roll: 1.5707963
+          pitch: 0
+          yaw: 0
     collision:
       mesh:
         package: flexiv_description
@@ -163,12 +163,12 @@ visual_parameters:
           path: meshes/Rizon10/visual/ring.obj
           scale: 0.051 0.051 0.002
         origin:
-          x: 0.0
-          y: 0.0
+          x: 0
+          y: 0
           z: -0.0025
-          roll: 0.0
-          pitch: 0.0
-          yaw: 0.0
+          roll: 0
+          pitch: 0
+          yaw: 0
     collision:
       mesh:
         package: flexiv_description
