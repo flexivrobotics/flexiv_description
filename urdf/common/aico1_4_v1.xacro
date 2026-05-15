@@ -28,9 +28,9 @@
 
     <link name="${prefix}aico1_4_v1_base_link">
       <inertial>
-        <origin xyz="0.00266 0.000754 0.34" rpy="0 0 0" />
-        <mass value="6.6" />
-        <inertia ixx="0.45" ixy="-0.0018" ixz="-0.0051" iyy="0.234" iyz="-0.00059" izz="0.3" />
+        <origin xyz="0.00266 0.00075403 0.34014" rpy="0 0 0" />
+        <mass value="6.6026" />
+        <inertia ixx="0.45058" ixy="-0.0017625" ixz="-0.0050778" iyy="0.23454" iyz="-0.00059237" izz="0.2993" />
       </inertial>
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
@@ -53,9 +53,9 @@
 
     <link name="${prefix}aico1_4_v1_link1">
       <inertial>
-        <origin xyz="0.017 0.014 -0.075" rpy="0 0 0" />
-        <mass value="6.3" />
-        <inertia ixx="0.35" ixy="-0.002" ixz="-0.0059" iyy="0.197" iyz="-0.0096" izz="0.241" />
+        <origin xyz="0.017065 0.014003 -0.075525" rpy="0 0 0" />
+        <mass value="6.2889" />
+        <inertia ixx="0.35138" ixy="-0.0019964" ixz="-0.0059424" iyy="0.19696" iyz="-0.0095617" izz="0.24113" />
       </inertial>
       <visual>
         <origin xyz="0 0 -0.4235" rpy="0 0 0" />
@@ -85,9 +85,9 @@
 
     <link name="${prefix}aico1_4_v1_link2">
       <inertial>
-        <origin xyz="0.0303 -0.092 0.255" rpy="0 0 0" />
-        <mass value="3.68" />
-        <inertia ixx="0.0804" ixy="4.3E-05" ixz="-0.0025" iyy="0.0484" iyz="-0.0063" izz="0.047" />
+        <origin xyz="0.030313 -0.09201 0.25487" rpy="0 0 0" />
+        <mass value="3.6794" />
+        <inertia ixx="0.080449" ixy="4.3268E-05" ixz="-0.0025222" iyy="0.048422" iyz="-0.0063047" izz="0.046989" />
       </inertial>
       <visual>
         <origin xyz="0.00003 -0.01892 0.0009" rpy="0 0 0" />
