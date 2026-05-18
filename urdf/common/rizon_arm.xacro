@@ -24,9 +24,9 @@
       inertia_parameters_file="${inertia_parameters_file}"
       visual_parameters_file="${visual_parameters_file}"
       load_mounted_ft_sensor="${load_mounted_ft_sensor}"
-      sensor_kinematics_file="$(find flexiv_description)/config/FT03-D1/ft_sensor_kinematics.yaml"
-      sensor_inertia_file="$(find flexiv_description)/config/FT03-D1/ft_sensor_inertia.yaml"
-      sensor_visual_file="$(find flexiv_description)/config/FT03-D1/ft_sensor_visual.yaml"
+      sensor_kinematics_file="$(find flexiv_description)/config/FT03/ft_sensor_kinematics.yaml"
+      sensor_inertia_file="$(find flexiv_description)/config/FT03/ft_sensor_inertia.yaml"
+      sensor_visual_file="$(find flexiv_description)/config/FT03/ft_sensor_visual.yaml"
     />
 
     <!-- JOINTS -->
@@ -160,7 +160,7 @@
       <xacro:get_collisions name="link7" />
     </link>
 
-    <!-- FT03-D1 wrist sensor -->
+    <!-- FT03 wrist sensor -->
     <xacro:if value="${load_mounted_ft_sensor}">
       <joint name="${prefix}wrist-sensor.remove_rizon_flange_body" type="fixed">
         <xacro:get_kinematics name="wrist_sensor_remove_rizon_flange_body" />
