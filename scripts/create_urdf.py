@@ -17,23 +17,58 @@ def convert_package_name_to_absolute_path(package_name, package_path, urdf_file)
     return urdf_file
 
 
-def save_urdf_to_file(package_path, urdf_file, file_name):
+def build_urdf_output_paths(package_path, file_name, host_package_path=None):
+    """Build the container and host-visible URDF output paths."""
+    container_output_path = os.path.join(package_path, "urdf", f"{file_name}.urdf")
+    host_output_path = None
+    if host_package_path:
+        host_output_path = os.path.join(host_package_path, "urdf", f"{file_name}.urdf")
+    return container_output_path, host_output_path
+
+
+def print_output_location(message, container_output_path, host_output_path=None):
+    """Print where the generated URDF can be found."""
+    if host_output_path and os.path.normpath(host_output_path) != os.path.normpath(
+        container_output_path
+    ):
+        print(f"{message} (container): {container_output_path}")
+        print(f"{message} (host): {host_output_path}")
+        return
+
+    print(f"{message}: {container_output_path}")
+
+
+def save_urdf_to_file(package_path, urdf_file, file_name, host_package_path=None):
     """Save URDF into a file."""
     # Save to 'urdf' folder in the package
     folder_path = os.path.join(package_path, "urdf")
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
 
-    output_path = os.path.join(folder_path, f"{file_name}.urdf")
-    with open(output_path, "w") as f:
+    container_output_path, host_output_path = build_urdf_output_paths(
+        package_path, file_name, host_package_path
+    )
+    with open(container_output_path, "w") as f:
         f.write(urdf_file)
-    print(f"Created {output_path}")
+    print_output_location("Created URDF file", container_output_path, host_output_path)
 
 
-def urdf_generation(package_path, xacro_file, file_name, mappings, output_path=None):
+def urdf_generation(
+    package_path,
+    xacro_file,
+    file_name,
+    mappings,
+    description,
+    output_path=None,
+    host_package_path=None,
+):
     """Generate URDF file and save it."""
     full_xacro_path = os.path.join(package_path, xacro_file)
     try:
+        print(
+            f"Generating URDF '{file_name}.urdf' from '{xacro_file}' for {description}."
+        )
+
         urdf_file = convert_xacro_to_urdf(full_xacro_path, mappings)
 
         target_path = output_path if output_path else package_path
@@ -41,13 +76,14 @@ def urdf_generation(package_path, xacro_file, file_name, mappings, output_path=N
         urdf_file = convert_package_name_to_absolute_path(
             "flexiv_description", target_path, urdf_file
         )
-        save_urdf_to_file(package_path, urdf_file, file_name)
+        save_urdf_to_file(package_path, urdf_file, file_name, host_package_path)
     except Exception as e:
         print(f"Error generating URDF for {file_name}: {e}")
 
 
 if __name__ == "__main__":
     package_name = "flexiv_description"
+    host_package_path = os.environ.get("FLEXIV_DESCRIPTION_HOST_PATH")
 
     # Ensure we are in the package root
     cwd = os.getcwd()
@@ -206,10 +242,15 @@ if __name__ == "__main__":
         if args.robot_sn:
             file_name = f"aico1_{args.robot_sn}"
 
-        print(
-            f"Generating URDF for {args.external_axis_type} with {args.rizon_type}..."
+        urdf_generation(
+            os.getcwd(),
+            xacro_file,
+            file_name,
+            mappings,
+            f"{args.external_axis_type} with robot type '{args.rizon_type}'",
+            args.output_path,
+            host_package_path,
         )
-        urdf_generation(os.getcwd(), xacro_file, file_name, mappings, args.output_path)
 
     elif args.aico2:
         if not args.rizon_type:
@@ -259,10 +300,15 @@ if __name__ == "__main__":
         if args.robot_sn_left and args.robot_sn_right:
             file_name = f"aico2_{args.robot_sn_left}_{args.robot_sn_right}"
 
-        print(
-            f"Generating URDF for {args.external_axis_type} with {args.rizon_type}..."
+        urdf_generation(
+            os.getcwd(),
+            xacro_file,
+            file_name,
+            mappings,
+            f"{args.external_axis_type} with robot type '{args.rizon_type}'",
+            args.output_path,
+            host_package_path,
         )
-        urdf_generation(os.getcwd(), xacro_file, file_name, mappings, args.output_path)
 
     elif args.dual:
         if args.rizon_type_left not in RIZON_TYPES:
@@ -298,10 +344,18 @@ if __name__ == "__main__":
         if args.robot_sn_left and args.robot_sn_right:
             file_name = f"dual_{args.robot_sn_left}_{args.robot_sn_right}"
 
-        print(
-            f"Generating Dual URDF for {args.rizon_type_left} and {args.rizon_type_right}..."
+        urdf_generation(
+            os.getcwd(),
+            xacro_file,
+            file_name,
+            mappings,
+            (
+                "dual-arm setup with "
+                f"'{args.rizon_type_left}' and '{args.rizon_type_right}'"
+            ),
+            args.output_path,
+            host_package_path,
         )
-        urdf_generation(os.getcwd(), xacro_file, file_name, mappings, args.output_path)
 
     else:
         if not args.rizon_type:
@@ -334,5 +388,12 @@ if __name__ == "__main__":
         if args.load_gripper:
             file_name += f"_{args.gripper_name}"
 
-        print(f"Generating URDF for {rizon_type}...")
-        urdf_generation(os.getcwd(), xacro_file, file_name, mappings, args.output_path)
+        urdf_generation(
+            os.getcwd(),
+            xacro_file,
+            file_name,
+            mappings,
+            f"robot type '{rizon_type}'",
+            args.output_path,
+            host_package_path,
+        )
