@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://wiki.ros.org/xacro">
 
-  <xacro:include filename="$(find flexiv_description)/urdf/common/rizon_common.xacro" />
+  <xacro:include filename="$(find flexiv_description)/urdf/common/flexiv_common.xacro" />
 
   <xacro:macro name="enlight_arm"
     params="

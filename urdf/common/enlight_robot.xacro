@@ -22,8 +22,6 @@
     initial_positions_file:='$(find flexiv_description)/config/EnlightL/initial_positions.yaml'
     base_xyz:='0.0 0.0 0.0'
     base_rpy:='0.0 0.0 0.0'
-    external_axis_type:=''
-    external_axis_prefix:=''
     ">
 
     <xacro:property name="prefix"
@@ -50,14 +48,12 @@
     />
 
     <xacro:if value="${ros2_control}">
-      <xacro:include filename="$(find flexiv_description)/urdf/common/rizon.ros2_control.xacro" />
-      <xacro:rizon_ros2_control prefix="${prefix}" robot_sn="${robot_sn}"
+      <xacro:include filename="$(find flexiv_description)/urdf/common/flexiv.ros2_control.xacro" />
+      <xacro:flexiv_ros2_control prefix="${prefix}" robot_sn="${robot_sn}"
         rdk_control_mode="${rdk_control_mode}"
         use_fake_hardware="${use_fake_hardware}"
         fake_sensor_commands="${fake_sensor_commands}"
         initial_positions_file="${initial_positions_file}"
-        external_axis_type="${external_axis_type}"
-        external_axis_prefix="${external_axis_prefix}"
       />
     </xacro:if>
 

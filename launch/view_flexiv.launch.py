@@ -15,16 +15,9 @@ from launch_ros.substitutions import FindPackageShare
 def generate_launch_description():
     single_arm_robot_types = [
         "EnlightL",
-        "Rizon4",
-        "Rizon4M",
-        "Rizon4R",
-        "Rizon4s",
-        "Rizon10",
-        "Rizon10s",
     ]
     pkg_share = FindPackageShare("flexiv_description")
     robot_sn = LaunchConfiguration("robot_sn")
-    rizon_type = LaunchConfiguration("rizon_type")
     robot_type = LaunchConfiguration("robot_type")
     load_gripper = LaunchConfiguration("load_gripper")
     gripper_name = LaunchConfiguration("gripper_name")
@@ -100,17 +93,11 @@ def generate_launch_description():
         [
             DeclareLaunchArgument(
                 name="robot_sn",
-                description="Serial number of the robot to connect to. Remove any space, for example: Rizon4s-123456",
-            ),
-            DeclareLaunchArgument(
-                name="rizon_type",
-                default_value="Rizon4",
-                description="Deprecated alias for robot_type. Kept for compatibility with existing single-arm launch commands.",
-                choices=single_arm_robot_types,
+                description="Serial number of the robot to connect to. Remove any space, for example: EnlightL-123456",
             ),
             DeclareLaunchArgument(
                 name="robot_type",
-                default_value=rizon_type,
+                default_value="EnlightL",
                 description="Type of the Flexiv single-arm robot.",
                 choices=single_arm_robot_types,
             ),
@@ -127,7 +114,7 @@ def generate_launch_description():
             DeclareLaunchArgument(
                 name="load_mounted_ft_sensor",
                 default_value="False",
-                description="Flag to load the mounted force torque sensor. Only available for Rizon4, Rizon4R and Rizon10",
+                description="Flag to load the mounted force torque sensor.",
             ),
             DeclareLaunchArgument(
                 name="gui",

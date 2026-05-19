@@ -11,15 +11,7 @@ ARGS=""
 
 for arg in "$@"
 do
-    if [ "$arg" == "--dual" ]; then
-        LAUNCH_FILE="view_rizon_dual.launch.py"
-    elif [ "$arg" == "--aico1" ]; then
-        LAUNCH_FILE="view_aico1.launch.py"
-    elif [ "$arg" == "--aico2" ]; then
-        LAUNCH_FILE="view_aico2.launch.py"
-    else
-        ARGS="$ARGS $arg"
-    fi
+    ARGS="$ARGS $arg"
 done
 
 docker run -it -u $(id -u) \
