@@ -102,7 +102,7 @@ Generate URDF for Rizon4 with a specific serial number:
 Generate URDF for Dual Arm setup:
 
 ```bash
-./scripts/create_urdf.sh --dual --rizon_type_left Rizon4 --rizon_type_right Rizon4R --robot_sn MICO-123456
+./scripts/create_urdf.sh --dual --rizon_type_left Rizon4 --rizon_type_right Rizon4R --robot_sn DualArms-123456
 ```
 
 Generate URDF for AICO1-4-V1:
@@ -184,8 +184,10 @@ Visualize EnlightL:
 Visualize dual robots:
 
 ```bash
-./scripts/visualize_flexiv.sh --dual robot_sn:=MICO-123456 gui:=True
+./scripts/visualize_flexiv.sh --dual --rizon_type_left Rizon4 --rizon_type_right Rizon4R robot_sn:=DualArms-123456 gui:=True
 ```
+
+The translation of the two robots in the world frame can be configured in the `config/dual_arm_translations.yaml` file.
 
 Visualize AICO1-4-V1:
 
@@ -198,8 +200,6 @@ Visualize AICO2-4-V1:
 ```bash
 ./scripts/visualize_flexiv.sh --aico2 external_axis_type:=AICO2-4-V1 rizon_type:=Rizon4 robot_sn:=AICO2-123456 gui:=True
 ```
-
-The translation of the two robots in the world frame can be configured in the `config/dual_arm_translations.yaml` file.
 
 > [!NOTE]
 > The launch files can also be run directly using `ros2 launch` if the package is built and sourced in your ROS2 workspace.
