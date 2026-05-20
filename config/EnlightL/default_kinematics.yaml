@@ -1,0 +1,57 @@
+kinematics:
+  joint1:
+    x: 0.0
+    y: 0.0
+    z: 0.146
+    roll: 0.0
+    pitch: 0.0
+    yaw: 0.0
+  joint2:
+    x: 0.0
+    y: -0.037
+    z: 0.114
+    roll: 1.5707963267948966
+    pitch: 0.0
+    yaw: 0.0
+  joint3:
+    x: 0.0
+    y: 0.181
+    z: -0.037
+    roll: -1.5707963267948966
+    pitch: 0.0
+    yaw: 0.0
+  joint4:
+    x: 0.0
+    y: 0.037
+    z: 0.109
+    roll: -1.5707963267948966
+    pitch: 0.0
+    yaw: 0.0
+  joint5:
+    x: 0.0
+    y: -0.156
+    z: -0.037
+    roll: 1.5707963267948966
+    pitch: 0.0
+    yaw: 0.0
+  joint6:
+    x: 0.0
+    y: -0.0261
+    z: 0.124
+    roll: 1.5707963267948966
+    pitch: 0.0
+    yaw: 0.0
+  joint7:
+    x: 0.0
+    y: 0.134
+    z: -0.0261
+    roll: -1.5707963267948966
+    pitch: 0.0
+    yaw: 0.0
+  link7_to_flange:
+    x: 0.0
+    y: 0.0
+    z: 0.048
+    roll: 0.0
+    pitch: 0.0
+    yaw: 0.0

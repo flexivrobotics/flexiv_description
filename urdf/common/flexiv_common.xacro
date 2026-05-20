@@ -1,0 +1,180 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <!--
+    Extract visual parameters from the config file
+    name: name of the link
+  -->
+  <xacro:macro name="get_visuals" params="name">
+    <xacro:property name="visual_config" value="${sec_visual_parameters[name]['visual']}"
+      lazy_eval="false" />
+    <xacro:if value="${'shell' in visual_config}">
+      <visual name="shell">
+        <xacro:property name="shell_config" value="${visual_config['shell']}" lazy_eval="false" />
+        <xacro:if value="${'origin' in shell_config}">
+          <origin
+            xyz="${shell_config['origin']['x']} ${shell_config['origin']['y']} ${shell_config['origin']['z']}"
+            rpy="${shell_config['origin']['roll']} ${shell_config['origin']['pitch']} ${shell_config['origin']['yaw']}" />
+        </xacro:if>
+        <xacro:unless value="${'origin' in shell_config}">
+          <origin xyz="0 0 0" rpy="0 0 0" />
+        </xacro:unless>
+        <geometry>
+          <mesh
+            filename="package://${shell_config['mesh']['package']}/${shell_config['mesh']['path']}" />
+        </geometry>
+      </visual>
+    </xacro:if>
+    <xacro:if value="${'ring' in visual_config}">
+      <visual name="ring">
+        <xacro:property name="ring_config" value="${visual_config['ring']}" lazy_eval="false" />
+        <origin
+          xyz="${ring_config['origin']['x']} ${ring_config['origin']['y']} ${ring_config['origin']['z']}"
+          rpy="${ring_config['origin']['roll']} ${ring_config['origin']['pitch']} ${ring_config['origin']['yaw']}" />
+        <geometry>
+          <mesh
+            filename="package://${ring_config['mesh']['package']}/${ring_config['mesh']['path']}"
+            scale="${ring_config['mesh']['scale']}" />
+        </geometry>
+      </visual>
+    </xacro:if>
+  </xacro:macro>
+
+  <!--
+    Extract collision parameters from the config file
+    name: name of the link
+  -->
+  <xacro:macro name="get_collisions" params="name">
+    <xacro:property name="collision_config" value="${sec_visual_parameters[name]['collision']}"
+      lazy_eval="false" />
+    <collision name="convex_mesh">
+      <xacro:if value="${'origin' in collision_config}">
+        <origin
+          xyz="${collision_config['origin']['x']} ${collision_config['origin']['y']} ${collision_config['origin']['z']}"
+          rpy="${collision_config['origin']['roll']} ${collision_config['origin']['pitch']} ${collision_config['origin']['yaw']}" />
+      </xacro:if>
+      <xacro:unless value="${'origin' in collision_config}">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+      </xacro:unless>
+      <geometry>
+        <mesh
+          filename="package://${collision_config['mesh']['package']}/${collision_config['mesh']['path']}" />
+      </geometry>
+    </collision>
+  </xacro:macro>
+
+  <!--
+    Extract joint limits parameters from the config file
+    name: name of the joint
+  -->
+  <xacro:macro name="get_joint_limits" params="name">
+    <xacro:property name="limits" value="${sec_joint_limits[name]}" lazy_eval="false" />
+    <limit lower="${limits['lower']}" upper="${limits['upper']}" effort="${limits['effort']}"
+      velocity="${limits['velocity']}" />
+    <safety_controller k_position="100.0" k_velocity="40.0"
+      soft_lower_limit="${limits['soft_lower']}"
+      soft_upper_limit="${limits['soft_upper']}" />
+  </xacro:macro>
+
+  <!--
+    Extract kinematics parameters from the config file
+    name: name of the joint
+  -->
+  <xacro:macro name="get_kinematics" params="name">
+    <xacro:property name="kinematics" value="${sec_kinematics[name]}" lazy_eval="false" />
+    <origin xyz="${kinematics['x']} ${kinematics['y']} ${kinematics['z']}"
+      rpy="${kinematics['roll']} ${kinematics['pitch']} ${kinematics['yaw']}" />
+  </xacro:macro>
+
+  <!--
+    Extract inertia parameters from the config file
+    name: name of the link
+  -->
+  <xacro:macro name="get_inertias" params="name">
+    <xacro:property name="inertias" value="${sec_inertia_parameters[name]}" lazy_eval="false" />
+    <origin xyz="${inertias['origin']['x']} ${inertias['origin']['y']} ${inertias['origin']['z']}"
+      rpy="${inertias['origin']['roll']} ${inertias['origin']['pitch']} ${inertias['origin']['yaw']}" />
+    <mass value="${inertias['mass']}" />
+    <inertia ixx="${inertias['inertia']['ixx']}" ixy="${inertias['inertia']['ixy']}"
+      ixz="${inertias['inertia']['ixz']}" iyy="${inertias['inertia']['iyy']}"
+      iyz="${inertias['inertia']['iyz']}"
+      izz="${inertias['inertia']['izz']}" />
+  </xacro:macro>
+
+  <!--
+    Read model data from YAML files
+    joint_limits_parameters_file: path to the joint limits YAML file
+    kinematics_parameters_file: path to the kinematics YAML file
+    inertia_parameters_file: path to the inertia parameters YAML file
+    visual_parameters_file: path to the visual parameters YAML file
+    load_mounted_ft_sensor: whether to load FT sensor parameters
+    sensor_kinematics_file: path to the sensor kinematics YAML file
+    sensor_inertia_file: path to the sensor inertia parameters YAML file
+    sensor_visual_file: path to the sensor visual parameters YAML file
+  -->
+  <xacro:macro name="read_model_data"
+    params="joint_limits_parameters_file kinematics_parameters_file inertia_parameters_file visual_parameters_file load_mounted_ft_sensor:=false sensor_kinematics_file:='' sensor_inertia_file:='' sensor_visual_file:=''">
+
+    <!-- Read YAML files -->
+    <xacro:property name="config_joint_limits_parameters"
+      value="${xacro.load_yaml(joint_limits_parameters_file)}" />
+    <xacro:property name="config_kinematics_parameters"
+      value="${xacro.load_yaml(kinematics_parameters_file)}" />
+    <xacro:property name="config_inertia_parameters"
+      value="${xacro.load_yaml(inertia_parameters_file)}" />
+    <xacro:property name="config_visual_parameters"
+      value="${xacro.load_yaml(visual_parameters_file)}" />
+
+    <!-- Extract subsections from YAML files -->
+    <xacro:property name="sec_joint_limits"
+      value="${config_joint_limits_parameters['joint_limits']}" scope="parent" />
+
+    <xacro:if value="${load_mounted_ft_sensor}">
+      <xacro:property name="config_sensor_kinematics"
+        value="${xacro.load_yaml(sensor_kinematics_file)}" />
+      <xacro:property name="config_sensor_inertia" value="${xacro.load_yaml(sensor_inertia_file)}" />
+      <xacro:property name="config_sensor_visual" value="${xacro.load_yaml(sensor_visual_file)}" />
+
+      <!-- Merge dictionaries -->
+      <xacro:property name="sec_kinematics"
+        value="${dict(config_kinematics_parameters['kinematics'], **config_sensor_kinematics['kinematics'])}"
+        scope="parent" />
+      <xacro:property name="sec_inertia_parameters"
+        value="${dict(config_inertia_parameters['inertia_parameters'], **config_sensor_inertia['inertia_parameters'])}"
+        scope="parent" />
+      <xacro:property name="sec_visual_parameters"
+        value="${dict(config_visual_parameters['visual_parameters'], **config_sensor_visual['visual_parameters'])}"
+        scope="parent" />
+    </xacro:if>
+
+    <xacro:unless value="${load_mounted_ft_sensor}">
+      <xacro:property name="sec_kinematics"
+        value="${config_kinematics_parameters['kinematics']}" scope="parent" />
+      <xacro:property name="sec_inertia_parameters"
+        value="${config_inertia_parameters['inertia_parameters']}" scope="parent" />
+      <xacro:property name="sec_visual_parameters"
+        value="${config_visual_parameters['visual_parameters']}" scope="parent" />
+    </xacro:unless>
+
+  </xacro:macro>
+
+  <!--
+    Extract workspace parameters from the config file
+    name: name of the link
+  -->
+  <xacro:macro name="get_workspace" params="name">
+    <xacro:if value="${'workspace' in sec_visual_parameters[name]}">
+      <xacro:property name="workspace_config" value="${sec_visual_parameters[name]['workspace']}"
+        lazy_eval="false" />
+      <workspace>
+        <origin
+          xyz="${workspace_config['origin']['x']} ${workspace_config['origin']['y']} ${workspace_config['origin']['z']}"
+          rpy="${workspace_config['origin']['roll']} ${workspace_config['origin']['pitch']} ${workspace_config['origin']['yaw']}" />
+        <geometry>
+          <sphere radius="${workspace_config['sphere']['radius']}" />
+        </geometry>
+      </workspace>
+    </xacro:if>
+  </xacro:macro>
+
+</robot>
