@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="$(arg robot_type)">
-  <!-- 'robot_type' values: EnlightL -->
-  <xacro:arg name="robot_type" default="EnlightL" />
+  <!-- 'robot_type' values: Enlight-L (single arm), Enlight-LL (dual arm on world),
+       MICO-Core (fixed torso + two Enlight-L arms),
+       MICO-Plus (2-DOF pan-tilt torso + two Enlight-L arms),
+       MICO-Ultra (2-DOF waist torso on mobile base + two Enlight-L arms). -->
+  <xacro:arg name="robot_type" default="Enlight-L" />
 
   <!-- import model macro -->
   <xacro:include filename="$(find flexiv_description)/urdf/common/enlight_robot.xacro" />
@@ -28,10 +31,27 @@
   <xacro:arg name="fake_sensor_commands" default="false" />
   <xacro:arg name="initial_positions_file" default="" />
   <xacro:arg name="mounting_file" default="$(find flexiv_description)/config/single_robot_mounting.yaml" />
+  <xacro:arg name="dual_mounting_file" default="$(find flexiv_description)/config/dual_robot_mounting.yaml" />
 
-  <xacro:property name="mounting" value="${xacro.load_yaml('$(arg mounting_file)')}" />
+  <!-- Boolean flags for dispatch -->
+  <xacro:property name="is_mico_core" value="${'$(arg robot_type)' == 'MICO-Core'}" />
+  <xacro:property name="is_mico_plus" value="${'$(arg robot_type)' == 'MICO-Plus'}" />
+  <xacro:property name="is_mico_ultra" value="${'$(arg robot_type)' == 'MICO-Ultra'}" />
+  <xacro:property name="is_mico" value="${is_mico_core or is_mico_plus or is_mico_ultra}" />
+  <xacro:property name="is_enlight_ll" value="${'$(arg robot_type)' == 'Enlight-LL'}" />
+  <xacro:property name="is_dual" value="${is_enlight_ll or is_mico}" />
 
-  <xacro:if value="${'$(arg initial_positions_file)' == ''}">
+  <!-- ============================== SINGLE ARM (Enlight-L) ============================== -->
+  <xacro:unless value="${is_dual}">
+    <xacro:property name="mounting" value="${xacro.load_yaml('$(arg mounting_file)')}" />
+    <xacro:if value="${'$(arg initial_positions_file)' == ''}">
+      <xacro:property name="resolved_initial_positions_file"
+        value="$(find flexiv_description)/config/$(arg robot_type)/initial_positions.yaml" />
+    </xacro:if>
+    <xacro:unless value="${'$(arg initial_positions_file)' == ''}">
+      <xacro:property name="resolved_initial_positions_file" value="$(arg initial_positions_file)" />
+    </xacro:unless>
+
     <xacro:enlight_robot
       robot_type="$(arg robot_type)"
       robot_sn="$(arg robot_sn)"
@@ -47,30 +67,130 @@
       rdk_control_mode="$(arg rdk_control_mode)"
       use_fake_hardware="$(arg use_fake_hardware)"
       fake_sensor_commands="$(arg fake_sensor_commands)"
-      initial_positions_file="$(find flexiv_description)/config/EnlightL/initial_positions.yaml"
-      base_rpy="${radians(mounting['orientation']['rx'])} ${radians(mounting['orientation']['ry'])} ${radians(mounting['orientation']['rz'])}">
-    </xacro:enlight_robot>
-  </xacro:if>
-
-  <xacro:unless value="${'$(arg initial_positions_file)' == ''}">
-    <xacro:enlight_robot
-      robot_type="$(arg robot_type)"
-      robot_sn="$(arg robot_sn)"
-      joint_limits_parameters_file="$(arg joint_limits_parameters_file)"
-      kinematics_parameters_file="$(arg kinematics_parameters_file)"
-      inertia_parameters_file="$(arg inertia_parameters_file)"
-      visual_parameters_file="$(arg visual_parameters_file)"
-      arm_prefix="$(arg arm_prefix)"
-      load_gripper="$(arg load_gripper)"
-      gripper_name="$(arg gripper_name)"
-      load_mounted_ft_sensor="$(arg load_mounted_ft_sensor)"
-      ros2_control="$(arg ros2_control)"
-      rdk_control_mode="$(arg rdk_control_mode)"
-      use_fake_hardware="$(arg use_fake_hardware)"
-      fake_sensor_commands="$(arg fake_sensor_commands)"
-      initial_positions_file="$(arg initial_positions_file)"
+      initial_positions_file="${resolved_initial_positions_file}"
       base_rpy="${radians(mounting['orientation']['rx'])} ${radians(mounting['orientation']['ry'])} ${radians(mounting['orientation']['rz'])}">
     </xacro:enlight_robot>
   </xacro:unless>
+
+  <!-- ============================== DUAL ARM (Enlight-LL) ============================== -->
+  <xacro:if value="${is_enlight_ll}">
+    <xacro:include filename="$(find flexiv_description)/urdf/common/flexiv_dual.ros2_control.xacro" />
+
+    <xacro:property name="dual_mounting" value="${xacro.load_yaml('$(arg dual_mounting_file)')}" />
+    <xacro:property name="left_pose" value="${dual_mounting['positions']['left']}" />
+    <xacro:property name="right_pose" value="${dual_mounting['positions']['right']}" />
+
+    <!-- Each arm of a dual-arm product is an Enlight-L: reuse its config + meshes for both arms. -->
+    <xacro:property name="arm_cfg" value="$(find flexiv_description)/config/Enlight-L" />
+    <xacro:property name="arm_init_positions" value="${arm_cfg}/initial_positions.yaml" />
+
+    <!-- Left arm: owns the shared world link + its base joint. ros2_control handled below. -->
+    <xacro:enlight_robot
+      robot_type="Enlight-L"
+      robot_sn="$(arg robot_sn)"
+      joint_limits_parameters_file="${arm_cfg}/joint_limits.yaml"
+      kinematics_parameters_file="${arm_cfg}/default_kinematics.yaml"
+      inertia_parameters_file="${arm_cfg}/inertia_parameters.yaml"
+      visual_parameters_file="${arm_cfg}/visual_parameters.yaml"
+      arm_prefix="left"
+      load_gripper="$(arg load_gripper)"
+      gripper_name="$(arg gripper_name)"
+      load_mounted_ft_sensor="$(arg load_mounted_ft_sensor)"
+      ros2_control="false"
+      use_fake_hardware="$(arg use_fake_hardware)"
+      fake_sensor_commands="$(arg fake_sensor_commands)"
+      initial_positions_file="${arm_init_positions}"
+      add_world_link="true"
+      create_base_joint="true"
+      base_xyz="${left_pose['x']} ${left_pose['y']} ${left_pose['z']}"
+      base_rpy="${radians(left_pose['rx'])} ${radians(left_pose['ry'])} ${radians(left_pose['rz'])}">
+    </xacro:enlight_robot>
+
+    <!-- Right arm: reuses the world link created by the left arm. -->
+    <xacro:enlight_robot
+      robot_type="Enlight-L"
+      robot_sn="$(arg robot_sn)"
+      joint_limits_parameters_file="${arm_cfg}/joint_limits.yaml"
+      kinematics_parameters_file="${arm_cfg}/default_kinematics.yaml"
+      inertia_parameters_file="${arm_cfg}/inertia_parameters.yaml"
+      visual_parameters_file="${arm_cfg}/visual_parameters.yaml"
+      arm_prefix="right"
+      load_gripper="$(arg load_gripper)"
+      gripper_name="$(arg gripper_name)"
+      load_mounted_ft_sensor="$(arg load_mounted_ft_sensor)"
+      ros2_control="false"
+      use_fake_hardware="$(arg use_fake_hardware)"
+      fake_sensor_commands="$(arg fake_sensor_commands)"
+      initial_positions_file="${arm_init_positions}"
+      add_world_link="false"
+      create_base_joint="true"
+      base_xyz="${right_pose['x']} ${right_pose['y']} ${right_pose['z']}"
+      base_rpy="${radians(right_pose['rx'])} ${radians(right_pose['ry'])} ${radians(right_pose['rz'])}">
+    </xacro:enlight_robot>
+
+    <!-- Single unified ros2_control for both arms (one robot_sn, prefix_left/prefix_right). -->
+    <xacro:if value="$(arg ros2_control)">
+      <xacro:flexiv_dual_ros2_control
+        prefix_left="left_$(arg robot_sn)_"
+        prefix_right="right_$(arg robot_sn)_"
+        robot_sn="$(arg robot_sn)"
+        rdk_control_mode="$(arg rdk_control_mode)"
+        use_fake_hardware="$(arg use_fake_hardware)"
+        fake_sensor_commands="$(arg fake_sensor_commands)"
+        initial_positions_file_left="${arm_init_positions}"
+        initial_positions_file_right="${arm_init_positions}" />
+    </xacro:if>
+  </xacro:if>
+
+  <!-- ============================== MICO-Core ============================== -->
+  <xacro:if value="${is_mico_core}">
+    <xacro:include filename="$(find flexiv_description)/urdf/common/mico_core.xacro" />
+    <xacro:property name="arm_cfg" value="$(find flexiv_description)/config/Enlight-L" />
+    <xacro:mico_core
+      robot_sn="$(arg robot_sn)"
+      load_gripper="$(arg load_gripper)"
+      gripper_name="$(arg gripper_name)"
+      load_mounted_ft_sensor="$(arg load_mounted_ft_sensor)"
+      ros2_control="$(arg ros2_control)"
+      rdk_control_mode="$(arg rdk_control_mode)"
+      use_fake_hardware="$(arg use_fake_hardware)"
+      fake_sensor_commands="$(arg fake_sensor_commands)"
+      arm_init_positions_file="${arm_cfg}/initial_positions.yaml"
+      torso_init_positions_file="$(find flexiv_description)/config/MICO-Core/torso_initial_positions.yaml" />
+  </xacro:if>
+
+  <!-- ============================== MICO-Plus ============================== -->
+  <xacro:if value="${is_mico_plus}">
+    <xacro:include filename="$(find flexiv_description)/urdf/common/mico_plus.xacro" />
+    <xacro:property name="arm_cfg" value="$(find flexiv_description)/config/Enlight-L" />
+    <xacro:mico_plus
+      robot_sn="$(arg robot_sn)"
+      load_gripper="$(arg load_gripper)"
+      gripper_name="$(arg gripper_name)"
+      load_mounted_ft_sensor="$(arg load_mounted_ft_sensor)"
+      ros2_control="$(arg ros2_control)"
+      rdk_control_mode="$(arg rdk_control_mode)"
+      use_fake_hardware="$(arg use_fake_hardware)"
+      fake_sensor_commands="$(arg fake_sensor_commands)"
+      arm_init_positions_file="${arm_cfg}/initial_positions.yaml"
+      torso_init_positions_file="$(find flexiv_description)/config/MICO-Plus/torso_initial_positions.yaml" />
+  </xacro:if>
+
+  <!-- ============================== MICO-Ultra ============================== -->
+  <xacro:if value="${is_mico_ultra}">
+    <xacro:include filename="$(find flexiv_description)/urdf/common/mico_ultra.xacro" />
+    <xacro:property name="arm_cfg" value="$(find flexiv_description)/config/Enlight-L" />
+    <xacro:mico_ultra
+      robot_sn="$(arg robot_sn)"
+      load_gripper="$(arg load_gripper)"
+      gripper_name="$(arg gripper_name)"
+      load_mounted_ft_sensor="$(arg load_mounted_ft_sensor)"
+      ros2_control="$(arg ros2_control)"
+      rdk_control_mode="$(arg rdk_control_mode)"
+      use_fake_hardware="$(arg use_fake_hardware)"
+      fake_sensor_commands="$(arg fake_sensor_commands)"
+      arm_init_positions_file="${arm_cfg}/initial_positions.yaml"
+      torso_init_positions_file="$(find flexiv_description)/config/MICO-Ultra/torso_initial_positions.yaml" />
+  </xacro:if>
 
 </robot>

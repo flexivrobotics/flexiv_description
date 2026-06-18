@@ -1,0 +1,13 @@
+inertia_parameters:
+  base_link:
+    mass: 18.238
+    origin: {x: -0.090747, y: 6.4085E-05, z: -0.26377, roll: 0.0, pitch: 0.0, yaw: 0.0}
+    inertia: {ixx: 0.22757, ixy: 3.4149E-05, ixz: 0.00058623, iyy: 0.097323, iyz: 7.8076E-05, izz: 0.18911}
+  link1:
+    mass: 6.9142
+    origin: {x: -0.011866, y: -2.3311E-06, z: -0.40936, roll: 0.0, pitch: 0.0, yaw: 0.0}
+    inertia: {ixx: 0.025877, ixy: 9.7841E-08, ixz: 0.00068462, iyy: 0.024283, iyz: 1.1456E-06, izz: 0.0221}
+  link2:
+    mass: 20.583
+    origin: {x: -0.037984, y: -0.00015842, z: 0.17472, roll: 0.0, pitch: 0.0, yaw: 0.0}
+    inertia: {ixx: 0.25176, ixy: -0.00013956, ixz: 0.0011163, iyy: 0.12449, iyz: -0.00031134, izz: 0.19821}
