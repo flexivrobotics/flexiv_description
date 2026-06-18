@@ -105,7 +105,8 @@ if __name__ == "__main__":
                 f"Warning: You are running this script from {cwd}. It is recommended to run it from the {package_name} root folder."
             )
 
-    SINGLE_ARM_TYPES = ["EnlightL"]
+    # Single-arm (Enlight-L) and dual-arm (Enlight-LL + MICO family) robot types.
+    ROBOT_TYPES = ["Enlight-L", "Enlight-LL", "MICO-Core", "MICO-Plus", "MICO-Ultra"]
 
     parser = argparse.ArgumentParser(
         description="Create URDF files from xacro for Flexiv robots."
@@ -113,8 +114,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "--robot_type",
         type=str,
-        default="EnlightL",
-        help=f"Single-arm robot type. Options: {SINGLE_ARM_TYPES}.",
+        default="Enlight-L",
+        help=f"Robot type. Options: {ROBOT_TYPES}.",
     )
     parser.add_argument("--arm_prefix", type=str, default="", help="Arm prefix.")
     parser.add_argument("--robot_sn", type=str, default="", help="Robot serial number.")
@@ -136,8 +137,8 @@ if __name__ == "__main__":
 
     robot_type = args.robot_type
 
-    if robot_type not in SINGLE_ARM_TYPES:
-        print(f"Invalid robot_type: {robot_type}. Available: {SINGLE_ARM_TYPES}")
+    if robot_type not in ROBOT_TYPES:
+        print(f"Invalid robot_type: {robot_type}. Available: {ROBOT_TYPES}")
         exit(1)
 
     xacro_file = "urdf/flexiv.urdf.xacro"

@@ -13,8 +13,12 @@ from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
-    single_arm_robot_types = [
-        "EnlightL",
+    robot_types = [
+        "Enlight-L",
+        "Enlight-LL",
+        "MICO-Core",
+        "MICO-Plus",
+        "MICO-Ultra",
     ]
     pkg_share = FindPackageShare("flexiv_description")
     robot_sn = LaunchConfiguration("robot_sn")
@@ -93,13 +97,13 @@ def generate_launch_description():
         [
             DeclareLaunchArgument(
                 name="robot_sn",
-                description="Serial number of the robot to connect to. Remove any space, for example: EnlightL-123456",
+                description="Serial number of the robot to connect to. Remove any space, for example: Enlight-L-123456",
             ),
             DeclareLaunchArgument(
                 name="robot_type",
-                default_value="EnlightL",
-                description="Type of the Flexiv single-arm robot.",
-                choices=single_arm_robot_types,
+                default_value="Enlight-L",
+                description="Type of the Flexiv robot. Single-arm: Enlight-L. Dual-arm: Enlight-LL, MICO-Core, MICO-Plus, MICO-Ultra.",
+                choices=robot_types,
             ),
             DeclareLaunchArgument(
                 name="load_gripper",
