@@ -7,6 +7,10 @@
        MICO-Ultra (2-DOF waist torso on mobile base + two Enlight-L arms). -->
   <xacro:arg name="robot_type" default="Enlight-L" />
 
+  <material name="flexiv_black">
+    <color rgba="0.22 0.22 0.22 1" />
+  </material>
+
   <!-- import model macro -->
   <xacro:include filename="$(find flexiv_description)/urdf/common/enlight_robot.xacro" />
 
