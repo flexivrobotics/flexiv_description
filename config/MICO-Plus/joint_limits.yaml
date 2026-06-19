@@ -1,3 +1,15 @@
 joint_limits:
-  joint1: {lower: -1.5708, upper: 1.5708, effort: 300, velocity: 1.0, soft_lower: -1.5708, soft_upper: 1.5708}
-  joint2: {lower: 0, upper: 1.5708, effort: 300, velocity: 1.0, soft_lower: 0, soft_upper: 1.5708}
+  joint1:
+    lower: -1.5708
+    upper: 1.5708
+    effort: 300
+    velocity: 1.0
+    soft_lower: -1.5708
+    soft_upper: 1.5708
+  joint2:
+    lower: 0
+    upper: 1.5708
+    effort: 300
+    velocity: 1.0
+    soft_lower: 0
+    soft_upper: 1.5708

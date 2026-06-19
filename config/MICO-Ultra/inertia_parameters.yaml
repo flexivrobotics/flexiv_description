@@ -1,13 +1,49 @@
 inertia_parameters:
   base_link:
     mass: 0
-    origin: {x: 0.0, y: 0.0, z: 0.0, roll: 0.0, pitch: 0.0, yaw: 0.0}
-    inertia: {ixx: 0, ixy: 0, ixz: 0, iyy: 0, iyz: 0, izz: 0}
+    origin:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0
+      ixy: 0
+      ixz: 0
+      iyy: 0
+      iyz: 0
+      izz: 0
   link1:
     mass: 7.082
-    origin: {x: -0.015488, y: 1.5112E-07, z: 0.18006, roll: 0.0, pitch: 0.0, yaw: 0.0}
-    inertia: {ixx: 0.1589, ixy: -8.79E-08, ixz: 0.0042256, iyy: 0.15681, iyz: -3.9975E-07, izz: 0.03051}
+    origin:
+      x: -0.015488
+      y: 1.5112E-07
+      z: 0.18006
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.1589
+      ixy: -8.79E-08
+      ixz: 0.0042256
+      iyy: 0.15681
+      iyz: -3.9975E-07
+      izz: 0.03051
   link2:
     mass: 21.979
-    origin: {x: -0.018599, y: -3.3799E-06, z: 0.16518, roll: 0.0, pitch: 0.0, yaw: 0.0}
-    inertia: {ixx: 0.45359, ixy: 1.7934E-06, ixz: -0.0023155, iyy: 0.26008, iyz: 2.1595E-06, izz: 0.23508}
+    origin:
+      x: -0.018599
+      y: -3.3799E-06
+      z: 0.16518
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.45359
+      ixy: 1.7934E-06
+      ixz: -0.0023155
+      iyy: 0.26008
+      iyz: 2.1595E-06
+      izz: 0.23508
