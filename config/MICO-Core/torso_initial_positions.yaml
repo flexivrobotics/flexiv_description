@@ -1,0 +1,2 @@
+# MICO-Core has no actuated torso joints (fixed torso).
+initial_positions: {}

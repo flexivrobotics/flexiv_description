@@ -2,9 +2,26 @@
 
 URDF description for Flexiv robots.
 
+> [!IMPORTANT]
+> This branch works with Flexiv software package **v4** and Flexiv ROS 2 Humble **v2** versions. Flexiv software v4 series is only for Enlight/MICO product family use. For Flexiv Rizon and AICO products, please refer to the `humble-v1` branch.
+
 ## URDF Creation
 
 The URDF files for Flexiv robots can be generated from xacro files using the provided script. This script runs inside a Docker container to ensure a consistent environment.
+
+### Supported robot types
+
+The same `robot_type` values are used by both URDF creation and visualization:
+
+| `robot_type` | Arms | Torso | Notes |
+| --- | --- | --- | --- |
+| `Enlight-L` | single | — | Single 7-DoF arm |
+| `Enlight-LL` | dual | — | Two Enlight-L arms mounted on `world` |
+| `MICO-Core` | dual | fixed | Two Enlight-L arms on a fixed torso |
+| `MICO-Plus` | dual | 2-DoF (yaw + pitch) | Pan-tilt torso |
+| `MICO-Ultra` | dual | 2-DoF (waist yaw + pitch) | Torso on a mobile base (modeled as an empty base root, no mesh) |
+
+Dual-arm robots (Enlight-LL, MICO-\*) share one serial number; their arm joints/links are prefixed `left_${robot_sn}_` and `right_${robot_sn}_`, and the MICO-Plus/Ultra torso uses the prefix `${robot_sn}_torso_` (`${robot_sn}_torso_joint1`/`joint2`). All MICO arms reuse the `config/Enlight-L` parameters.
 
 ### Prerequisites
 
@@ -31,7 +48,8 @@ Create URDF files from xacro for Flexiv robots.
 optional arguments:
   -h, --help            show this help message and exit
   --robot_type ROBOT_TYPE
-                        Single-arm robot type. Options: ['EnlightL']. (default: 'EnlightL')
+                        Robot type. Options: ['Enlight-L', 'Enlight-LL',
+                        'MICO-Core', 'MICO-Plus', 'MICO-Ultra']. (default: 'Enlight-L')
   --arm_prefix ARM_PREFIX
                         Arm prefix. (default: '')
   --robot_sn ROBOT_SN   Robot serial number. (default: '')
@@ -44,22 +62,31 @@ optional arguments:
 
 ### Examples
 
-Generate URDF for EnlightL:
+Generate URDF for Enlight-L:
 
 ```bash
-./scripts/create_urdf.sh --robot_type EnlightL
+./scripts/create_urdf.sh --robot_type Enlight-L
 ```
 
-Generate URDF for EnlightL with a specific serial number:
+Generate URDF for Enlight-L with a specific serial number:
 
 ```bash
-./scripts/create_urdf.sh --robot_type EnlightL --robot_sn EnlightL-123456
+./scripts/create_urdf.sh --robot_type Enlight-L --robot_sn Enlight-L-123456
 ```
 
-Generate URDF for EnlightL with gripper:
+Generate URDF for Enlight-L with gripper:
 
 ```bash
-./scripts/create_urdf.sh --robot_type EnlightL --robot_sn EnlightL-123456 --load_gripper
+./scripts/create_urdf.sh --robot_type Enlight-L --robot_sn Enlight-L-123456 --load_gripper
+```
+
+Generate URDF for a dual-arm robot (Enlight-LL or any MICO variant):
+
+```bash
+./scripts/create_urdf.sh --robot_type Enlight-LL --robot_sn Enlight-LL-123456
+./scripts/create_urdf.sh --robot_type MICO-Core  --robot_sn MICO-Core-123456
+./scripts/create_urdf.sh --robot_type MICO-Plus  --robot_sn MICO-Plus-123456
+./scripts/create_urdf.sh --robot_type MICO-Ultra --robot_sn MICO-Ultra-123456
 ```
 
 ## Visualize in RViz
@@ -73,17 +100,26 @@ Visualize Flexiv robots in RViz.
 
 Arguments:
   robot_sn:=ROBOT_SN            Serial number of the robot to connect to.
-  robot_type:=TYPE              Type of the Flexiv single-arm robot. (default: 'EnlightL')
+  robot_type:=TYPE              Type of the Flexiv robot (single- or dual-arm). (default: 'Enlight-L')
   load_gripper:=BOOL            Flag to load the Flexiv Grav gripper. (default: 'False')
   gripper_name:=NAME            Full name of the gripper to be controlled. (default: 'Flexiv-GN01')
   load_mounted_ft_sensor:=BOOL  Flag to load the mounted force torque sensor. (default: 'False')
   gui:=BOOL                     Flag to enable joint_state_publisher_gui. (default: 'False')
 ```
 
-Visualize EnlightL:
+Visualize Enlight-L:
 
 ```bash
-./scripts/visualize_flexiv.sh robot_type:=EnlightL robot_sn:=EnlightL-123456 gui:=True
+./scripts/visualize_flexiv.sh robot_type:=Enlight-L robot_sn:=Enlight-L-123456 gui:=True
+```
+
+Visualize a dual-arm robot (Enlight-LL or any MICO variant):
+
+```bash
+./scripts/visualize_flexiv.sh robot_type:=Enlight-LL robot_sn:=Enlight-LL-123456 gui:=True
+./scripts/visualize_flexiv.sh robot_type:=MICO-Core  robot_sn:=MICO-Core-123456  gui:=True
+./scripts/visualize_flexiv.sh robot_type:=MICO-Plus  robot_sn:=MICO-Plus-123456  gui:=True
+./scripts/visualize_flexiv.sh robot_type:=MICO-Ultra robot_sn:=MICO-Ultra-123456 gui:=True
 ```
 
 > [!NOTE]

@@ -1,0 +1,31 @@
+visual_parameters:
+  base_link:
+    visual:
+      shell:
+        mesh:
+          package: flexiv_description
+          path: meshes/MICO-Plus/visual/Base-link.obj
+    collision:
+      mesh:
+        package: flexiv_description
+        path: meshes/MICO-Plus/collision/Base-link.stl
+  link1:
+    visual:
+      shell:
+        mesh:
+          package: flexiv_description
+          path: meshes/MICO-Plus/visual/Yaw-link.obj
+    collision:
+      mesh:
+        package: flexiv_description
+        path: meshes/MICO-Plus/collision/Yaw-link.stl
+  link2:
+    visual:
+      shell:
+        mesh:
+          package: flexiv_description
+          path: meshes/MICO-Plus/visual/Pitch-link.obj
+    collision:
+      mesh:
+        package: flexiv_description
+        path: meshes/MICO-Plus/collision/Pitch-link.stl
