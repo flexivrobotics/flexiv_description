@@ -1,0 +1,29 @@
+kinematics:
+  joint1:
+    x: 0.0
+    y: 0.0
+    z: 0.278
+    roll: 0.0
+    pitch: 0.0
+    yaw: 0.0
+  joint2:
+    x: 0.04
+    y: 0.0
+    z: 0.1735
+    roll: 0.0
+    pitch: 0.0
+    yaw: 0.0
+  left_arm_adapter:
+    x: -0.04
+    y: 0.015
+    z: 0.31
+    roll: -1.5708
+    pitch: 0.0
+    yaw: 0.0
+  right_arm_adapter:
+    x: -0.04
+    y: -0.015
+    z: 0.31
+    roll: 1.5708
+    pitch: 0.0
+    yaw: 0.0

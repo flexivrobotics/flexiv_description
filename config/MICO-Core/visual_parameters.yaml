@@ -1,0 +1,11 @@
+visual_parameters:
+  base_link:
+    visual:
+      shell:
+        mesh:
+          package: flexiv_description
+          path: meshes/MICO-Core/visual/Core-link.obj
+    collision:
+      mesh:
+        package: flexiv_description
+        path: meshes/MICO-Core/collision/Core-link.stl
