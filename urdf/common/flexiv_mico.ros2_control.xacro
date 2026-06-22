@@ -87,11 +87,11 @@
         <state_interface name="effort" />
       </joint>
 
-      <!-- Single GPIO block for the whole robot. -->
+      <!-- Single GPIO block for the whole robot. 20 ports -->
       <xacro:macro name="mico_loop_gpio" params="idx">
         <command_interface name="digital_output_${idx}" />
         <state_interface name="digital_input_${idx}" />
-        <xacro:if value="${idx &lt; 23}">
+        <xacro:if value="${idx &lt; 19}">
           <xacro:mico_loop_gpio idx="${idx+1}" />
         </xacro:if>
       </xacro:macro>

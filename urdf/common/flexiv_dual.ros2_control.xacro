@@ -68,7 +68,7 @@
       <xacro:macro name="loop_gpio" params="idx">
         <command_interface name="digital_output_${idx}" />
         <state_interface name="digital_input_${idx}" />
-        <xacro:if value="${idx &lt; 23}">
+        <xacro:if value="${idx &lt; 19}">
           <xacro:loop_gpio idx="${idx+1}" />
         </xacro:if>
       </xacro:macro>
