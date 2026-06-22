@@ -22,6 +22,7 @@
     use_fake_hardware:=false
     fake_sensor_commands:=false
     arm_init_positions_file
+    right_arm_init_positions_file:='$(find flexiv_description)/config/Enlight-L/initial_positions_mirrored.yaml'
     torso_init_positions_file:=''
     torso_joint_limits_file:='$(find flexiv_description)/config/MICO-Plus/joint_limits.yaml'
     torso_kinematics_file:='$(find flexiv_description)/config/MICO-Plus/default_kinematics.yaml'
@@ -156,7 +157,7 @@
       ros2_control="false"
       use_fake_hardware="${use_fake_hardware}"
       fake_sensor_commands="${fake_sensor_commands}"
-      initial_positions_file="${arm_init_positions_file}"
+      initial_positions_file="${right_arm_init_positions_file}"
       add_world_link="false"
       create_base_joint="false"
     />
@@ -184,7 +185,7 @@
         use_fake_hardware="${use_fake_hardware}"
         fake_sensor_commands="${fake_sensor_commands}"
         initial_positions_file_left="${arm_init_positions_file}"
-        initial_positions_file_right="${arm_init_positions_file}"
+        initial_positions_file_right="${right_arm_init_positions_file}"
         torso_initial_positions_file="${torso_init_positions_file}" />
     </xacro:if>
 

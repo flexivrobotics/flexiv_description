@@ -25,5 +25,5 @@ kinematics:
     y: -0.015
     z: 0.31
     roll: 1.5708
-    pitch: 0.0
+    pitch: 3.14159
     yaw: 0.0
