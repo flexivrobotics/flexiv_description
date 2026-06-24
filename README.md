@@ -3,7 +3,9 @@
 URDF description for Flexiv robots.
 
 > [!IMPORTANT]
-> This branch works with Flexiv software package **v4** and Flexiv ROS 2 Humble **v2** versions. Flexiv software v4 series is only for Enlight/MICO product family use. For Flexiv Rizon and AICO products, please refer to the `humble-v1` branch.
+> This branch works with Flexiv software package **v4** and Flexiv ROS 2 Humble **v2** versions.
+>
+> Flexiv software v4 series is only for Enlight/MICO product family use. For Flexiv Rizon and AICO products, please refer to the `humble-v1` branch.
 
 ## URDF Creation
 
