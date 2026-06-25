@@ -81,8 +81,7 @@
       <child link="${torso_prefix}left_flange" />
     </joint>
 
-    <!-- Right adapter mirrors the left (rpy roll = +pi/2, no yaw/pitch) so the right arm faces
-         forward; the manufacturer URDF's extra 180 deg made the right arm base point backwards. -->
+    <!-- Right adapter mirrors the left -->
     <joint name="${torso_prefix}right_arm_adapter" type="fixed">
       <xacro:get_kinematics name="right_arm_adapter" />
       <parent link="${torso_prefix}base_link" />
