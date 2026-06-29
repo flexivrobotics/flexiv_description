@@ -1,0 +1,21 @@
+visual_parameters:
+  link1:
+    visual:
+      shell:
+        mesh:
+          package: flexiv_description
+          path: meshes/MICO-Ultra/visual/waist_link.STL
+    collision:
+      mesh:
+        package: flexiv_description
+        path: meshes/MICO-Ultra/collision/waist_link.STL
+  link2:
+    visual:
+      shell:
+        mesh:
+          package: flexiv_description
+          path: meshes/MICO-Ultra/visual/pitch_link.STL
+    collision:
+      mesh:
+        package: flexiv_description
+        path: meshes/MICO-Ultra/collision/pitch_link.STL

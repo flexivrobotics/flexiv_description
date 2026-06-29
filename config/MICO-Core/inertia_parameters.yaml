@@ -1,0 +1,17 @@
+inertia_parameters:
+  base_link:
+    mass: 23.116
+    origin:
+      x: 0.0027794
+      y: -0.00019221
+      z: 0.22614
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.27032
+      ixy: -0.00021807
+      ixz: 0.00091154
+      iyy: 0.13627
+      iyz: -0.00034551
+      izz: 0.22713
