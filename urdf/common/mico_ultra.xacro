@@ -1,0 +1,193 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <!--
+    MICO-Ultra: 2-DOF torso (waist yaw + pitch) with two Enlight-L arms, mounted on a mobile base.
+    base_link is the mobile-base root (empty link, no mesh present).
+    Torso joints: ${robot_sn}_torso_joint1 (waist yaw), ${robot_sn}_torso_joint2 (pitch).
+    Arm joints:   left_${robot_sn}_joint1..7, right_${robot_sn}_joint1..7.
+  -->
+
+  <xacro:include filename="$(find flexiv_description)/urdf/common/flexiv_common.xacro" />
+  <xacro:include filename="$(find flexiv_description)/urdf/common/enlight_robot.xacro" />
+  <xacro:include filename="$(find flexiv_description)/urdf/common/flexiv_mico.ros2_control.xacro" />
+
+  <xacro:macro name="mico_ultra"
+    params="
+    robot_sn
+    load_gripper:=false
+    gripper_name:='Flexiv-GN01'
+    load_mounted_ft_sensor:=false
+    ros2_control:=false
+    rdk_control_mode:='joint_position'
+    use_fake_hardware:=false
+    fake_sensor_commands:=false
+    arm_init_positions_file
+    right_arm_init_positions_file:='$(find flexiv_description)/config/Enlight-L/initial_positions_mirrored.yaml'
+    torso_init_positions_file:=''
+    torso_joint_limits_file:='$(find flexiv_description)/config/MICO-Ultra/joint_limits.yaml'
+    torso_kinematics_file:='$(find flexiv_description)/config/MICO-Ultra/default_kinematics.yaml'
+    torso_inertia_file:='$(find flexiv_description)/config/MICO-Ultra/inertia_parameters.yaml'
+    torso_visual_file:='$(find flexiv_description)/config/MICO-Ultra/visual_parameters.yaml'
+    ">
+
+    <xacro:property name="arm_cfg" value="$(find flexiv_description)/config/Enlight-L" />
+    <xacro:property name="torso_prefix" value="${robot_sn}_torso_" />
+
+    <xacro:read_model_data
+      joint_limits_parameters_file="${torso_joint_limits_file}"
+      kinematics_parameters_file="${torso_kinematics_file}"
+      inertia_parameters_file="${torso_inertia_file}"
+      visual_parameters_file="${torso_visual_file}" />
+
+    <!-- World link and fixed joint to torso base (mobile base root: empty link, no mesh) -->
+    <link name="world" />
+
+    <joint name="${torso_prefix}world_joint" type="fixed">
+      <parent link="world" />
+      <child link="${torso_prefix}base_link" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+    <!-- Mobile base root: empty link -->
+    <link name="${torso_prefix}base_link">
+      <inertial>
+        <xacro:get_inertias name="base_link" />
+      </inertial>
+    </link>
+
+    <!-- Torso links -->
+    <link name="${torso_prefix}link1">
+      <inertial>
+        <xacro:get_inertias name="link1" />
+      </inertial>
+      <xacro:get_visuals name="link1" />
+      <xacro:get_collisions name="link1" />
+    </link>
+
+    <link name="${torso_prefix}link2">
+      <inertial>
+        <xacro:get_inertias name="link2" />
+      </inertial>
+      <xacro:get_visuals name="link2" />
+      <xacro:get_collisions name="link2" />
+    </link>
+
+    <!-- Torso flange links (massless) -->
+    <link name="${torso_prefix}left_flange">
+      <inertial>
+        <mass value="0" />
+        <origin rpy="0 0 0" xyz="0 0 0" />
+        <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+      </inertial>
+    </link>
+
+    <link name="${torso_prefix}right_flange">
+      <inertial>
+        <mass value="0" />
+        <origin rpy="0 0 0" xyz="0 0 0" />
+        <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+      </inertial>
+    </link>
+
+    <!-- Torso revolute joints -->
+    <joint name="${torso_prefix}joint1" type="revolute">
+      <xacro:get_kinematics name="joint1" />
+      <parent link="${torso_prefix}base_link" />
+      <child link="${torso_prefix}link1" />
+      <axis xyz="0 0 1" />
+      <xacro:get_joint_limits name="joint1" />
+    </joint>
+
+    <joint name="${torso_prefix}joint2" type="revolute">
+      <xacro:get_kinematics name="joint2" />
+      <parent link="${torso_prefix}link1" />
+      <child link="${torso_prefix}link2" />
+      <axis xyz="0 1 0" />
+      <xacro:get_joint_limits name="joint2" />
+    </joint>
+
+    <!-- Fixed adapter joints: link2 -> flanges -->
+    <joint name="${torso_prefix}left_arm_adapter" type="fixed">
+      <xacro:get_kinematics name="left_arm_adapter" />
+      <parent link="${torso_prefix}link2" />
+      <child link="${torso_prefix}left_flange" />
+    </joint>
+
+    <!-- Right adapter mirrors the left -->
+    <joint name="${torso_prefix}right_arm_adapter" type="fixed">
+      <xacro:get_kinematics name="right_arm_adapter" />
+      <parent link="${torso_prefix}link2" />
+      <child link="${torso_prefix}right_flange" />
+    </joint>
+
+    <!-- Left arm (Enlight-L): no world link, no base joint -->
+    <xacro:enlight_robot
+      robot_type="Enlight-L"
+      robot_sn="${robot_sn}"
+      joint_limits_parameters_file="${arm_cfg}/joint_limits.yaml"
+      kinematics_parameters_file="${arm_cfg}/default_kinematics.yaml"
+      inertia_parameters_file="${arm_cfg}/inertia_parameters.yaml"
+      visual_parameters_file="${arm_cfg}/visual_parameters.yaml"
+      arm_prefix="left"
+      load_gripper="${load_gripper}"
+      gripper_name="${gripper_name}"
+      load_mounted_ft_sensor="${load_mounted_ft_sensor}"
+      ros2_control="false"
+      use_fake_hardware="${use_fake_hardware}"
+      fake_sensor_commands="${fake_sensor_commands}"
+      initial_positions_file="${arm_init_positions_file}"
+      add_world_link="false"
+      create_base_joint="false"
+    />
+
+    <!-- Right arm (Enlight-L): no world link, no base joint -->
+    <xacro:enlight_robot
+      robot_type="Enlight-L"
+      robot_sn="${robot_sn}"
+      joint_limits_parameters_file="${arm_cfg}/joint_limits.yaml"
+      kinematics_parameters_file="${arm_cfg}/default_kinematics.yaml"
+      inertia_parameters_file="${arm_cfg}/inertia_parameters.yaml"
+      visual_parameters_file="${arm_cfg}/visual_parameters.yaml"
+      arm_prefix="right"
+      load_gripper="${load_gripper}"
+      gripper_name="${gripper_name}"
+      load_mounted_ft_sensor="${load_mounted_ft_sensor}"
+      ros2_control="false"
+      use_fake_hardware="${use_fake_hardware}"
+      fake_sensor_commands="${fake_sensor_commands}"
+      initial_positions_file="${right_arm_init_positions_file}"
+      add_world_link="false"
+      create_base_joint="false"
+    />
+
+    <!-- Attach arm base_links to torso flanges -->
+    <joint name="${torso_prefix}left_flange_to_left_arm" type="fixed">
+      <parent link="${torso_prefix}left_flange" />
+      <child link="left_${robot_sn}_base_link" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+    <joint name="${torso_prefix}right_flange_to_right_arm" type="fixed">
+      <parent link="${torso_prefix}right_flange" />
+      <child link="right_${robot_sn}_base_link" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+    <!-- ros2_control: MICO-Ultra uses flexiv_mico_ros2_control (includes torso joints) -->
+    <xacro:if value="${ros2_control}">
+      <xacro:flexiv_mico_ros2_control
+        prefix_left="left_${robot_sn}_"
+        prefix_right="right_${robot_sn}_"
+        robot_sn="${robot_sn}"
+        rdk_control_mode="${rdk_control_mode}"
+        use_fake_hardware="${use_fake_hardware}"
+        fake_sensor_commands="${fake_sensor_commands}"
+        initial_positions_file_left="${arm_init_positions_file}"
+        initial_positions_file_right="${right_arm_init_positions_file}"
+        torso_initial_positions_file="${torso_init_positions_file}" />
+    </xacro:if>
+
+  </xacro:macro>
+
+</robot>

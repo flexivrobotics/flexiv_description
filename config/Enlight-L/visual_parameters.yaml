@@ -4,11 +4,11 @@ visual_parameters:
       shell:
         mesh:
           package: flexiv_description
-          path: meshes/EnlightL/visual/link0.obj
+          path: meshes/Enlight-L/visual/link0.obj
     collision:
       mesh:
         package: flexiv_description
-        path: meshes/EnlightL/collision/link0.stl
+        path: meshes/Enlight-L/collision/link0.stl
     workspace:
       origin:
         x: 0.0
@@ -24,68 +24,68 @@ visual_parameters:
       shell:
         mesh:
           package: flexiv_description
-          path: meshes/EnlightL/visual/link1.obj
+          path: meshes/Enlight-L/visual/link1.obj
     collision:
       mesh:
         package: flexiv_description
-        path: meshes/EnlightL/collision/link1.stl
+        path: meshes/Enlight-L/collision/link1.stl
   link2:
     visual:
       shell:
         mesh:
           package: flexiv_description
-          path: meshes/EnlightL/visual/link2.obj
+          path: meshes/Enlight-L/visual/link2.obj
     collision:
       mesh:
         package: flexiv_description
-        path: meshes/EnlightL/collision/link2.stl
+        path: meshes/Enlight-L/collision/link2.stl
   link3:
     visual:
       shell:
         mesh:
           package: flexiv_description
-          path: meshes/EnlightL/visual/link3.obj
+          path: meshes/Enlight-L/visual/link3.obj
     collision:
       mesh:
         package: flexiv_description
-        path: meshes/EnlightL/collision/link3.stl
+        path: meshes/Enlight-L/collision/link3.stl
   link4:
     visual:
       shell:
         mesh:
           package: flexiv_description
-          path: meshes/EnlightL/visual/link4.obj
+          path: meshes/Enlight-L/visual/link4.obj
     collision:
       mesh:
         package: flexiv_description
-        path: meshes/EnlightL/collision/link4.stl
+        path: meshes/Enlight-L/collision/link4.stl
   link5:
     visual:
       shell:
         mesh:
           package: flexiv_description
-          path: meshes/EnlightL/visual/link5.obj
+          path: meshes/Enlight-L/visual/link5.obj
     collision:
       mesh:
         package: flexiv_description
-        path: meshes/EnlightL/collision/link5.stl
+        path: meshes/Enlight-L/collision/link5.stl
   link6:
     visual:
       shell:
         mesh:
           package: flexiv_description
-          path: meshes/EnlightL/visual/link6.obj
+          path: meshes/Enlight-L/visual/link6.obj
     collision:
       mesh:
         package: flexiv_description
-        path: meshes/EnlightL/collision/link6.stl
+        path: meshes/Enlight-L/collision/link6.stl
   link7:
     visual:
       shell:
         mesh:
           package: flexiv_description
-          path: meshes/EnlightL/visual/link7.obj
+          path: meshes/Enlight-L/visual/link7.obj
     collision:
       mesh:
         package: flexiv_description
-        path: meshes/EnlightL/collision/link7.stl
+        path: meshes/Enlight-L/collision/link7.stl
