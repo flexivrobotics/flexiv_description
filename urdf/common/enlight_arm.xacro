@@ -23,9 +23,9 @@
       inertia_parameters_file="${inertia_parameters_file}"
       visual_parameters_file="${visual_parameters_file}"
       load_mounted_ft_sensor="${load_mounted_ft_sensor}"
-      sensor_kinematics_file="$(find flexiv_description)/config/FT03-D1/ft_sensor_kinematics.yaml"
-      sensor_inertia_file="$(find flexiv_description)/config/FT03-D1/ft_sensor_inertia.yaml"
-      sensor_visual_file="$(find flexiv_description)/config/FT03-D1/ft_sensor_visual.yaml"
+      sensor_kinematics_file="$(find flexiv_description)/config/FT03/ft_sensor_kinematics.yaml"
+      sensor_inertia_file="$(find flexiv_description)/config/FT03/ft_sensor_inertia.yaml"
+      sensor_visual_file="$(find flexiv_description)/config/FT03/ft_sensor_visual.yaml"
     />
 
     <xacro:if value="${create_base_joint}">
