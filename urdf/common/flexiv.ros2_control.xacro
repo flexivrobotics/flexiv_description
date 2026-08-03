@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+  <!-- Single-robot ros2_control: one robot_sn, one FlexivHardwareInterface.
+       For two robots paired on a platform (Rizon dual, AICO2) see
+       rizon_dual.ros2_control.xacro instead. -->
   <xacro:macro name="flexiv_ros2_control"
     params="
     prefix
@@ -9,6 +12,9 @@
     use_fake_hardware:=false
     fake_sensor_commands:=false
     initial_positions_file
+    num_gpio_ports:=20
+    external_axis_type:=''
+    external_axis_prefix:=''
     ">
 
     <xacro:property name="initial_positions" value="${xacro.load_yaml(initial_positions_file)['initial_positions']}"/>
@@ -25,6 +31,9 @@
           <param name="robot_sn">${robot_sn}</param>
           <param name="prefix">${prefix}</param>
           <param name="rdk_control_mode">${rdk_control_mode}</param>
+          <xacro:unless value="${external_axis_type == ''}">
+            <param name="external_axis_type">${external_axis_type}</param>
+          </xacro:unless>
         </xacro:unless>
       </hardware>
 
@@ -99,11 +108,37 @@
         <state_interface name="effort" />
       </joint>
 
-      <!-- 20 digital IO ports (16 on control box + 2 in each wrist connector, max 2 wrists). -->
+      <!-- External axis joints. AICO1 mounts a single arm on a positioner, so
+           the axis joints join this robot's interface rather than a paired one. -->
+      <xacro:macro name="ext_axis_joint" params="name">
+        <joint name="${external_axis_prefix}${name}">
+          <command_interface name="position" />
+          <command_interface name="velocity" />
+          <command_interface name="effort" />
+          <state_interface name="position">
+            <param name="initial_value">0.0</param>
+          </state_interface>
+          <state_interface name="velocity" />
+          <state_interface name="effort" />
+        </joint>
+      </xacro:macro>
+
+      <xacro:if value="${external_axis_type == 'aico1_4_v1'}">
+        <!-- joint1 is not actuated on this variant. -->
+        <xacro:ext_axis_joint name="aico1_4_v1_joint2" />
+      </xacro:if>
+      <xacro:if value="${external_axis_type == 'aico1_4_v2'}">
+        <xacro:ext_axis_joint name="aico1_4_v2_joint1" />
+        <xacro:ext_axis_joint name="aico1_4_v2_joint2" />
+        <xacro:ext_axis_joint name="aico1_4_v2_joint_head" />
+      </xacro:if>
+
+      <!-- Digital IO ports: 16 on the control box plus 2 in each wrist connector.
+           Enlight-L and MICO have two wrist connectors (20); Rizon has one (18). -->
       <xacro:macro name="loop_gpio" params="idx">
         <command_interface name="digital_output_${idx}" />
         <state_interface name="digital_input_${idx}" />
-        <xacro:if value="${idx &lt; 19}">
+        <xacro:if value="${idx &lt; num_gpio_ports - 1}">
           <xacro:loop_gpio idx="${idx+1}" />
         </xacro:if>
       </xacro:macro>
