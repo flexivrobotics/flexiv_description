@@ -19,6 +19,13 @@
 
     <xacro:property name="initial_positions" value="${xacro.load_yaml(initial_positions_file)['initial_positions']}"/>
 
+    <xacro:include filename="$(find flexiv_description)/urdf/common/flexiv_common.xacro" />
+    <!-- GPIO belongs to the control box, not to an arm, so it is named from robot_sn
+         alone. The hardware interface builds it as robot_sn + "_gpio" regardless of
+         any arm prefix. -->
+    <xacro:compute_arm_prefix robot_sn="${robot_sn}" />
+    <xacro:property name="sn_prefix" value="${computed_arm_prefix}" lazy_eval="false" />
+
     <ros2_control name="FlexivHardwareInterface" type="system">
       <hardware>
         <xacro:if value="${use_fake_hardware}">
@@ -143,7 +150,7 @@
         </xacro:if>
       </xacro:macro>
 
-      <gpio name="${prefix}gpio">
+      <gpio name="${sn_prefix}gpio">
         <xacro:loop_gpio idx="0" />
       </gpio>
 
