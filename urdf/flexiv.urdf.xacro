@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="$(arg robot_type)">
-  <!-- 'robot_type' values: Enlight-L (single arm), Enlight-LL (dual arm on world),
-       MICO-Core (fixed torso + two Enlight-L arms),
-       MICO-Plus (2-DOF pan-tilt torso + two Enlight-L arms),
-       MICO-Ultra (2-DOF waist torso on mobile base + two Enlight-L arms). -->
+  <!-- Single entry point for every Flexiv robot model. 'robot_type' values:
+
+       Single arm on a mount (one robot_sn):
+         Enlight-L, Rizon4, Rizon4s, Rizon4M, Rizon4R, Rizon10, Rizon10s
+       One robot with two arms (one robot_sn):
+         Enlight-LL   dual arm on world
+         MICO-Core    fixed torso + two Enlight-L arms
+         MICO-Plus    2-DOF pan-tilt torso + two Enlight-L arms
+         MICO-Ultra   2-DOF waist torso on mobile base + two Enlight-L arms
+       Single arm on an external axis (one robot_sn, use 'arm_type' to pick the arm):
+         AICO1-4-V1, AICO1-4-V2
+       Two paired robots (robot_sn_left + robot_sn_right, 'arm_type_left/right'):
+         Rizon-Dual   two arms on a shared mount, no external axis
+         AICO2-4-V1, AICO2-4-V2, AICO2-10-V1
+
+       Which of these a given software release actually supports is decided by
+       RDK and RCA. This package is a resource depot and hosts all of them. -->
   <xacro:arg name="robot_type" default="Enlight-L" />
 
   <material name="flexiv_black">
@@ -36,17 +49,55 @@
   <xacro:arg name="initial_positions_file" default="" />
   <xacro:arg name="mounting_file" default="$(find flexiv_description)/config/single_robot_mounting.yaml" />
   <xacro:arg name="dual_mounting_file" default="$(find flexiv_description)/config/dual_robot_mounting.yaml" />
+  <xacro:arg name="paired_mounting_file" default="$(find flexiv_description)/config/dual_arm_mounting.yaml" />
+
+  <!-- External axis (AICO) parameters -->
+  <xacro:arg name="external_axis_prefix" default="" />
+  <!-- Arm carried by an external axis. Empty means 'pick the default for this axis'. -->
+  <xacro:arg name="arm_type" default="" />
+
+  <!-- Paired-robot parameters. Only read by Rizon-Dual and AICO2 configurations. -->
+  <xacro:arg name="robot_sn_left" default="" />
+  <xacro:arg name="robot_sn_right" default="" />
+  <xacro:arg name="arm_type_left" default="" />
+  <xacro:arg name="arm_type_right" default="" />
+  <xacro:arg name="load_gripper_left" default="false" />
+  <xacro:arg name="load_gripper_right" default="false" />
+  <xacro:arg name="gripper_name_left" default="Flexiv-GN01" />
+  <xacro:arg name="gripper_name_right" default="Flexiv-GN01" />
+  <xacro:arg name="load_mounted_ft_sensor_left" default="false" />
+  <xacro:arg name="load_mounted_ft_sensor_right" default="false" />
 
   <!-- Boolean flags for dispatch -->
-  <xacro:property name="is_mico_core" value="${'$(arg robot_type)' == 'MICO-Core'}" />
-  <xacro:property name="is_mico_plus" value="${'$(arg robot_type)' == 'MICO-Plus'}" />
-  <xacro:property name="is_mico_ultra" value="${'$(arg robot_type)' == 'MICO-Ultra'}" />
+  <xacro:property name="robot_type_str" value="$(arg robot_type)" />
+  <xacro:property name="is_mico_core" value="${robot_type_str == 'MICO-Core'}" />
+  <xacro:property name="is_mico_plus" value="${robot_type_str == 'MICO-Plus'}" />
+  <xacro:property name="is_mico_ultra" value="${robot_type_str == 'MICO-Ultra'}" />
   <xacro:property name="is_mico" value="${is_mico_core or is_mico_plus or is_mico_ultra}" />
-  <xacro:property name="is_enlight_ll" value="${'$(arg robot_type)' == 'Enlight-LL'}" />
+  <xacro:property name="is_enlight_ll" value="${robot_type_str == 'Enlight-LL'}" />
   <xacro:property name="is_dual" value="${is_enlight_ll or is_mico}" />
 
-  <!-- ============================== SINGLE ARM (Enlight-L) ============================== -->
-  <xacro:unless value="${is_dual}">
+  <xacro:property name="is_aico1" value="${robot_type_str in ['AICO1-4-V1', 'AICO1-4-V2']}" />
+  <xacro:property name="is_aico2"
+    value="${robot_type_str in ['AICO2-4-V1', 'AICO2-4-V2', 'AICO2-10-V1']}" />
+  <xacro:property name="is_rizon_dual" value="${robot_type_str == 'Rizon-Dual'}" />
+  <!-- 'Paired' means two robots with two serial numbers, as opposed to one robot
+       with two arms. They need different hardware interfaces. -->
+  <xacro:property name="is_paired" value="${is_rizon_dual or is_aico2}" />
+
+  <!-- The external axis macro name is the robot type lowercased with dashes as
+       underscores, e.g. AICO2-10-V1 -> aico2_10_v1. The hardware interface takes
+       the same string as its 'external_axis_type' parameter. -->
+  <xacro:property name="external_axis_type"
+    value="${robot_type_str.lower().replace('-', '_') if (is_aico1 or is_aico2) else ''}" />
+
+  <!-- Anything without a dedicated branch below is a plain single arm on a mount. -->
+  <xacro:property name="is_single" value="${not (is_dual or is_paired or is_aico1)}" />
+
+  <xacro:property name="cfg" value="$(find flexiv_description)/config" />
+
+  <!-- ============================== SINGLE ARM ON A MOUNT ============================== -->
+  <xacro:if value="${is_single}">
     <xacro:property name="mounting" value="${xacro.load_yaml('$(arg mounting_file)')}" />
     <xacro:if value="${'$(arg initial_positions_file)' == ''}">
       <xacro:property name="resolved_initial_positions_file"
@@ -72,9 +123,10 @@
       use_fake_hardware="$(arg use_fake_hardware)"
       fake_sensor_commands="$(arg fake_sensor_commands)"
       initial_positions_file="${resolved_initial_positions_file}"
+      num_gpio_ports="${18 if robot_type_str.startswith('Rizon') else 20}"
       base_rpy="${radians(mounting['orientation']['rx'])} ${radians(mounting['orientation']['ry'])} ${radians(mounting['orientation']['rz'])}">
     </xacro:enlight_robot>
-  </xacro:unless>
+  </xacro:if>
 
   <!-- ============================== DUAL ARM (Enlight-LL) ============================== -->
   <xacro:if value="${is_enlight_ll}">
@@ -195,6 +247,204 @@
       fake_sensor_commands="$(arg fake_sensor_commands)"
       arm_init_positions_file="${arm_cfg}/initial_positions.yaml"
       torso_init_positions_file="$(find flexiv_description)/config/MICO-Ultra/torso_initial_positions.yaml" />
+  </xacro:if>
+
+  <!-- ================= AICO1: single arm on a 2-DOF external axis ================= -->
+  <xacro:if value="${is_aico1}">
+    <xacro:include filename="$(find flexiv_description)/urdf/common/aico1_4_v1.xacro" />
+    <xacro:include filename="$(find flexiv_description)/urdf/common/aico1_4_v2.xacro" />
+
+    <xacro:property name="aico1_arm" value="${'$(arg arm_type)' if '$(arg arm_type)' != '' else 'Rizon4'}" />
+    <xacro:unless value="${aico1_arm in ['Rizon4', 'Rizon4s', 'Rizon4R']}">
+      ${xacro.warning('AICO1 supports Rizon4, Rizon4s and Rizon4R. You selected ' + aico1_arm + '.')}
+    </xacro:unless>
+
+    <!-- The external axis owns the world link; its adapter joint parents the arm. -->
+    <link name="world" />
+    <xacro:property name="aico1_base"
+      value="$(arg external_axis_prefix)${external_axis_type}_base_link" />
+    <joint name="world_to_platform" type="fixed">
+      <parent link="world" />
+      <child link="${aico1_base}" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </joint>
+
+    <!-- enlight_robot derives the arm prefix as 'arm_prefix_robot_sn_'. -->
+    <xacro:property name="aico1_arm_prefix"
+      value="${('$(arg arm_prefix)' + '_' + '$(arg robot_sn)' + '_') if '$(arg arm_prefix)' != '' and '$(arg robot_sn)' != '' else ('$(arg arm_prefix)' + '$(arg robot_sn)' + '_') if ('$(arg arm_prefix)' + '$(arg robot_sn)') != '' else ''}" />
+
+    <xacro:if value="${robot_type_str == 'AICO1-4-V1'}">
+      <xacro:aico1_4_v1 prefix="$(arg external_axis_prefix)"
+        arm_prefix="${aico1_arm_prefix}"
+        mesh_prefix_path="package://flexiv_description/" />
+    </xacro:if>
+    <xacro:if value="${robot_type_str == 'AICO1-4-V2'}">
+      <xacro:aico1_4_v2 prefix="$(arg external_axis_prefix)"
+        arm_prefix="${aico1_arm_prefix}"
+        mesh_prefix_path="package://flexiv_description/" />
+    </xacro:if>
+
+    <xacro:enlight_robot
+      robot_type="${aico1_arm}"
+      robot_sn="$(arg robot_sn)"
+      joint_limits_parameters_file="${cfg}/${aico1_arm}/joint_limits.yaml"
+      kinematics_parameters_file="${cfg}/${aico1_arm}/default_kinematics.yaml"
+      inertia_parameters_file="${cfg}/${aico1_arm}/inertia_parameters.yaml"
+      visual_parameters_file="${cfg}/${aico1_arm}/visual_parameters.yaml"
+      arm_prefix="$(arg arm_prefix)"
+      load_gripper="$(arg load_gripper)"
+      gripper_name="$(arg gripper_name)"
+      load_mounted_ft_sensor="$(arg load_mounted_ft_sensor)"
+      ros2_control="$(arg ros2_control)"
+      rdk_control_mode="$(arg rdk_control_mode)"
+      use_fake_hardware="$(arg use_fake_hardware)"
+      fake_sensor_commands="$(arg fake_sensor_commands)"
+      initial_positions_file="${cfg}/${aico1_arm}/initial_positions.yaml"
+      num_gpio_ports="${18 if aico1_arm.startswith('Rizon') else 20}"
+      external_axis_type="${external_axis_type}"
+      external_axis_prefix="$(arg external_axis_prefix)"
+      add_world_link="false"
+      create_base_joint="false" />
+  </xacro:if>
+
+  <!-- ========== PAIRED ROBOTS: Rizon-Dual and AICO2 (two serial numbers) ==========
+       Distinct from Enlight-LL and MICO above: those are one robot with two arms on
+       a single robot_sn, these are two robots driven together, so they need
+       FlexivDualHardwareInterface via rizon_dual.ros2_control.xacro. -->
+  <xacro:if value="${is_paired}">
+    <xacro:include filename="$(find flexiv_description)/urdf/common/rizon_dual.ros2_control.xacro" />
+
+    <!-- AICO2-10-V1 carries two Rizon10; the -4- variants carry a Rizon4 / Rizon4R
+         mirrored pair, which is also the default for a plain Rizon-Dual. -->
+    <xacro:property name="paired_default_left"
+      value="${'Rizon10' if robot_type_str == 'AICO2-10-V1' else 'Rizon4'}" />
+    <xacro:property name="paired_default_right"
+      value="${'Rizon10' if robot_type_str == 'AICO2-10-V1' else 'Rizon4R'}" />
+    <xacro:property name="arm_left"
+      value="${'$(arg arm_type_left)' if '$(arg arm_type_left)' != '' else paired_default_left}" />
+    <xacro:property name="arm_right"
+      value="${'$(arg arm_type_right)' if '$(arg arm_type_right)' != '' else paired_default_right}" />
+
+    <xacro:if value="${robot_type_str in ['AICO2-4-V1', 'AICO2-4-V2']}">
+      <xacro:unless value="${arm_left in ['Rizon4', 'Rizon4s', 'Rizon4R'] and arm_right in ['Rizon4', 'Rizon4s', 'Rizon4R']}">
+        ${xacro.warning(robot_type_str + ' carries Rizon4-class arms. You selected ' + arm_left + ' and ' + arm_right + '.')}
+      </xacro:unless>
+    </xacro:if>
+    <xacro:if value="${robot_type_str == 'AICO2-10-V1'}">
+      <xacro:unless value="${arm_left == 'Rizon10' and arm_right == 'Rizon10'}">
+        ${xacro.warning('AICO2-10-V1 carries two Rizon10 arms. You selected ' + arm_left + ' and ' + arm_right + '.')}
+      </xacro:unless>
+    </xacro:if>
+
+    <xacro:property name="prefix_left" value="left_$(arg robot_sn_left)_" />
+    <xacro:property name="prefix_right" value="right_$(arg robot_sn_right)_" />
+    <xacro:property name="init_left" value="${cfg}/${arm_left}/initial_positions.yaml" />
+    <xacro:property name="init_right" value="${cfg}/${arm_right}/initial_positions.yaml" />
+
+    <link name="world" />
+
+    <!-- AICO2: the external axis carries both arms, so neither creates a base joint. -->
+    <xacro:if value="${is_aico2}">
+      <xacro:include filename="$(find flexiv_description)/urdf/common/aico2_4_v1.xacro" />
+      <xacro:include filename="$(find flexiv_description)/urdf/common/aico2_4_v2.xacro" />
+      <xacro:include filename="$(find flexiv_description)/urdf/common/aico2_10_v1.xacro" />
+
+      <joint name="world_to_platform" type="fixed">
+        <parent link="world" />
+        <child link="$(arg external_axis_prefix)${external_axis_type}_base_link" />
+        <origin xyz="0 0 0" rpy="0 0 0" />
+      </joint>
+
+      <xacro:if value="${robot_type_str == 'AICO2-4-V1'}">
+        <xacro:aico2_4_v1 prefix="$(arg external_axis_prefix)"
+          left_arm_prefix="${prefix_left}" right_arm_prefix="${prefix_right}"
+          mesh_prefix_path="package://flexiv_description/" />
+      </xacro:if>
+      <xacro:if value="${robot_type_str == 'AICO2-4-V2'}">
+        <xacro:aico2_4_v2 prefix="$(arg external_axis_prefix)"
+          left_arm_prefix="${prefix_left}" right_arm_prefix="${prefix_right}"
+          mesh_prefix_path="package://flexiv_description/" />
+      </xacro:if>
+      <xacro:if value="${robot_type_str == 'AICO2-10-V1'}">
+        <xacro:aico2_10_v1 prefix="$(arg external_axis_prefix)"
+          left_arm_prefix="${prefix_left}" right_arm_prefix="${prefix_right}"
+          mesh_prefix_path="package://flexiv_description/" />
+      </xacro:if>
+
+      <xacro:property name="paired_left_xyz" value="0.0 0.0 0.0" />
+      <xacro:property name="paired_left_rpy" value="0.0 0.0 0.0" />
+      <xacro:property name="paired_right_xyz" value="0.0 0.0 0.0" />
+      <xacro:property name="paired_right_rpy" value="0.0 0.0 0.0" />
+      <xacro:property name="paired_base_joint" value="false" />
+    </xacro:if>
+
+    <!-- Rizon-Dual: no external axis, so both arms bolt to the world at the poses
+         given by the mounting file. -->
+    <xacro:if value="${is_rizon_dual}">
+      <xacro:property name="paired_mounting"
+        value="${xacro.load_yaml('$(arg paired_mounting_file)')}" />
+      <xacro:property name="pl" value="${paired_mounting['positions']['left']}" />
+      <xacro:property name="pr" value="${paired_mounting['positions']['right']}" />
+      <xacro:property name="paired_left_xyz" value="${pl['x']} ${pl['y']} ${pl['z']}" />
+      <xacro:property name="paired_left_rpy"
+        value="${radians(pl['rx'])} ${radians(pl['ry'])} ${radians(pl['rz'])}" />
+      <xacro:property name="paired_right_xyz" value="${pr['x']} ${pr['y']} ${pr['z']}" />
+      <xacro:property name="paired_right_rpy"
+        value="${radians(pr['rx'])} ${radians(pr['ry'])} ${radians(pr['rz'])}" />
+      <xacro:property name="paired_base_joint" value="true" />
+    </xacro:if>
+
+    <xacro:enlight_robot
+      robot_type="${arm_left}"
+      robot_sn="$(arg robot_sn_left)"
+      joint_limits_parameters_file="${cfg}/${arm_left}/joint_limits.yaml"
+      kinematics_parameters_file="${cfg}/${arm_left}/default_kinematics.yaml"
+      inertia_parameters_file="${cfg}/${arm_left}/inertia_parameters.yaml"
+      visual_parameters_file="${cfg}/${arm_left}/visual_parameters.yaml"
+      arm_prefix="left"
+      load_gripper="$(arg load_gripper_left)"
+      gripper_name="$(arg gripper_name_left)"
+      load_mounted_ft_sensor="$(arg load_mounted_ft_sensor_left)"
+      ros2_control="false"
+      initial_positions_file="${init_left}"
+      add_world_link="false"
+      create_base_joint="${paired_base_joint}"
+      base_xyz="${paired_left_xyz}"
+      base_rpy="${paired_left_rpy}" />
+
+    <xacro:enlight_robot
+      robot_type="${arm_right}"
+      robot_sn="$(arg robot_sn_right)"
+      joint_limits_parameters_file="${cfg}/${arm_right}/joint_limits.yaml"
+      kinematics_parameters_file="${cfg}/${arm_right}/default_kinematics.yaml"
+      inertia_parameters_file="${cfg}/${arm_right}/inertia_parameters.yaml"
+      visual_parameters_file="${cfg}/${arm_right}/visual_parameters.yaml"
+      arm_prefix="right"
+      load_gripper="$(arg load_gripper_right)"
+      gripper_name="$(arg gripper_name_right)"
+      load_mounted_ft_sensor="$(arg load_mounted_ft_sensor_right)"
+      ros2_control="false"
+      initial_positions_file="${init_right}"
+      add_world_link="false"
+      create_base_joint="${paired_base_joint}"
+      base_xyz="${paired_right_xyz}"
+      base_rpy="${paired_right_rpy}" />
+
+    <!-- One interface spanning both robots plus any external axis joints. -->
+    <xacro:if value="$(arg ros2_control)">
+      <xacro:rizon_dual_ros2_control
+        prefix_left="${prefix_left}"
+        prefix_right="${prefix_right}"
+        robot_sn_left="$(arg robot_sn_left)"
+        robot_sn_right="$(arg robot_sn_right)"
+        rdk_control_mode="$(arg rdk_control_mode)"
+        use_fake_hardware="$(arg use_fake_hardware)"
+        fake_sensor_commands="$(arg fake_sensor_commands)"
+        initial_positions_file_left="${init_left}"
+        initial_positions_file_right="${init_right}"
+        external_axis_type="${external_axis_type}"
+        external_axis_prefix="$(arg external_axis_prefix)" />
+    </xacro:if>
   </xacro:if>
 
 </robot>
