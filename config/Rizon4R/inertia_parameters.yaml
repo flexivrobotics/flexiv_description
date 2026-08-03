@@ -1,0 +1,129 @@
+inertia_parameters:
+  base_link:
+    mass: 3.653
+    origin:
+      x: -0.0002
+      y: 0.0006
+      z: 0.0874
+      roll: 0
+      pitch: 0
+      yaw: 0
+    inertia:
+      ixx: 0.0194
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 0.0196
+      iyz: -0.0001
+      izz: 0.0088
+  link1:
+    mass: 3.673
+    origin:
+      x: -0.0001
+      y: 0.006
+      z: -0.1489
+      roll: 0
+      pitch: 0
+      yaw: 0
+    inertia:
+      ixx: 0.0276
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 0.0272
+      iyz: -0.0017
+      izz: 0.0077
+  link2:
+    mass: 2.734
+    origin:
+      x: 0.0002
+      y: -0.0362
+      z: -0.0979
+      roll: 0
+      pitch: 0
+      yaw: 0
+    inertia:
+      ixx: 0.0234
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 0.0243
+      iyz: -0.0003
+      izz: 0.0036
+  link3:
+    mass: 2.397
+    origin:
+      x: -0.0117
+      y: -0.0028
+      z: -0.1334
+      roll: 0
+      pitch: 0
+      yaw: 0
+    inertia:
+      ixx: 0.0141
+      ixy: 0.0001
+      ixz: 0.0014
+      iyy: 0.0137
+      iyz: 0.0007
+      izz: 0.0038
+  link4:
+    mass: 2.397
+    origin:
+      x: 0.0126
+      y: -0.0312
+      z: -0.1013
+      roll: 0
+      pitch: 0
+      yaw: 0
+    inertia:
+      ixx: 0.0184
+      ixy: 0.0001
+      ixz: -0.0016
+      iyy: 0.0188
+      iyz: -0.0012
+      izz: 0.003
+  link5:
+    mass: 2.363
+    origin:
+      x: 0.0002
+      y: 0.0032
+      z: -0.1328
+      roll: 0
+      pitch: 0
+      yaw: 0
+    inertia:
+      ixx: 0.014
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 0.0134
+      iyz: -0.0007
+      izz: 0.0036
+  link6:
+    mass: 2.178
+    origin:
+      x: -0.0171
+      y: -0.0587
+      z: -0.0692
+      roll: 0
+      pitch: 0
+      yaw: 0
+    inertia:
+      ixx: 0.0085
+      ixy: 0.0004
+      ixz: 0.0011
+      iyy: 0.0088
+      iyz: 0.0019
+      izz: 0.0039
+  link7:
+    mass: 0.794
+    origin:
+      x: 0.0001
+      y: -0.0003
+      z: 0.0252
+      roll: 0
+      pitch: 0
+      yaw: 0
+    inertia:
+      ixx: 0.0009
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 0.001
+      iyz: 0.0
+      izz: 0.0009
