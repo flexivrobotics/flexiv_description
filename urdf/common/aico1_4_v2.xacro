@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:macro name="aico1_4_v2" params="prefix arm_prefix mesh_prefix_path">
+
+    <joint name="${prefix}aico1_4_v2_base_to_torso_mount" type="fixed">
+      <origin xyz="0.004 0.1255 0.695" rpy="0.0 0.0 0.0" />
+      <parent link="${prefix}aico1_4_v2_base_link" />
+      <child link="${prefix}aico1_4_v2_torso_mount"/>
+      <axis xyz="0 0 0" />
+    </joint>
+
+    <joint name="${prefix}aico1_4_v2_joint1" type="revolute">
+      <origin xyz="-0.122 0.1066 0.164" rpy="0 0 0" />
+      <parent link="${prefix}aico1_4_v2_torso_mount" />
+      <child link="${prefix}aico1_4_v2_link1" />
+      <axis xyz="0 1 0" />
+      <limit lower="-0.523598775598" upper="1.57079632679" effort="1000"
+        velocity="1" />
+    </joint>
+
+    <joint name="${prefix}aico1_4_v2_joint2" type="revolute">
+      <origin xyz="-0.005 -0.0991 0.47875" rpy="0 0 0" />
+      <parent link="${prefix}aico1_4_v2_link1" />
+      <child link="${prefix}aico1_4_v2_neck_link" />
+      <axis xyz="0 0 1" />
+      <limit lower="-1.57079632679" upper="1.57079632679" effort="50" velocity="1" />
+    </joint>
+
+    <joint name="${prefix}aico1_4_v2_joint_head" type="revolute">
+      <origin xyz="-0.025 0 0.088" rpy="0 0 0" />
+      <parent link="${prefix}aico1_4_v2_neck_link" />
+      <child link="${prefix}aico1_4_v2_head_link" />
+      <axis xyz="0 1 0" />
+      <limit lower="0" upper="0.436332312999" effort="80" velocity="1" />
+    </joint>
+
+    <joint name="${prefix}aico1_4_v2_arm_adapter" type="fixed">
+      <parent link="${prefix}aico1_4_v2_link1" />
+      <child link="${arm_prefix}base_link" />
+      <origin xyz="0.0 0.016 0.320" rpy="1.57079632679 0.0 0.0" />
+    </joint>
+
+    <link name="${prefix}aico1_4_v2_base_link">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <mass value="60" />
+        <inertia ixx="0.029184" ixy="2.8373E-05" ixz="-2.82E-05" iyy="0.089571" iyz="4.6654E-05" izz="0.10508" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="${mesh_prefix_path}meshes/AICO1-4-V2/visual/base_link.obj" />
+        </geometry>
+        <material name="">
+          <color rgba="0.75294 0.75294 0.75294 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="${mesh_prefix_path}meshes/AICO1-4-V2/collision/base_link.stl" />
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="${prefix}aico1_4_v2_torso_mount">
+      <inertial>
+        <origin xyz="-0.037217 -0.002506 0.044824" rpy="0 0 0" />
+        <mass value="3.9443" />
+        <inertia ixx="0.029184" ixy="2.8373E-05" ixz="-2.82E-05" iyy="0.089571" iyz="4.6654E-05" izz="0.10508" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="${mesh_prefix_path}meshes/AICO1-4-V2/visual/torso_mount.obj" />
+        </geometry>
+        <material name="">
+          <color rgba="0.75294 0.75294 0.75294 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="${mesh_prefix_path}meshes/AICO1-4-V2/collision/torso_mount.stl" />
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="${prefix}aico1_4_v2_link1">
+      <inertial>
+        <origin xyz="-0.0014123 -0.092235 0.10641" rpy="0 0 0" />
+        <mass value="2.7625" />
+        <inertia ixx="0.039793" ixy="-8.0219E-05" ixz="-0.00090994" iyy="0.039722" iyz="0.0017219" izz="0.026481" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="${mesh_prefix_path}meshes/AICO1-4-V2/visual/link1.obj" />
+        </geometry>
+        <material name="">
+          <color rgba="0.75294 0.75294 0.75294 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="${mesh_prefix_path}meshes/AICO1-4-V2/collision/link1.stl" />
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="${prefix}aico1_4_v2_neck_link">
+      <inertial>
+        <origin xyz="-0.014922 7.085E-07 0.054696" rpy="0 0 0" />
+        <mass value="0.078627" />
+        <inertia ixx="0.00013359" ixy="-1.6505E-09" ixz="1.4077E-05" iyy="7.7245E-05" iyz="9.9064E-10" izz="8.0068E-05" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="${mesh_prefix_path}meshes/AICO1-4-V2/visual/neck_link.obj" />
+        </geometry>
+        <material name="">
+          <color rgba="0.75294 0.75294 0.75294 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="${mesh_prefix_path}meshes/AICO1-4-V2/collision/neck_link.stl" />
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="${prefix}aico1_4_v2_head_link">
+      <inertial>
+        <origin xyz="0.017357 0.00012518 0.059446" rpy="0 0 0" />
+        <mass value="6.9698" />
+        <inertia ixx="0.061947" ixy="-1.0452E-06" ixz="0.00041384" iyy="0.029712" iyz="2.3512E-06" izz="0.057242" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="${mesh_prefix_path}meshes/AICO1-4-V2/visual/head_link.obj" />
+        </geometry>
+        <material name="">
+          <color rgba="0.31765 1 0.92549 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="${mesh_prefix_path}meshes/AICO1-4-V2/collision/head_link.stl" />
+        </geometry>
+      </collision>
+    </link>
+
+  </xacro:macro>
+
+</robot>
