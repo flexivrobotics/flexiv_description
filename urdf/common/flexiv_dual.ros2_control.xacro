@@ -21,6 +21,12 @@
     initial_positions_file_right
     ">
 
+    <xacro:include filename="$(find flexiv_description)/urdf/common/flexiv_common.xacro" />
+    <!-- Same omit-separator rule as the arm prefixes, so these names match the ones
+         the model files generate even when robot_sn is empty. -->
+    <xacro:compute_arm_prefix robot_sn="${robot_sn}" />
+    <xacro:property name="sn_prefix" value="${computed_arm_prefix}" lazy_eval="false" />
+
     <xacro:property name="initial_positions_left"
       value="${xacro.load_yaml(initial_positions_file_left)['initial_positions']}" />
     <xacro:property name="initial_positions_right"
@@ -64,7 +70,8 @@
       <xacro:dual_arm_joints arm_prefix="${prefix_right}" initial_positions="${initial_positions_right}" />
 
       <!-- Single GPIO block for the whole robot. The unified hardware interface names GPIO
-           interfaces "${robot_sn}_gpio" regardless of arm count. -->
+           interfaces "<robot_sn>_gpio" (or "gpio" when robot_sn is empty) regardless of
+           arm count. -->
       <xacro:macro name="loop_gpio" params="idx">
         <command_interface name="digital_output_${idx}" />
         <state_interface name="digital_input_${idx}" />
@@ -73,7 +80,7 @@
         </xacro:if>
       </xacro:macro>
 
-      <gpio name="${robot_sn}_gpio">
+      <gpio name="${sn_prefix}gpio">
         <xacro:loop_gpio idx="0" />
       </gpio>
 
