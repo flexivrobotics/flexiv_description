@@ -22,6 +22,9 @@
     initial_positions_file:='$(find flexiv_description)/config/Enlight-L/initial_positions.yaml'
     base_xyz:='0.0 0.0 0.0'
     base_rpy:='0.0 0.0 0.0'
+    num_gpio_ports:=20
+    external_axis_type:=''
+    external_axis_prefix:=''
     ">
 
     <xacro:property name="prefix"
@@ -52,6 +55,9 @@
         use_fake_hardware="${use_fake_hardware}"
         fake_sensor_commands="${fake_sensor_commands}"
         initial_positions_file="${initial_positions_file}"
+        num_gpio_ports="${num_gpio_ports}"
+        external_axis_type="${external_axis_type}"
+        external_axis_prefix="${external_axis_prefix}"
       />
     </xacro:if>
 
