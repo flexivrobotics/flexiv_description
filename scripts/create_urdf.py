@@ -2,6 +2,19 @@
 import argparse
 import os
 import xacro
+import yaml
+
+ROBOT_TYPES_FILE = os.path.join("config", "robot_types.yaml")
+
+
+def load_robot_types(package_path):
+    """Load the robot types grouped by hardware topology.
+
+    config/robot_types.yaml is the single source of truth, shared with
+    launch/view_flexiv.launch.py.
+    """
+    with open(os.path.join(package_path, ROBOT_TYPES_FILE)) as f:
+        return yaml.safe_load(f)
 
 
 def convert_xacro_to_urdf(xacro_file, mappings):
@@ -105,8 +118,11 @@ if __name__ == "__main__":
                 f"Warning: You are running this script from {cwd}. It is recommended to run it from the {package_name} root folder."
             )
 
-    # Single-arm (Enlight-L) and dual-arm (Enlight-LL + MICO family) robot types.
-    ROBOT_TYPES = ["Enlight-L", "Enlight-LL", "MICO-Core", "MICO-Plus", "MICO-Ultra"]
+    ROBOT_TYPE_GROUPS = load_robot_types(os.getcwd())
+    PAIRED_TYPES = ROBOT_TYPE_GROUPS["paired"]
+    ROBOT_TYPES = [t for group in ROBOT_TYPE_GROUPS.values() for t in group]
+    # Only the AICO models sit on an external axis; Rizon-Dual is paired without one.
+    EXTERNAL_AXIS_TYPES = [t for t in ROBOT_TYPES if t.startswith("AICO")]
 
     parser = argparse.ArgumentParser(
         description="Create URDF files from xacro for Flexiv robots."
@@ -133,6 +149,65 @@ if __name__ == "__main__":
         help="Absolute path to replace package://flexiv_description with.",
     )
 
+    # External axis (AICO) options.
+    parser.add_argument(
+        "--external_axis_prefix", type=str, default="", help="External axis prefix."
+    )
+    parser.add_argument(
+        "--arm_type",
+        type=str,
+        default="",
+        help="Arm carried by an AICO1 external axis. Empty picks the axis default.",
+    )
+
+    # Paired-robot options, used by the types in the 'paired' group.
+    parser.add_argument(
+        "--robot_sn_left", type=str, default="", help="Left robot serial number."
+    )
+    parser.add_argument(
+        "--robot_sn_right", type=str, default="", help="Right robot serial number."
+    )
+    parser.add_argument(
+        "--arm_type_left",
+        type=str,
+        default="",
+        help="Left arm type. Empty picks the default for this robot type.",
+    )
+    parser.add_argument(
+        "--arm_type_right",
+        type=str,
+        default="",
+        help="Right arm type. Empty picks the default for this robot type.",
+    )
+    parser.add_argument(
+        "--load_gripper_left", action="store_true", help="Load left gripper."
+    )
+    parser.add_argument(
+        "--load_gripper_right", action="store_true", help="Load right gripper."
+    )
+    parser.add_argument(
+        "--gripper_name_left",
+        type=str,
+        default="Flexiv-GN01",
+        help="Left gripper name.",
+    )
+    parser.add_argument(
+        "--gripper_name_right",
+        type=str,
+        default="Flexiv-GN01",
+        help="Right gripper name.",
+    )
+    parser.add_argument(
+        "--load_mounted_ft_sensor_left",
+        action="store_true",
+        help="Load left mounted FT sensor.",
+    )
+    parser.add_argument(
+        "--load_mounted_ft_sensor_right",
+        action="store_true",
+        help="Load right mounted FT sensor.",
+    )
+
     args = parser.parse_args()
 
     robot_type = args.robot_type
@@ -141,26 +216,65 @@ if __name__ == "__main__":
         print(f"Invalid robot_type: {robot_type}. Available: {ROBOT_TYPES}")
         exit(1)
 
+    is_paired = robot_type in PAIRED_TYPES
+
+    if is_paired and not (args.robot_sn_left and args.robot_sn_right):
+        print(
+            f"{robot_type} drives two robots, so both --robot_sn_left and "
+            "--robot_sn_right are required."
+        )
+        exit(1)
+
     xacro_file = "urdf/flexiv.urdf.xacro"
 
-    mappings = {
-        "robot_type": robot_type,
-        "arm_prefix": args.arm_prefix,
-        "robot_sn": args.robot_sn,
-        "load_gripper": str(args.load_gripper).lower(),
-        "gripper_name": args.gripper_name,
-        "load_mounted_ft_sensor": str(args.load_mounted_ft_sensor).lower(),
-    }
+    mappings = {"robot_type": robot_type}
 
-    if args.robot_sn:
+    if is_paired:
+        mappings.update(
+            {
+                "robot_sn_left": args.robot_sn_left,
+                "robot_sn_right": args.robot_sn_right,
+                "arm_type_left": args.arm_type_left,
+                "arm_type_right": args.arm_type_right,
+                "load_gripper_left": str(args.load_gripper_left).lower(),
+                "load_gripper_right": str(args.load_gripper_right).lower(),
+                "gripper_name_left": args.gripper_name_left,
+                "gripper_name_right": args.gripper_name_right,
+                "load_mounted_ft_sensor_left": str(
+                    args.load_mounted_ft_sensor_left
+                ).lower(),
+                "load_mounted_ft_sensor_right": str(
+                    args.load_mounted_ft_sensor_right
+                ).lower(),
+            }
+        )
+    else:
+        mappings.update(
+            {
+                "arm_prefix": args.arm_prefix,
+                "robot_sn": args.robot_sn,
+                "load_gripper": str(args.load_gripper).lower(),
+                "gripper_name": args.gripper_name,
+                "load_mounted_ft_sensor": str(args.load_mounted_ft_sensor).lower(),
+                "arm_type": args.arm_type,
+            }
+        )
+
+    if robot_type in EXTERNAL_AXIS_TYPES:
+        mappings["external_axis_prefix"] = args.external_axis_prefix
+
+    if is_paired:
+        file_name = f"{args.robot_sn_left}_{args.robot_sn_right}"
+    elif args.robot_sn:
         file_name = args.robot_sn
     else:
         file_name = robot_type
 
-    if args.arm_prefix:
-        file_name = f"{args.arm_prefix}_{file_name}"
-    if args.load_gripper:
-        file_name += f"_{args.gripper_name}"
+    if not is_paired:
+        if args.arm_prefix:
+            file_name = f"{args.arm_prefix}_{file_name}"
+        if args.load_gripper:
+            file_name += f"_{args.gripper_name}"
 
     urdf_generation(
         os.getcwd(),
