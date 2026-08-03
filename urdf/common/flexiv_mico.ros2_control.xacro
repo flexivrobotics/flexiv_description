@@ -3,9 +3,9 @@
 
   <!--
     MICO-Plus / MICO-Ultra ros2_control: mirrors flexiv_dual_ros2_control but additionally emits
-    the 2 torso revolute joints (${robot_sn}_torso_joint1/2). The torso joint prefix
-    intentionally differs from left_/right_ so the hardware interface classifies them as
-    external-axis joints.
+    the 2 torso revolute joints, named "<robot_sn>_torso_joint1/2" (or "torso_joint1/2"
+    when robot_sn is empty). The torso joint prefix intentionally differs from
+    left_/right_ so the hardware interface classifies them as external-axis joints.
   -->
   <xacro:macro name="flexiv_mico_ros2_control"
     params="
@@ -19,6 +19,12 @@
     initial_positions_file_right
     torso_initial_positions_file
     ">
+
+    <xacro:include filename="$(find flexiv_description)/urdf/common/flexiv_common.xacro" />
+    <!-- Same omit-separator rule as the arm prefixes, so these names match the ones
+         the model files generate even when robot_sn is empty. -->
+    <xacro:compute_arm_prefix robot_sn="${robot_sn}" />
+    <xacro:property name="sn_prefix" value="${computed_arm_prefix}" lazy_eval="false" />
 
     <xacro:property name="initial_positions_left"
       value="${xacro.load_yaml(initial_positions_file_left)['initial_positions']}" />
@@ -65,7 +71,7 @@
       <xacro:mico_arm_joints arm_prefix="${prefix_right}" initial_positions="${initial_positions_right}" />
 
       <!-- Torso joints: classified as external-axis joints by the hardware interface. -->
-      <joint name="${robot_sn}_torso_joint1">
+      <joint name="${sn_prefix}torso_joint1">
         <command_interface name="position" />
         <command_interface name="velocity" />
         <command_interface name="effort" />
@@ -76,7 +82,7 @@
         <state_interface name="effort" />
       </joint>
 
-      <joint name="${robot_sn}_torso_joint2">
+      <joint name="${sn_prefix}torso_joint2">
         <command_interface name="position" />
         <command_interface name="velocity" />
         <command_interface name="effort" />
@@ -96,7 +102,7 @@
         </xacro:if>
       </xacro:macro>
 
-      <gpio name="${robot_sn}_gpio">
+      <gpio name="${sn_prefix}gpio">
         <xacro:mico_loop_gpio idx="0" />
       </gpio>
 

@@ -3,7 +3,8 @@
 
   <!--
     MICO-Core: fixed torso (no actuated torso joints) with two Enlight-L arms.
-    Arm joints: left_${robot_sn}_joint1..7, right_${robot_sn}_joint1..7.
+    Arm joints: left_<robot_sn>_joint1..7, right_<robot_sn>_joint1..7.
+    An empty robot_sn drops the separating underscore, e.g. 'torso_joint1', 'left_joint1'.
     ros2_control: reuses flexiv_dual_ros2_control (no torso joints to add).
   -->
 
@@ -31,10 +32,13 @@
     ">
 
     <xacro:property name="arm_cfg" value="$(find flexiv_description)/config/Enlight-L" />
-    <xacro:property name="torso_prefix" value="${robot_sn}_torso_" />
-
-    <!-- Must match the prefixes enlight_robot derives, including when robot_sn is
-         empty. lazy_eval is off so each capture resolves before the next call. -->
+    <!-- All prefixes follow the same rule as the arms: the separating underscore
+         only appears when the part it separates is non-empty, so an empty robot_sn
+         gives 'torso_base_link' rather than '_torso_base_link'. lazy_eval is off so
+         each capture resolves before the next call. -->
+    <xacro:compute_arm_prefix robot_sn="${robot_sn}" />
+    <xacro:property name="sn_prefix" value="${computed_arm_prefix}" lazy_eval="false" />
+    <xacro:property name="torso_prefix" value="${sn_prefix}torso_" lazy_eval="false" />
     <xacro:compute_arm_prefix arm_prefix="left" robot_sn="${robot_sn}" />
     <xacro:property name="prefix_left" value="${computed_arm_prefix}" lazy_eval="false" />
     <xacro:compute_arm_prefix arm_prefix="right" robot_sn="${robot_sn}" />
