@@ -33,6 +33,13 @@
     <xacro:property name="arm_cfg" value="$(find flexiv_description)/config/Enlight-L" />
     <xacro:property name="torso_prefix" value="${robot_sn}_torso_" />
 
+    <!-- Must match the prefixes enlight_robot derives, including when robot_sn is
+         empty. lazy_eval is off so each capture resolves before the next call. -->
+    <xacro:compute_arm_prefix arm_prefix="left" robot_sn="${robot_sn}" />
+    <xacro:property name="prefix_left" value="${computed_arm_prefix}" lazy_eval="false" />
+    <xacro:compute_arm_prefix arm_prefix="right" robot_sn="${robot_sn}" />
+    <xacro:property name="prefix_right" value="${computed_arm_prefix}" lazy_eval="false" />
+
     <xacro:read_model_data
       joint_limits_parameters_file="${torso_joint_limits_file}"
       kinematics_parameters_file="${torso_kinematics_file}"
@@ -164,21 +171,21 @@
     <!-- Attach arm base_links to torso flanges -->
     <joint name="${torso_prefix}left_flange_to_left_arm" type="fixed">
       <parent link="${torso_prefix}left_flange" />
-      <child link="left_${robot_sn}_base_link" />
+      <child link="${prefix_left}base_link" />
       <origin xyz="0 0 0" rpy="0 0 0" />
     </joint>
 
     <joint name="${torso_prefix}right_flange_to_right_arm" type="fixed">
       <parent link="${torso_prefix}right_flange" />
-      <child link="right_${robot_sn}_base_link" />
+      <child link="${prefix_right}base_link" />
       <origin xyz="0 0 0" rpy="0 0 0" />
     </joint>
 
     <!-- ros2_control: MICO-Plus uses flexiv_mico_ros2_control (includes torso joints) -->
     <xacro:if value="${ros2_control}">
       <xacro:flexiv_mico_ros2_control
-        prefix_left="left_${robot_sn}_"
-        prefix_right="right_${robot_sn}_"
+        prefix_left="${prefix_left}"
+        prefix_right="${prefix_right}"
         robot_sn="${robot_sn}"
         rdk_control_mode="${rdk_control_mode}"
         use_fake_hardware="${use_fake_hardware}"

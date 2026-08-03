@@ -25,6 +25,7 @@
   </material>
 
   <!-- import model macro -->
+  <xacro:include filename="$(find flexiv_description)/urdf/common/flexiv_common.xacro" />
   <xacro:include filename="$(find flexiv_description)/urdf/common/enlight_robot.xacro" />
 
   <!-- parameters -->
@@ -184,11 +185,18 @@
       base_rpy="${radians(right_pose['rx'])} ${radians(right_pose['ry'])} ${radians(right_pose['rz'])}">
     </xacro:enlight_robot>
 
-    <!-- Single unified ros2_control for both arms (one robot_sn, prefix_left/prefix_right). -->
+    <!-- Single unified ros2_control for both arms (one robot_sn, prefix_left/prefix_right).
+         Prefixes come from compute_arm_prefix so they match the arms' own links even
+         when robot_sn is empty. -->
+    <xacro:compute_arm_prefix arm_prefix="left" robot_sn="$(arg robot_sn)" />
+    <xacro:property name="ll_prefix_left" value="${computed_arm_prefix}" lazy_eval="false" />
+    <xacro:compute_arm_prefix arm_prefix="right" robot_sn="$(arg robot_sn)" />
+    <xacro:property name="ll_prefix_right" value="${computed_arm_prefix}" lazy_eval="false" />
+
     <xacro:if value="$(arg ros2_control)">
       <xacro:flexiv_dual_ros2_control
-        prefix_left="left_$(arg robot_sn)_"
-        prefix_right="right_$(arg robot_sn)_"
+        prefix_left="${ll_prefix_left}"
+        prefix_right="${ll_prefix_right}"
         robot_sn="$(arg robot_sn)"
         rdk_control_mode="$(arg rdk_control_mode)"
         use_fake_hardware="$(arg use_fake_hardware)"
@@ -269,9 +277,9 @@
       <origin xyz="0 0 0" rpy="0 0 0" />
     </joint>
 
-    <!-- enlight_robot derives the arm prefix as 'arm_prefix_robot_sn_'. -->
-    <xacro:property name="aico1_arm_prefix"
-      value="${('$(arg arm_prefix)' + '_' + '$(arg robot_sn)' + '_') if '$(arg arm_prefix)' != '' and '$(arg robot_sn)' != '' else ('$(arg arm_prefix)' + '$(arg robot_sn)' + '_') if ('$(arg arm_prefix)' + '$(arg robot_sn)') != '' else ''}" />
+    <!-- Must match the prefix enlight_robot derives for this arm. -->
+    <xacro:compute_arm_prefix arm_prefix="$(arg arm_prefix)" robot_sn="$(arg robot_sn)" />
+    <xacro:property name="aico1_arm_prefix" value="${computed_arm_prefix}" lazy_eval="false" />
 
     <xacro:if value="${robot_type_str == 'AICO1-4-V1'}">
       <xacro:aico1_4_v1 prefix="$(arg external_axis_prefix)"
@@ -336,8 +344,13 @@
       </xacro:unless>
     </xacro:if>
 
-    <xacro:property name="prefix_left" value="left_$(arg robot_sn_left)_" />
-    <xacro:property name="prefix_right" value="right_$(arg robot_sn_right)_" />
+    <!-- Must match the prefixes enlight_robot derives, including when either serial
+         number is empty. lazy_eval is off so each capture resolves before the next
+         call. -->
+    <xacro:compute_arm_prefix arm_prefix="left" robot_sn="$(arg robot_sn_left)" />
+    <xacro:property name="prefix_left" value="${computed_arm_prefix}" lazy_eval="false" />
+    <xacro:compute_arm_prefix arm_prefix="right" robot_sn="$(arg robot_sn_right)" />
+    <xacro:property name="prefix_right" value="${computed_arm_prefix}" lazy_eval="false" />
     <xacro:property name="init_left" value="${cfg}/${arm_left}/initial_positions.yaml" />
     <xacro:property name="init_right" value="${cfg}/${arm_right}/initial_positions.yaml" />
 

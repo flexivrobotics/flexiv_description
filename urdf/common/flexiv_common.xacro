@@ -2,6 +2,21 @@
 <robot xmlns:xacro="http://wiki.ros.org/xacro">
 
   <!--
+    Compute an arm's joint/link name prefix and expose it to the caller as
+    'computed_arm_prefix'.
+
+    This is the single source of truth for the prefix.
+
+    arm_prefix: 'left', 'right' or '' (user-supplied prefixes also allowed)
+    robot_sn:   robot serial number, may be empty
+  -->
+  <xacro:macro name="compute_arm_prefix" params="arm_prefix:='' robot_sn:=''">
+    <xacro:property name="computed_arm_prefix"
+      value="${(arm_prefix + '_' + robot_sn + '_') if arm_prefix != '' and robot_sn != '' else (arm_prefix + robot_sn + '_') if (arm_prefix + robot_sn) != '' else ''}"
+      scope="parent" />
+  </xacro:macro>
+
+  <!--
     Extract visual parameters from the config file
     name: name of the link
   -->

@@ -27,8 +27,9 @@
     external_axis_prefix:=''
     ">
 
-    <xacro:property name="prefix"
-      value="${(arm_prefix + '_' + robot_sn + '_') if arm_prefix != '' and robot_sn != '' else (arm_prefix + robot_sn + '_') if (arm_prefix + robot_sn) != '' else ''}" />
+    <xacro:include filename="$(find flexiv_description)/urdf/common/flexiv_common.xacro" />
+    <xacro:compute_arm_prefix arm_prefix="${arm_prefix}" robot_sn="${robot_sn}" />
+    <xacro:property name="prefix" value="${computed_arm_prefix}" />
 
     <xacro:if value="${load_gripper and gripper_name=='Flexiv-GN01'}">
       <xacro:include filename="$(find flexiv_description)/urdf/common/grav_macro.xacro" />
