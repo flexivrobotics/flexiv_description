@@ -27,8 +27,6 @@
     <xacro:property name="prefix"
       value="${(arm_prefix + '_' + robot_sn + '_') if arm_prefix != '' and robot_sn != '' else (arm_prefix + robot_sn + '_') if (arm_prefix + robot_sn) != '' else ''}" />
 
-    <xacro:property name="load_mounted_ft_sensor" value="false" />
-
     <xacro:if value="${load_gripper and gripper_name=='Flexiv-GN01'}">
       <xacro:include filename="$(find flexiv_description)/urdf/common/grav_macro.xacro" />
       <xacro:flexiv_GN01 prefix="${prefix}" mesh_prefix_path="package://flexiv_description/" />
