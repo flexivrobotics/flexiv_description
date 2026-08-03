@@ -12,12 +12,15 @@ The same `robot_type` values are used by both URDF creation and visualization.
 [config/robot_types.yaml](config/robot_types.yaml) is the single source of truth
 and is read by both `scripts/create_urdf.py` and `launch/view_flexiv.launch.py`.
 
-Types are grouped by hardware topology, because the topology decides which
-arguments apply.
-
 **Single arm on a mount** — one `robot_sn`, pose from `config/single_robot_mounting.yaml`:
 
-`Enlight-L`, `Rizon4`, `Rizon4s`, `Rizon4M`, `Rizon4R`, `Rizon10`, `Rizon10s`
+- `Enlight-L`
+- `Rizon4`
+- `Rizon4s`
+- `Rizon4M`
+- `Rizon4R`
+- `Rizon10`
+- `Rizon10s`
 
 `Rizon4R` is mirrored `Rizon4` kinematics and is the default right arm of a pair.
 
