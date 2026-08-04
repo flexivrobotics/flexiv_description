@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://wiki.ros.org/xacro">
 
-  <xacro:macro name="enlight_robot"
+  <xacro:macro name="flexiv_robot"
     params="
     robot_type
     robot_sn
@@ -13,18 +13,10 @@
     load_gripper:=false
     gripper_name:='Flexiv-GN01'
     load_mounted_ft_sensor:=false
-    ros2_control:=false
-    rdk_control_mode:='joint_position'
-    use_fake_hardware:=false
-    fake_sensor_commands:=false
     add_world_link:=true
     create_base_joint:=true
-    initial_positions_file:='$(find flexiv_description)/config/Enlight-L/initial_positions.yaml'
     base_xyz:='0.0 0.0 0.0'
     base_rpy:='0.0 0.0 0.0'
-    num_gpio_ports:=20
-    external_axis_type:=''
-    external_axis_prefix:=''
     ">
 
     <xacro:include filename="$(find flexiv_description)/urdf/common/flexiv_common.xacro" />
@@ -36,8 +28,8 @@
       <xacro:flexiv_GN01 prefix="${prefix}" mesh_prefix_path="package://flexiv_description/" />
     </xacro:if>
 
-    <xacro:include filename="$(find flexiv_description)/urdf/common/enlight_arm.xacro" />
-    <xacro:enlight_arm prefix="${prefix}"
+    <xacro:include filename="$(find flexiv_description)/urdf/common/flexiv_arm.xacro" />
+    <xacro:flexiv_arm prefix="${prefix}"
       load_mounted_ft_sensor="${load_mounted_ft_sensor}"
       joint_limits_parameters_file="${joint_limits_parameters_file}"
       kinematics_parameters_file="${kinematics_parameters_file}"
@@ -48,19 +40,6 @@
       base_xyz="${base_xyz}"
       base_rpy="${base_rpy}"
     />
-
-    <xacro:if value="${ros2_control}">
-      <xacro:include filename="$(find flexiv_description)/urdf/common/flexiv.ros2_control.xacro" />
-      <xacro:flexiv_ros2_control prefix="${prefix}" robot_sn="${robot_sn}"
-        rdk_control_mode="${rdk_control_mode}"
-        use_fake_hardware="${use_fake_hardware}"
-        fake_sensor_commands="${fake_sensor_commands}"
-        initial_positions_file="${initial_positions_file}"
-        num_gpio_ports="${num_gpio_ports}"
-        external_axis_type="${external_axis_type}"
-        external_axis_prefix="${external_axis_prefix}"
-      />
-    </xacro:if>
 
   </xacro:macro>
 

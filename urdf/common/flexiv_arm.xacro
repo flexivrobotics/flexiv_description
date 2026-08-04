@@ -3,7 +3,7 @@
 
   <xacro:include filename="$(find flexiv_description)/urdf/common/flexiv_common.xacro" />
 
-  <xacro:macro name="enlight_arm"
+  <xacro:macro name="flexiv_arm"
     params="
     prefix
     joint_limits_parameters_file
@@ -40,7 +40,7 @@
       <parent link="${prefix}base_link" />
       <child link="${prefix}link1" />
       <xacro:get_kinematics name="joint1" />
-      <axis xyz="0 0 1" />
+      <xacro:get_joint_axis name="joint1" />
       <xacro:get_joint_limits name="joint1" />
     </joint>
 
@@ -48,7 +48,7 @@
       <parent link="${prefix}link1" />
       <child link="${prefix}link2" />
       <xacro:get_kinematics name="joint2" />
-      <axis xyz="0 0 1" />
+      <xacro:get_joint_axis name="joint2" />
       <xacro:get_joint_limits name="joint2" />
     </joint>
 
@@ -56,7 +56,7 @@
       <parent link="${prefix}link2" />
       <child link="${prefix}link3" />
       <xacro:get_kinematics name="joint3" />
-      <axis xyz="0 0 1" />
+      <xacro:get_joint_axis name="joint3" />
       <xacro:get_joint_limits name="joint3" />
     </joint>
 
@@ -64,7 +64,7 @@
       <parent link="${prefix}link3" />
       <child link="${prefix}link4" />
       <xacro:get_kinematics name="joint4" />
-      <axis xyz="0 0 1" />
+      <xacro:get_joint_axis name="joint4" />
       <xacro:get_joint_limits name="joint4" />
     </joint>
 
@@ -72,7 +72,7 @@
       <parent link="${prefix}link4" />
       <child link="${prefix}link5" />
       <xacro:get_kinematics name="joint5" />
-      <axis xyz="0 0 1" />
+      <xacro:get_joint_axis name="joint5" />
       <xacro:get_joint_limits name="joint5" />
     </joint>
 
@@ -80,7 +80,7 @@
       <parent link="${prefix}link5" />
       <child link="${prefix}link6" />
       <xacro:get_kinematics name="joint6" />
-      <axis xyz="0 0 1" />
+      <xacro:get_joint_axis name="joint6" />
       <xacro:get_joint_limits name="joint6" />
     </joint>
 
@@ -88,7 +88,7 @@
       <parent link="${prefix}link6" />
       <child link="${prefix}link7" />
       <xacro:get_kinematics name="joint7" />
-      <axis xyz="0 0 1" />
+      <xacro:get_joint_axis name="joint7" />
       <xacro:get_joint_limits name="joint7" />
     </joint>
 

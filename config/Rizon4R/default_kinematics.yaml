@@ -13,6 +13,7 @@ kinematics:
     roll: 0.0
     pitch: 0.0
     yaw: 3.141592653589793
+    axis: "0 1 0"
   joint3:
     x: 0.0
     y: -0.035
@@ -27,6 +28,7 @@ kinematics:
     roll: 0.0
     pitch: 0.0
     yaw: 0.0
+    axis: "0 1 0"
   joint5:
     x: 0.02
     y: -0.025
@@ -41,6 +43,7 @@ kinematics:
     roll: 0.0
     pitch: 0.0
     yaw: 3.141592653589793
+    axis: "0 1 0"
   joint7:
     x: 0.015
     y: -0.073

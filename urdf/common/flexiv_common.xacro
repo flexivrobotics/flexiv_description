@@ -102,6 +102,15 @@
   </xacro:macro>
 
   <!--
+    Extract the joint rotation axis from the config file.
+    name: name of the joint
+  -->
+  <xacro:macro name="get_joint_axis" params="name">
+    <xacro:property name="joint_kinematics" value="${sec_kinematics[name]}" lazy_eval="false" />
+    <axis xyz="${joint_kinematics['axis'] if 'axis' in joint_kinematics else '0 0 1'}" />
+  </xacro:macro>
+
+  <!--
     Extract inertia parameters from the config file
     name: name of the link
   -->
