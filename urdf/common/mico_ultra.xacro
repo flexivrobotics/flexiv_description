@@ -10,8 +10,7 @@
   -->
 
   <xacro:include filename="$(find flexiv_description)/urdf/common/flexiv_common.xacro" />
-  <xacro:include filename="$(find flexiv_description)/urdf/common/enlight_robot.xacro" />
-  <xacro:include filename="$(find flexiv_description)/urdf/common/flexiv_mico.ros2_control.xacro" />
+  <xacro:include filename="$(find flexiv_description)/urdf/common/flexiv_robot.xacro" />
 
   <xacro:macro name="mico_ultra"
     params="
@@ -19,13 +18,6 @@
     load_gripper:=false
     gripper_name:='Flexiv-GN01'
     load_mounted_ft_sensor:=false
-    ros2_control:=false
-    rdk_control_mode:='joint_position'
-    use_fake_hardware:=false
-    fake_sensor_commands:=false
-    arm_init_positions_file
-    right_arm_init_positions_file:='$(find flexiv_description)/config/Enlight-L/initial_positions_mirrored.yaml'
-    torso_init_positions_file:=''
     torso_joint_limits_file:='$(find flexiv_description)/config/MICO-Ultra/joint_limits.yaml'
     torso_kinematics_file:='$(find flexiv_description)/config/MICO-Ultra/default_kinematics.yaml'
     torso_inertia_file:='$(find flexiv_description)/config/MICO-Ultra/inertia_parameters.yaml'
@@ -133,7 +125,7 @@
     </joint>
 
     <!-- Left arm (Enlight-L): no world link, no base joint -->
-    <xacro:enlight_robot
+    <xacro:flexiv_robot
       robot_type="Enlight-L"
       robot_sn="${robot_sn}"
       joint_limits_parameters_file="${arm_cfg}/joint_limits.yaml"
@@ -144,16 +136,12 @@
       load_gripper="${load_gripper}"
       gripper_name="${gripper_name}"
       load_mounted_ft_sensor="${load_mounted_ft_sensor}"
-      ros2_control="false"
-      use_fake_hardware="${use_fake_hardware}"
-      fake_sensor_commands="${fake_sensor_commands}"
-      initial_positions_file="${arm_init_positions_file}"
       add_world_link="false"
       create_base_joint="false"
     />
 
     <!-- Right arm (Enlight-L): no world link, no base joint -->
-    <xacro:enlight_robot
+    <xacro:flexiv_robot
       robot_type="Enlight-L"
       robot_sn="${robot_sn}"
       joint_limits_parameters_file="${arm_cfg}/joint_limits.yaml"
@@ -164,10 +152,6 @@
       load_gripper="${load_gripper}"
       gripper_name="${gripper_name}"
       load_mounted_ft_sensor="${load_mounted_ft_sensor}"
-      ros2_control="false"
-      use_fake_hardware="${use_fake_hardware}"
-      fake_sensor_commands="${fake_sensor_commands}"
-      initial_positions_file="${right_arm_init_positions_file}"
       add_world_link="false"
       create_base_joint="false"
     />
@@ -184,20 +168,6 @@
       <child link="${prefix_right}base_link" />
       <origin xyz="0 0 0" rpy="0 0 0" />
     </joint>
-
-    <!-- ros2_control: MICO-Ultra uses flexiv_mico_ros2_control (includes torso joints) -->
-    <xacro:if value="${ros2_control}">
-      <xacro:flexiv_mico_ros2_control
-        prefix_left="${prefix_left}"
-        prefix_right="${prefix_right}"
-        robot_sn="${robot_sn}"
-        rdk_control_mode="${rdk_control_mode}"
-        use_fake_hardware="${use_fake_hardware}"
-        fake_sensor_commands="${fake_sensor_commands}"
-        initial_positions_file_left="${arm_init_positions_file}"
-        initial_positions_file_right="${right_arm_init_positions_file}"
-        torso_initial_positions_file="${torso_init_positions_file}" />
-    </xacro:if>
 
   </xacro:macro>
 
