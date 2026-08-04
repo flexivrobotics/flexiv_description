@@ -5,12 +5,10 @@
     MICO-Core: fixed torso (no actuated torso joints) with two Enlight-L arms.
     Arm joints: left_<robot_sn>_joint1..7, right_<robot_sn>_joint1..7.
     An empty robot_sn drops the separating underscore, e.g. 'torso_joint1', 'left_joint1'.
-    ros2_control: reuses flexiv_dual_ros2_control (no torso joints to add).
   -->
 
   <xacro:include filename="$(find flexiv_description)/urdf/common/flexiv_common.xacro" />
-  <xacro:include filename="$(find flexiv_description)/urdf/common/enlight_robot.xacro" />
-  <xacro:include filename="$(find flexiv_description)/urdf/common/flexiv_dual.ros2_control.xacro" />
+  <xacro:include filename="$(find flexiv_description)/urdf/common/flexiv_robot.xacro" />
 
   <xacro:macro name="mico_core"
     params="
@@ -18,13 +16,6 @@
     load_gripper:=false
     gripper_name:='Flexiv-GN01'
     load_mounted_ft_sensor:=false
-    ros2_control:=false
-    rdk_control_mode:='joint_position'
-    use_fake_hardware:=false
-    fake_sensor_commands:=false
-    arm_init_positions_file
-    right_arm_init_positions_file:='$(find flexiv_description)/config/Enlight-L/initial_positions_mirrored.yaml'
-    torso_init_positions_file:=''
     torso_joint_limits_file:='$(find flexiv_description)/config/MICO-Core/joint_limits.yaml'
     torso_kinematics_file:='$(find flexiv_description)/config/MICO-Core/default_kinematics.yaml'
     torso_inertia_file:='$(find flexiv_description)/config/MICO-Core/inertia_parameters.yaml'
@@ -100,7 +91,7 @@
     </joint>
 
     <!-- Left arm (Enlight-L): no world link, no base joint (we attach it below) -->
-    <xacro:enlight_robot
+    <xacro:flexiv_robot
       robot_type="Enlight-L"
       robot_sn="${robot_sn}"
       joint_limits_parameters_file="${arm_cfg}/joint_limits.yaml"
@@ -111,16 +102,12 @@
       load_gripper="${load_gripper}"
       gripper_name="${gripper_name}"
       load_mounted_ft_sensor="${load_mounted_ft_sensor}"
-      ros2_control="false"
-      use_fake_hardware="${use_fake_hardware}"
-      fake_sensor_commands="${fake_sensor_commands}"
-      initial_positions_file="${arm_init_positions_file}"
       add_world_link="false"
       create_base_joint="false"
     />
 
     <!-- Right arm (Enlight-L): no world link, no base joint -->
-    <xacro:enlight_robot
+    <xacro:flexiv_robot
       robot_type="Enlight-L"
       robot_sn="${robot_sn}"
       joint_limits_parameters_file="${arm_cfg}/joint_limits.yaml"
@@ -131,10 +118,6 @@
       load_gripper="${load_gripper}"
       gripper_name="${gripper_name}"
       load_mounted_ft_sensor="${load_mounted_ft_sensor}"
-      ros2_control="false"
-      use_fake_hardware="${use_fake_hardware}"
-      fake_sensor_commands="${fake_sensor_commands}"
-      initial_positions_file="${right_arm_init_positions_file}"
       add_world_link="false"
       create_base_joint="false"
     />
@@ -151,19 +134,6 @@
       <child link="${prefix_right}base_link" />
       <origin xyz="0 0 0" rpy="0 0 0" />
     </joint>
-
-    <!-- ros2_control: MICO-Core has no torso joints, reuse dual ros2_control directly -->
-    <xacro:if value="${ros2_control}">
-      <xacro:flexiv_dual_ros2_control
-        prefix_left="${prefix_left}"
-        prefix_right="${prefix_right}"
-        robot_sn="${robot_sn}"
-        rdk_control_mode="${rdk_control_mode}"
-        use_fake_hardware="${use_fake_hardware}"
-        fake_sensor_commands="${fake_sensor_commands}"
-        initial_positions_file_left="${arm_init_positions_file}"
-        initial_positions_file_right="${right_arm_init_positions_file}" />
-    </xacro:if>
 
   </xacro:macro>
 
