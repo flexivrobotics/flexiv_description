@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:macro name="flexiv_robot"
+    params="
+    robot_type
+    robot_sn
+    joint_limits_parameters_file
+    kinematics_parameters_file
+    inertia_parameters_file
+    visual_parameters_file
+    arm_prefix:=''
+    load_gripper:=false
+    gripper_name:='Flexiv-GN01'
+    load_mounted_ft_sensor:=false
+    add_world_link:=true
+    create_base_joint:=true
+    base_xyz:='0.0 0.0 0.0'
+    base_rpy:='0.0 0.0 0.0'
+    ">
+
+    <xacro:include filename="$(find flexiv_description)/urdf/common/flexiv_common.xacro" />
+    <xacro:compute_arm_prefix arm_prefix="${arm_prefix}" robot_sn="${robot_sn}" />
+    <xacro:property name="prefix" value="${computed_arm_prefix}" />
+
+    <xacro:if value="${load_gripper and gripper_name=='Flexiv-GN01'}">
+      <xacro:include filename="$(find flexiv_description)/urdf/common/grav_macro.xacro" />
+      <xacro:flexiv_GN01 prefix="${prefix}" mesh_prefix_path="package://flexiv_description/" />
+    </xacro:if>
+
+    <xacro:include filename="$(find flexiv_description)/urdf/common/flexiv_arm.xacro" />
+    <xacro:flexiv_arm prefix="${prefix}"
+      load_mounted_ft_sensor="${load_mounted_ft_sensor}"
+      joint_limits_parameters_file="${joint_limits_parameters_file}"
+      kinematics_parameters_file="${kinematics_parameters_file}"
+      inertia_parameters_file="${inertia_parameters_file}"
+      visual_parameters_file="${visual_parameters_file}"
+      add_world_link="${add_world_link}"
+      create_base_joint="${create_base_joint}"
+      base_xyz="${base_xyz}"
+      base_rpy="${base_rpy}"
+    />
+
+  </xacro:macro>
+
+</robot>

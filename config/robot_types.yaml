@@ -1,0 +1,41 @@
+# Single source of truth for the robot types urdf/flexiv.urdf.xacro accepts.
+# Read by scripts/create_urdf.py and launch/view_flexiv.launch.py, so add new
+# models here rather than in either of those files.
+#
+# Grouping is by hardware topology, because topology decides which arguments
+# apply. Which of these models a given software release supports is decided by
+# RDK and RCA; this package is a resource depot and hosts all of them.
+
+# One robot_sn. Arm bolted to a mount, pose from config/single_robot_mounting.yaml.
+single_arm:
+  - Enlight-L
+  - Rizon4
+  - Rizon4s
+  - Rizon4M
+  - Rizon4R
+  - Rizon10
+  - Rizon10s
+
+# One robot_sn. A single robot carrying two arms, driven by one
+# FlexivHardwareInterface.
+two_arm_single_sn:
+  - Enlight-LL
+  - MICO-Core
+  - MICO-Plus
+  - MICO-Ultra
+
+# One robot_sn. Arm mounted on an AICO1 positioner; the axis joints join the
+# arm's own hardware interface. Pick the arm with 'arm_type'.
+single_arm_external_axis:
+  - AICO1-4-V1
+  - AICO1-4-V2
+
+# Two robots driven together, so robot_sn_left and robot_sn_right are both
+# required and the interface is FlexivDualHardwareInterface. Pick the arms with
+# 'arm_type_left' and 'arm_type_right'. Rizon-Dual has no external axis; the
+# AICO2 variants mount both arms on one.
+paired:
+  - Rizon-Dual
+  - AICO2-4-V1
+  - AICO2-4-V2
+  - AICO2-10-V1

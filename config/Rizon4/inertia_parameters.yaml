@@ -1,0 +1,129 @@
+inertia_parameters:
+  base_link:
+    mass: 3.863
+    origin:
+      x: 0.0
+      y: -0.0008
+      z: 0.0883
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.0188
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 0.019
+      iyz: 0.0002
+      izz: 0.0103
+  link1:
+    mass: 3.85
+    origin:
+      x: 0.0002
+      y: 0.004
+      z: 0.1451
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.0308
+      ixy: 0.0
+      ixz: -0.0001
+      iyy: 0.0307
+      iyz: 0.0012
+      izz: 0.0077
+  link2:
+    mass: 2.904
+    origin:
+      x: 0.0
+      y: 0.0356
+      z: 0.0946
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.0255
+      ixy: 0.0
+      ixz: 0.0001
+      iyy: 0.0263
+      iyz: -0.0001
+      izz: 0.0039
+  link3:
+    mass: 2.381
+    origin:
+      x: -0.0123
+      y: -0.0021
+      z: 0.1368
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.0144
+      ixy: 0.0001
+      ixz: -0.0015
+      iyy: 0.0139
+      iyz: -0.0006
+      izz: 0.0039
+  link4:
+    mass: 2.381
+    origin:
+      x: -0.0129
+      y: 0.0309
+      z: 0.1047
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.0184
+      ixy: 0.0001
+      ixz: -0.0016
+      iyy: 0.0188
+      iyz: -0.0012
+      izz: 0.0029
+  link5:
+    mass: 2.336
+    origin:
+      x: 0.0003
+      y: 0.0024
+      z: 0.1365
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.0144
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 0.0136
+      iyz: 0.0006
+      izz: 0.0036
+  link6:
+    mass: 2.251
+    origin:
+      x: 0.0193
+      y: 0.0595
+      z: 0.0726
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.0085
+      ixy: 0.0004
+      ixz: 0.0012
+      iyy: 0.0089
+      iyz: 0.0018
+      izz: 0.0041
+  link7:
+    mass: 0.774
+    origin:
+      x: 0.0003
+      y: 0.0008
+      z: 0.025
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    inertia:
+      ixx: 0.001
+      ixy: 0.0
+      ixz: 0.0
+      iyy: 0.001
+      iyz: 0.0
+      izz: 0.0009
