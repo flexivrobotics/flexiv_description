@@ -1,0 +1,287 @@
+visual_parameters:
+  base_link:
+    visual:
+      shell:
+        origin:
+          x: 0
+          y: 0
+          z: 0
+          roll: 0
+          pitch: 0
+          yaw: 3.141592653589793
+        mesh:
+          package: flexiv_description
+          path: meshes/Rizon4R/visual/link0.obj
+    collision:
+      origin:
+        x: 0
+        y: 0
+        z: 0
+        roll: 0
+        pitch: 0
+        yaw: 3.141592653589793
+      mesh:
+        package: flexiv_description
+        path: meshes/Rizon4R/collision/link0.stl
+    workspace:
+      origin:
+        x: 0
+        y: 0
+        z: 0.365
+        roll: 0
+        pitch: 0
+        yaw: 0
+      sphere:
+        radius: 0.890
+  link1:
+    visual:
+      shell:
+        origin:
+          x: 0
+          y: 0
+          z: 0
+          roll: 0
+          pitch: 3.141592653589793
+          yaw: 0
+        mesh:
+          package: flexiv_description
+          path: meshes/Rizon4R/visual/link1.obj
+      ring:
+        mesh:
+          package: flexiv_description
+          path: meshes/Rizon4R/visual/ring.obj
+          scale: 0.062 0.062 0.002
+        origin:
+          x: 0
+          y: 0
+          z: 0.0025
+          roll: 0
+          pitch: 0
+          yaw: 0
+    collision:
+      origin:
+        x: 0
+        y: 0
+        z: 0
+        roll: 0
+        pitch: 3.141592653589793
+        yaw: 0
+      mesh:
+        package: flexiv_description
+        path: meshes/Rizon4R/collision/link1.stl
+  link2:
+    visual:
+      shell:
+        origin:
+          x: 0
+          y: 0
+          z: 0
+          roll: 3.141592653589793
+          pitch: 0
+          yaw: 0
+        mesh:
+          package: flexiv_description
+          path: meshes/Rizon4R/visual/link2.obj
+      ring:
+        mesh:
+          package: flexiv_description
+          path: meshes/Rizon4R/visual/ring.obj
+          scale: 0.062 0.062 0.002
+        origin:
+          x: 0
+          y: 0.0025
+          z: 0
+          roll: 1.5707963
+          pitch: 0
+          yaw: 0
+    collision:
+      origin:
+        x: 0
+        y: 0
+        z: 0
+        roll: 3.141592653589793
+        pitch: 0
+        yaw: 0
+      mesh:
+        package: flexiv_description
+        path: meshes/Rizon4R/collision/link2.stl
+  link3:
+    visual:
+      shell:
+        origin:
+          x: 0
+          y: 0
+          z: 0
+          roll: 0
+          pitch: 3.141592653589793
+          yaw: 0
+        mesh:
+          package: flexiv_description
+          path: meshes/Rizon4R/visual/link3r.obj
+      ring:
+        mesh:
+          package: flexiv_description
+          path: meshes/Rizon4R/visual/ring.obj
+          scale: 0.051 0.051 0.002
+        origin:
+          x: 0
+          y: 0
+          z: 0.0025
+          roll: 0
+          pitch: 0
+          yaw: 0
+    collision:
+      origin:
+        x: 0
+        y: 0
+        z: 0
+        roll: 0
+        pitch: 3.141592653589793
+        yaw: 0
+      mesh:
+        package: flexiv_description
+        path: meshes/Rizon4R/collision/link3r.stl
+  link4:
+    visual:
+      shell:
+        origin:
+          x: 0
+          y: 0
+          z: 0
+          roll: 3.141592653589793
+          pitch: 0
+          yaw: 0
+        mesh:
+          package: flexiv_description
+          path: meshes/Rizon4R/visual/link4r.obj
+      ring:
+        mesh:
+          package: flexiv_description
+          path: meshes/Rizon4R/visual/ring.obj
+          scale: 0.051 0.051 0.002
+        origin:
+          x: 0
+          y: 0.0025
+          z: 0
+          roll: 1.5707963
+          pitch: 0
+          yaw: 0
+    collision:
+      origin:
+        x: 0
+        y: 0
+        z: 0
+        roll: 3.141592653589793
+        pitch: 0
+        yaw: 0
+      mesh:
+        package: flexiv_description
+        path: meshes/Rizon4R/collision/link4r.stl
+  link5:
+    visual:
+      shell:
+        origin:
+          x: 0
+          y: 0
+          z: 0
+          roll: 0
+          pitch: 3.141592653589793
+          yaw: 0
+        mesh:
+          package: flexiv_description
+          path: meshes/Rizon4R/visual/link5.obj
+      ring:
+        mesh:
+          package: flexiv_description
+          path: meshes/Rizon4R/visual/ring.obj
+          scale: 0.051 0.051 0.002
+        origin:
+          x: 0
+          y: 0
+          z: 0.0025
+          roll: 0
+          pitch: 0
+          yaw: 0
+    collision:
+      origin:
+        x: 0
+        y: 0
+        z: 0
+        roll: 0
+        pitch: 3.141592653589793
+        yaw: 0
+      mesh:
+        package: flexiv_description
+        path: meshes/Rizon4R/collision/link5.stl
+  link6:
+    visual:
+      shell:
+        origin:
+          x: 0
+          y: 0
+          z: 0
+          roll: 0
+          pitch: 3.141592653589793
+          yaw: 0
+        mesh:
+          package: flexiv_description
+          path: meshes/Rizon4R/visual/link6r.obj
+      ring:
+        mesh:
+          package: flexiv_description
+          path: meshes/Rizon4R/visual/ring.obj
+          scale: 0.051 0.051 0.002
+        origin:
+          x: 0
+          y: 0.0025
+          z: 0
+          roll: 1.5707963
+          pitch: 0
+          yaw: 0
+    collision:
+      origin:
+        x: 0
+        y: 0
+        z: 0
+        roll: 0
+        pitch: 3.141592653589793
+        yaw: 0
+      mesh:
+        package: flexiv_description
+        path: meshes/Rizon4R/collision/link6r.stl
+  link7:
+    visual:
+      shell:
+        origin:
+          x: 0
+          y: 0
+          z: 0
+          roll: 3.141592653589793
+          pitch: 0
+          yaw: 0
+        mesh:
+          package: flexiv_description
+          path: meshes/Rizon4R/visual/link7.obj
+      ring:
+        mesh:
+          package: flexiv_description
+          path: meshes/Rizon4R/visual/ring.obj
+          scale: 0.051 0.051 0.002
+        origin:
+          x: 0
+          y: 0
+          z: 0.0025
+          roll: 0
+          pitch: 0
+          yaw: 0
+    collision:
+      origin:
+        x: 0
+        y: 0
+        z: 0
+        roll: 3.141592653589793
+        pitch: 0
+        yaw: 0
+      mesh:
+        package: flexiv_description
+        path: meshes/Rizon4R/collision/link7.stl
