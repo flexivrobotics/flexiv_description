@@ -23,6 +23,11 @@
     <xacro:compute_arm_prefix arm_prefix="${arm_prefix}" robot_sn="${robot_sn}" />
     <xacro:property name="prefix" value="${computed_arm_prefix}" />
 
+    <xacro:if value="${load_mounted_ft_sensor and robot_type not in ['Rizon4', 'Rizon4R', 'Rizon10', 'Rizon10R']}">
+      ${xacro.warning('load_mounted_ft_sensor is only supported by Rizon4, Rizon4R, Rizon10 and Rizon10R. robot_type \'' + robot_type + '\' does not support a mounted FT sensor.')}
+      ${xacro.fatal('load_mounted_ft_sensor is only supported by Rizon4, Rizon4R, Rizon10 and Rizon10R. robot_type \'' + robot_type + '\' does not support a mounted FT sensor.')}
+    </xacro:if>
+
     <xacro:if value="${load_gripper and gripper_name=='Flexiv-GN01'}">
       <xacro:include filename="$(find flexiv_description)/urdf/common/grav_macro.xacro" />
       <xacro:flexiv_GN01 prefix="${prefix}" mesh_prefix_path="package://flexiv_description/" />
