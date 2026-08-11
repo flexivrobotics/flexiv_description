@@ -21,8 +21,10 @@ and is read by both `scripts/create_urdf.py` and `launch/view_flexiv.launch.py`.
 - `Rizon4R`
 - `Rizon10`
 - `Rizon10s`
+- `Rizon10R`
 
 `Rizon4R` is mirrored `Rizon4` kinematics and is the default right arm of a pair.
+`Rizon10R` is mirrored `Rizon10` kinematics and is the default right arm of an `AICO2-10-V1` pair.
 
 **One robot with two arms** — one `robot_sn`, one `FlexivHardwareInterface`:
 
@@ -55,7 +57,7 @@ and `arm_type_right`; empty picks the arm the model actually carries:
 | `Rizon-Dual` | none, both arms bolt to `world` using `config/dual_arm_mounting.yaml` | `Rizon4` + `Rizon4R` |
 | `AICO2-4-V1` | 2-DoF | `Rizon4` + `Rizon4R` |
 | `AICO2-4-V2` | 2-DoF | `Rizon4` + `Rizon4R` |
-| `AICO2-10-V1` | 2-DoF | `Rizon10` + `Rizon10` |
+| `AICO2-10-V1` | 2-DoF | `Rizon10` + `Rizon10R` |
 
 Arm prefixes are `left_${robot_sn_left}_` and `right_${robot_sn_right}_`. Since the
 two arms are separate robots, each has its own GPIO block.
@@ -192,7 +194,7 @@ is named `<robot_sn_left>_<robot_sn_right>.urdf`:
   --robot_sn_left Rizon4-062001 --robot_sn_right Rizon4R-062002
 
 ./scripts/create_urdf.sh --robot_type AICO2-10-V1 \
-  --robot_sn_left Rizon10-062003 --robot_sn_right Rizon10-062004
+  --robot_sn_left Rizon10-062003 --robot_sn_right Rizon10R-062004
 ```
 
 ## Visualize in RViz
@@ -249,7 +251,7 @@ Visualize paired robots:
   robot_sn_left:=Rizon4-062001 robot_sn_right:=Rizon4R-062002 gui:=True
 
 ./scripts/visualize_flexiv.sh robot_type:=AICO2-10-V1 \
-  robot_sn_left:=Rizon10-062003 robot_sn_right:=Rizon10-062004 gui:=True
+  robot_sn_left:=Rizon10-062003 robot_sn_right:=Rizon10R-062004 gui:=True
 ```
 
 `rviz/view_rizon_dual.rviz` is also available as an alternative RViz layout for

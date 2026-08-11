@@ -12,6 +12,8 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && chown $USERNAME:$USERNAME /run/user/"${USER_UID}" \
     && chown $USERNAME:$USERNAME /workspaces
 
+RUN sed -i 's/^Types: deb deb-src$/Types: deb/' /etc/apt/sources.list.d/ros2.sources
+
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     ros-humble-xacro \

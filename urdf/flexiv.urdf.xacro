@@ -257,7 +257,7 @@
     <xacro:property name="paired_default_left"
       value="${'Rizon10' if robot_type_str == 'AICO2-10-V1' else 'Rizon4'}" />
     <xacro:property name="paired_default_right"
-      value="${'Rizon10' if robot_type_str == 'AICO2-10-V1' else 'Rizon4R'}" />
+      value="${'Rizon10R' if robot_type_str == 'AICO2-10-V1' else 'Rizon4R'}" />
     <xacro:property name="arm_left"
       value="${'$(arg arm_type_left)' if '$(arg arm_type_left)' != '' else paired_default_left}" />
     <xacro:property name="arm_right"
@@ -269,8 +269,8 @@
       </xacro:unless>
     </xacro:if>
     <xacro:if value="${robot_type_str == 'AICO2-10-V1'}">
-      <xacro:unless value="${arm_left == 'Rizon10' and arm_right == 'Rizon10'}">
-        ${xacro.warning('AICO2-10-V1 carries two Rizon10 arms. You selected ' + arm_left + ' and ' + arm_right + '.')}
+      <xacro:unless value="${arm_left in ['Rizon10', 'Rizon10R'] and arm_right in ['Rizon10', 'Rizon10R']}">
+        ${xacro.warning('AICO2-10-V1 carries Rizon10-class arms. You selected ' + arm_left + ' and ' + arm_right + '.')}
       </xacro:unless>
     </xacro:if>
 
