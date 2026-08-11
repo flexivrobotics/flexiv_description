@@ -60,6 +60,9 @@
   <xacro:arg name="gripper_name_right" default="Flexiv-GN01" />
   <xacro:arg name="load_mounted_ft_sensor_left" default="false" />
   <xacro:arg name="load_mounted_ft_sensor_right" default="false" />
+  <!-- Empty means 'use the arm's default_kinematics.yaml'. -->
+  <xacro:arg name="kinematics_parameters_file_left" default="" />
+  <xacro:arg name="kinematics_parameters_file_right" default="" />
 
   <!-- Boolean flags for dispatch -->
   <xacro:property name="robot_type_str" value="$(arg robot_type)" />
