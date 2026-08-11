@@ -15,6 +15,7 @@ single_arm:
   - Rizon4R
   - Rizon10
   - Rizon10s
+  - Rizon10R
 
 # One robot_sn. A single robot carrying two arms, driven by one
 # FlexivHardwareInterface.
