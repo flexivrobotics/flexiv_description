@@ -125,7 +125,8 @@
     <xacro:property name="arm_cfg" value="$(find flexiv_description)/config/Enlight-L" />
     <!-- Kinematics are per-robot and live in this product's own file, one section per arm. -->
     <xacro:property name="ll_kinematics_file"
-      value="$(find flexiv_description)/config/Enlight-LL/default_kinematics.yaml" />
+      value="${'$(arg kinematics_parameters_file)' if '$(arg kinematics_parameters_file)' != ''
+               else cfg + '/Enlight-LL/default_kinematics.yaml'}" />
 
     <!-- Left arm: owns the shared world link + its base joint. -->
     <xacro:flexiv_robot
@@ -176,8 +177,12 @@
   <xacro:if value="${is_mico_core}">
     <xacro:include filename="$(find flexiv_description)/urdf/common/mico_core.xacro" />
     <xacro:property name="arm_cfg" value="$(find flexiv_description)/config/Enlight-L" />
+    <xacro:property name="mico_core_kin"
+      value="${'$(arg kinematics_parameters_file)' if '$(arg kinematics_parameters_file)' != ''
+               else cfg + '/MICO-Core/default_kinematics.yaml'}" />
     <xacro:mico_core
       robot_sn="$(arg robot_sn)"
+      kinematics_parameters_file="${mico_core_kin}"
       load_gripper="$(arg load_gripper)"
       gripper_name="$(arg gripper_name)"
       load_mounted_ft_sensor="$(arg load_mounted_ft_sensor)"
@@ -188,8 +193,12 @@
   <xacro:if value="${is_mico_plus}">
     <xacro:include filename="$(find flexiv_description)/urdf/common/mico_plus.xacro" />
     <xacro:property name="arm_cfg" value="$(find flexiv_description)/config/Enlight-L" />
+    <xacro:property name="mico_plus_kin"
+      value="${'$(arg kinematics_parameters_file)' if '$(arg kinematics_parameters_file)' != ''
+               else cfg + '/MICO-Plus/default_kinematics.yaml'}" />
     <xacro:mico_plus
       robot_sn="$(arg robot_sn)"
+      kinematics_parameters_file="${mico_plus_kin}"
       load_gripper="$(arg load_gripper)"
       gripper_name="$(arg gripper_name)"
       load_mounted_ft_sensor="$(arg load_mounted_ft_sensor)"
@@ -200,8 +209,12 @@
   <xacro:if value="${is_mico_ultra}">
     <xacro:include filename="$(find flexiv_description)/urdf/common/mico_ultra.xacro" />
     <xacro:property name="arm_cfg" value="$(find flexiv_description)/config/Enlight-L" />
+    <xacro:property name="mico_ultra_kin"
+      value="${'$(arg kinematics_parameters_file)' if '$(arg kinematics_parameters_file)' != ''
+               else cfg + '/MICO-Ultra/default_kinematics.yaml'}" />
     <xacro:mico_ultra
       robot_sn="$(arg robot_sn)"
+      kinematics_parameters_file="${mico_ultra_kin}"
       load_gripper="$(arg load_gripper)"
       gripper_name="$(arg gripper_name)"
       load_mounted_ft_sensor="$(arg load_mounted_ft_sensor)"
