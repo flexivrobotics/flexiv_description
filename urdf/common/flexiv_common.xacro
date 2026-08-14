@@ -135,15 +135,20 @@
     sensor_kinematics_file: path to the sensor kinematics YAML file
     sensor_inertia_file: path to the sensor inertia parameters YAML file
     sensor_visual_file: path to the sensor visual parameters YAML file
+    kinematics_section: section of the kinematics YAML holding this chain, empty for the whole map
   -->
   <xacro:macro name="read_model_data"
-    params="joint_limits_parameters_file kinematics_parameters_file inertia_parameters_file visual_parameters_file load_mounted_ft_sensor:=false sensor_kinematics_file:='' sensor_inertia_file:='' sensor_visual_file:=''">
+    params="joint_limits_parameters_file kinematics_parameters_file inertia_parameters_file visual_parameters_file load_mounted_ft_sensor:=false sensor_kinematics_file:='' sensor_inertia_file:='' sensor_visual_file:='' kinematics_section:=''">
 
     <!-- Read YAML files -->
     <xacro:property name="config_joint_limits_parameters"
       value="${xacro.load_yaml(joint_limits_parameters_file)}" />
-    <xacro:property name="config_kinematics_parameters"
-      value="${xacro.load_yaml(kinematics_parameters_file)}" />
+    <!-- One robot instance is one kinematics file. Products that carry more than one chain
+         name a section per chain; a single arm leaves the section empty and uses the whole map. -->
+    <xacro:property name="config_kinematics_all"
+      value="${xacro.load_yaml(kinematics_parameters_file)['kinematics']}" />
+    <xacro:property name="kinematics_entries"
+      value="${config_kinematics_all if kinematics_section == '' else config_kinematics_all[kinematics_section]}" />
     <xacro:property name="config_inertia_parameters"
       value="${xacro.load_yaml(inertia_parameters_file)}" />
     <xacro:property name="config_visual_parameters"
@@ -161,7 +166,7 @@
 
       <!-- Merge dictionaries -->
       <xacro:property name="sec_kinematics"
-        value="${dict(config_kinematics_parameters['kinematics'], **config_sensor_kinematics['kinematics'])}"
+        value="${dict(kinematics_entries, **config_sensor_kinematics['kinematics'])}"
         scope="parent" />
       <xacro:property name="sec_inertia_parameters"
         value="${dict(config_inertia_parameters['inertia_parameters'], **config_sensor_inertia['inertia_parameters'])}"
@@ -172,8 +177,7 @@
     </xacro:if>
 
     <xacro:unless value="${load_mounted_ft_sensor}">
-      <xacro:property name="sec_kinematics"
-        value="${config_kinematics_parameters['kinematics']}" scope="parent" />
+      <xacro:property name="sec_kinematics" value="${kinematics_entries}" scope="parent" />
       <xacro:property name="sec_inertia_parameters"
         value="${config_inertia_parameters['inertia_parameters']}" scope="parent" />
       <xacro:property name="sec_visual_parameters"

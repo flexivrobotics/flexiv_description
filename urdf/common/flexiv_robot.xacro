@@ -17,6 +17,7 @@
     create_base_joint:=true
     base_xyz:='0.0 0.0 0.0'
     base_rpy:='0.0 0.0 0.0'
+    kinematics_section:=''
     ">
 
     <xacro:include filename="$(find flexiv_description)/urdf/common/flexiv_common.xacro" />
@@ -38,6 +39,7 @@
       load_mounted_ft_sensor="${load_mounted_ft_sensor}"
       joint_limits_parameters_file="${joint_limits_parameters_file}"
       kinematics_parameters_file="${kinematics_parameters_file}"
+      kinematics_section="${kinematics_section}"
       inertia_parameters_file="${inertia_parameters_file}"
       visual_parameters_file="${visual_parameters_file}"
       add_world_link="${add_world_link}"

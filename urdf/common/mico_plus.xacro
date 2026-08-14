@@ -18,12 +18,14 @@
     gripper_name:='Flexiv-GN01'
     load_mounted_ft_sensor:=false
     torso_joint_limits_file:='$(find flexiv_description)/config/MICO-Plus/joint_limits.yaml'
-    torso_kinematics_file:='$(find flexiv_description)/config/MICO-Plus/default_kinematics.yaml'
+    kinematics_parameters_file:='$(find flexiv_description)/config/MICO-Plus/default_kinematics.yaml'
     torso_inertia_file:='$(find flexiv_description)/config/MICO-Plus/inertia_parameters.yaml'
     torso_visual_file:='$(find flexiv_description)/config/MICO-Plus/visual_parameters.yaml'
     ">
 
     <xacro:property name="arm_cfg" value="$(find flexiv_description)/config/Enlight-L" />
+    <!-- Kinematics are per-robot and live in this product's own file, one section per
+         chain. The rest of arm_cfg is model spec shared with a standalone Enlight-L. -->
     <!-- All prefixes follow the same rule as the arms: the separating underscore
          only appears when the part it separates is non-empty, so an empty robot_sn
          gives 'torso_base_link' rather than '_torso_base_link'. lazy_eval is off so
@@ -38,7 +40,8 @@
 
     <xacro:read_model_data
       joint_limits_parameters_file="${torso_joint_limits_file}"
-      kinematics_parameters_file="${torso_kinematics_file}"
+      kinematics_parameters_file="${kinematics_parameters_file}"
+      kinematics_section="EXT_AXIS"
       inertia_parameters_file="${torso_inertia_file}"
       visual_parameters_file="${torso_visual_file}" />
 
@@ -129,7 +132,8 @@
       robot_type="Enlight-L"
       robot_sn="${robot_sn}"
       joint_limits_parameters_file="${arm_cfg}/joint_limits.yaml"
-      kinematics_parameters_file="${arm_cfg}/default_kinematics.yaml"
+      kinematics_parameters_file="${kinematics_parameters_file}"
+      kinematics_section="ARM_1"
       inertia_parameters_file="${arm_cfg}/inertia_parameters.yaml"
       visual_parameters_file="${arm_cfg}/visual_parameters.yaml"
       arm_prefix="left"
@@ -145,7 +149,8 @@
       robot_type="Enlight-L"
       robot_sn="${robot_sn}"
       joint_limits_parameters_file="${arm_cfg}/joint_limits.yaml"
-      kinematics_parameters_file="${arm_cfg}/default_kinematics.yaml"
+      kinematics_parameters_file="${kinematics_parameters_file}"
+      kinematics_section="ARM_2"
       inertia_parameters_file="${arm_cfg}/inertia_parameters.yaml"
       visual_parameters_file="${arm_cfg}/visual_parameters.yaml"
       arm_prefix="right"
