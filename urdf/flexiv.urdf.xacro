@@ -31,8 +31,8 @@
   <xacro:arg name="robot_sn" default="" />
   <xacro:arg name="joint_limits_parameters_file"
     default="$(find flexiv_description)/config/$(arg robot_type)/joint_limits.yaml" />
-  <xacro:arg name="kinematics_parameters_file"
-    default="$(find flexiv_description)/config/$(arg robot_type)/default_kinematics.yaml" />
+  <!-- Empty means 'use the arm's default_kinematics.yaml'. -->
+  <xacro:arg name="kinematics_parameters_file" default="" />
   <xacro:arg name="inertia_parameters_file"
     default="$(find flexiv_description)/config/$(arg robot_type)/inertia_parameters.yaml" />
   <xacro:arg name="visual_parameters_file"
@@ -60,6 +60,9 @@
   <xacro:arg name="gripper_name_right" default="Flexiv-GN01" />
   <xacro:arg name="load_mounted_ft_sensor_left" default="false" />
   <xacro:arg name="load_mounted_ft_sensor_right" default="false" />
+  <!-- Empty means 'use the arm's default_kinematics.yaml'. -->
+  <xacro:arg name="kinematics_parameters_file_left" default="" />
+  <xacro:arg name="kinematics_parameters_file_right" default="" />
 
   <!-- Boolean flags for dispatch -->
   <xacro:property name="robot_type_str" value="$(arg robot_type)" />
@@ -92,12 +95,15 @@
   <!-- ============================== SINGLE ARM ON A MOUNT ============================== -->
   <xacro:if value="${is_single}">
     <xacro:property name="mounting" value="${xacro.load_yaml('$(arg mounting_file)')}" />
+    <xacro:property name="single_kinematics"
+      value="${'$(arg kinematics_parameters_file)' if '$(arg kinematics_parameters_file)' != ''
+               else cfg + '/' + robot_type_str + '/default_kinematics.yaml'}" />
 
     <xacro:flexiv_robot
       robot_type="$(arg robot_type)"
       robot_sn="$(arg robot_sn)"
       joint_limits_parameters_file="$(arg joint_limits_parameters_file)"
-      kinematics_parameters_file="$(arg kinematics_parameters_file)"
+      kinematics_parameters_file="${single_kinematics}"
       inertia_parameters_file="$(arg inertia_parameters_file)"
       visual_parameters_file="$(arg visual_parameters_file)"
       arm_prefix="$(arg arm_prefix)"
@@ -117,13 +123,18 @@
 
     <!-- Each arm of a dual-arm product is an Enlight-L: reuse its config + meshes for both arms. -->
     <xacro:property name="arm_cfg" value="$(find flexiv_description)/config/Enlight-L" />
+    <!-- Kinematics are per-robot and live in this product's own file, one section per arm. -->
+    <xacro:property name="ll_kinematics_file"
+      value="${'$(arg kinematics_parameters_file)' if '$(arg kinematics_parameters_file)' != ''
+               else cfg + '/Enlight-LL/default_kinematics.yaml'}" />
 
     <!-- Left arm: owns the shared world link + its base joint. -->
     <xacro:flexiv_robot
       robot_type="Enlight-L"
       robot_sn="$(arg robot_sn)"
       joint_limits_parameters_file="${arm_cfg}/joint_limits.yaml"
-      kinematics_parameters_file="${arm_cfg}/default_kinematics.yaml"
+      kinematics_parameters_file="${ll_kinematics_file}"
+      kinematics_section="ARM_1"
       inertia_parameters_file="${arm_cfg}/inertia_parameters.yaml"
       visual_parameters_file="${arm_cfg}/visual_parameters.yaml"
       arm_prefix="left"
@@ -141,7 +152,8 @@
       robot_type="Enlight-L"
       robot_sn="$(arg robot_sn)"
       joint_limits_parameters_file="${arm_cfg}/joint_limits.yaml"
-      kinematics_parameters_file="${arm_cfg}/default_kinematics.yaml"
+      kinematics_parameters_file="${ll_kinematics_file}"
+      kinematics_section="ARM_2"
       inertia_parameters_file="${arm_cfg}/inertia_parameters.yaml"
       visual_parameters_file="${arm_cfg}/visual_parameters.yaml"
       arm_prefix="right"
@@ -165,8 +177,12 @@
   <xacro:if value="${is_mico_core}">
     <xacro:include filename="$(find flexiv_description)/urdf/common/mico_core.xacro" />
     <xacro:property name="arm_cfg" value="$(find flexiv_description)/config/Enlight-L" />
+    <xacro:property name="mico_core_kin"
+      value="${'$(arg kinematics_parameters_file)' if '$(arg kinematics_parameters_file)' != ''
+               else cfg + '/MICO-Core/default_kinematics.yaml'}" />
     <xacro:mico_core
       robot_sn="$(arg robot_sn)"
+      kinematics_parameters_file="${mico_core_kin}"
       load_gripper="$(arg load_gripper)"
       gripper_name="$(arg gripper_name)"
       load_mounted_ft_sensor="$(arg load_mounted_ft_sensor)"
@@ -177,8 +193,12 @@
   <xacro:if value="${is_mico_plus}">
     <xacro:include filename="$(find flexiv_description)/urdf/common/mico_plus.xacro" />
     <xacro:property name="arm_cfg" value="$(find flexiv_description)/config/Enlight-L" />
+    <xacro:property name="mico_plus_kin"
+      value="${'$(arg kinematics_parameters_file)' if '$(arg kinematics_parameters_file)' != ''
+               else cfg + '/MICO-Plus/default_kinematics.yaml'}" />
     <xacro:mico_plus
       robot_sn="$(arg robot_sn)"
+      kinematics_parameters_file="${mico_plus_kin}"
       load_gripper="$(arg load_gripper)"
       gripper_name="$(arg gripper_name)"
       load_mounted_ft_sensor="$(arg load_mounted_ft_sensor)"
@@ -189,8 +209,12 @@
   <xacro:if value="${is_mico_ultra}">
     <xacro:include filename="$(find flexiv_description)/urdf/common/mico_ultra.xacro" />
     <xacro:property name="arm_cfg" value="$(find flexiv_description)/config/Enlight-L" />
+    <xacro:property name="mico_ultra_kin"
+      value="${'$(arg kinematics_parameters_file)' if '$(arg kinematics_parameters_file)' != ''
+               else cfg + '/MICO-Ultra/default_kinematics.yaml'}" />
     <xacro:mico_ultra
       robot_sn="$(arg robot_sn)"
+      kinematics_parameters_file="${mico_ultra_kin}"
       load_gripper="$(arg load_gripper)"
       gripper_name="$(arg gripper_name)"
       load_mounted_ft_sensor="$(arg load_mounted_ft_sensor)"
@@ -232,11 +256,15 @@
         mesh_prefix_path="package://flexiv_description/" />
     </xacro:if>
 
+    <xacro:property name="aico1_kinematics"
+      value="${'$(arg kinematics_parameters_file)' if '$(arg kinematics_parameters_file)' != ''
+               else cfg + '/' + aico1_arm + '/default_kinematics.yaml'}" />
+
     <xacro:flexiv_robot
       robot_type="${aico1_arm}"
       robot_sn="$(arg robot_sn)"
       joint_limits_parameters_file="${cfg}/${aico1_arm}/joint_limits.yaml"
-      kinematics_parameters_file="${cfg}/${aico1_arm}/default_kinematics.yaml"
+      kinematics_parameters_file="${aico1_kinematics}"
       inertia_parameters_file="${cfg}/${aico1_arm}/inertia_parameters.yaml"
       visual_parameters_file="${cfg}/${aico1_arm}/visual_parameters.yaml"
       arm_prefix="$(arg arm_prefix)"
@@ -335,11 +363,18 @@
       <xacro:property name="paired_base_joint" value="true" />
     </xacro:if>
 
+    <xacro:property name="paired_kinematics_left"
+      value="${'$(arg kinematics_parameters_file_left)' if '$(arg kinematics_parameters_file_left)' != ''
+               else cfg + '/' + arm_left + '/default_kinematics.yaml'}" />
+    <xacro:property name="paired_kinematics_right"
+      value="${'$(arg kinematics_parameters_file_right)' if '$(arg kinematics_parameters_file_right)' != ''
+               else cfg + '/' + arm_right + '/default_kinematics.yaml'}" />
+
     <xacro:flexiv_robot
       robot_type="${arm_left}"
       robot_sn="$(arg robot_sn_left)"
       joint_limits_parameters_file="${cfg}/${arm_left}/joint_limits.yaml"
-      kinematics_parameters_file="${cfg}/${arm_left}/default_kinematics.yaml"
+      kinematics_parameters_file="${paired_kinematics_left}"
       inertia_parameters_file="${cfg}/${arm_left}/inertia_parameters.yaml"
       visual_parameters_file="${cfg}/${arm_left}/visual_parameters.yaml"
       arm_prefix="left"
@@ -355,7 +390,7 @@
       robot_type="${arm_right}"
       robot_sn="$(arg robot_sn_right)"
       joint_limits_parameters_file="${cfg}/${arm_right}/joint_limits.yaml"
-      kinematics_parameters_file="${cfg}/${arm_right}/default_kinematics.yaml"
+      kinematics_parameters_file="${paired_kinematics_right}"
       inertia_parameters_file="${cfg}/${arm_right}/inertia_parameters.yaml"
       visual_parameters_file="${cfg}/${arm_right}/visual_parameters.yaml"
       arm_prefix="right"
@@ -366,8 +401,6 @@
       create_base_joint="${paired_base_joint}"
       base_xyz="${paired_right_xyz}"
       base_rpy="${paired_right_rpy}" />
-
-    <!-- One interface spanning both robots plus any external axis joints. -->
   </xacro:if>
 
 </robot>
