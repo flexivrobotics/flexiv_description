@@ -1,4 +1,4 @@
-FROM osrf/ros:jazzy-desktop
+FROM osrf/ros:lyrical-desktop
 ARG DEBIAN_FRONTEND=noninteractive
 ARG USER_UID=1000
 ARG USER_GID=1000
@@ -18,11 +18,11 @@ RUN sed -i 's/^Types: deb deb-src$/Types: deb/' /etc/apt/sources.list.d/ros2.sou
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    ros-jazzy-xacro \
-    ros-jazzy-joint-state-publisher \
-    ros-jazzy-joint-state-publisher-gui \
-    ros-jazzy-robot-state-publisher \
-    ros-jazzy-rviz2 \
+    ros-lyrical-xacro \
+    ros-lyrical-joint-state-publisher \
+    ros-lyrical-joint-state-publisher-gui \
+    ros-lyrical-robot-state-publisher \
+    ros-lyrical-rviz2 \
     python3-colcon-common-extensions \
     && rm -rf /var/lib/apt/lists/*
 
