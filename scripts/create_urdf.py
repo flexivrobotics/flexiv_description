@@ -5,6 +5,7 @@ import xacro
 import yaml
 
 ROBOT_TYPES_FILE = os.path.join("config", "robot_types.yaml")
+GRIPPER_TYPES_FILE = os.path.join("config", "gripper_types.yaml")
 
 
 def load_robot_types(package_path):
@@ -15,6 +16,16 @@ def load_robot_types(package_path):
     """
     with open(os.path.join(package_path, ROBOT_TYPES_FILE)) as f:
         return yaml.safe_load(f)
+
+
+def load_gripper_types(package_path):
+    """Load the gripper types.
+
+    config/gripper_types.yaml is the single source of truth, shared with
+    urdf/common/flexiv_robot.xacro and launch/view_flexiv.launch.py.
+    """
+    with open(os.path.join(package_path, GRIPPER_TYPES_FILE)) as f:
+        return yaml.safe_load(f)["gripper_types"]
 
 
 def convert_xacro_to_urdf(xacro_file, mappings):
@@ -123,6 +134,7 @@ if __name__ == "__main__":
     ROBOT_TYPES = [t for group in ROBOT_TYPE_GROUPS.values() for t in group]
     # Only the AICO models sit on an external axis; Rizon-Dual is paired without one.
     EXTERNAL_AXIS_TYPES = [t for t in ROBOT_TYPES if t.startswith("AICO")]
+    GRIPPER_TYPES = load_gripper_types(os.getcwd())
 
     parser = argparse.ArgumentParser(
         description="Create URDF files from xacro for Flexiv robots."
@@ -137,7 +149,11 @@ if __name__ == "__main__":
     parser.add_argument("--robot_sn", type=str, default="", help="Robot serial number.")
     parser.add_argument("--load_gripper", action="store_true", help="Load gripper.")
     parser.add_argument(
-        "--gripper_name", type=str, default="Flexiv-GN01", help="Gripper name."
+        "--gripper_type",
+        type=str,
+        default="Grav",
+        choices=GRIPPER_TYPES,
+        help="Gripper type.",
     )
     parser.add_argument(
         "--load_mounted_ft_sensor", action="store_true", help="Load mounted FT sensor."
@@ -186,16 +202,18 @@ if __name__ == "__main__":
         "--load_gripper_right", action="store_true", help="Load right gripper."
     )
     parser.add_argument(
-        "--gripper_name_left",
+        "--gripper_type_left",
         type=str,
-        default="Flexiv-GN01",
-        help="Left gripper name.",
+        default="Grav",
+        choices=GRIPPER_TYPES,
+        help="Left gripper type.",
     )
     parser.add_argument(
-        "--gripper_name_right",
+        "--gripper_type_right",
         type=str,
-        default="Flexiv-GN01",
-        help="Right gripper name.",
+        default="Grav",
+        choices=GRIPPER_TYPES,
+        help="Right gripper type.",
     )
     parser.add_argument(
         "--load_mounted_ft_sensor_left",
@@ -238,8 +256,8 @@ if __name__ == "__main__":
                 "arm_type_right": args.arm_type_right,
                 "load_gripper_left": str(args.load_gripper_left).lower(),
                 "load_gripper_right": str(args.load_gripper_right).lower(),
-                "gripper_name_left": args.gripper_name_left,
-                "gripper_name_right": args.gripper_name_right,
+                "gripper_type_left": args.gripper_type_left,
+                "gripper_type_right": args.gripper_type_right,
                 "load_mounted_ft_sensor_left": str(
                     args.load_mounted_ft_sensor_left
                 ).lower(),
@@ -254,7 +272,7 @@ if __name__ == "__main__":
                 "arm_prefix": args.arm_prefix,
                 "robot_sn": args.robot_sn,
                 "load_gripper": str(args.load_gripper).lower(),
-                "gripper_name": args.gripper_name,
+                "gripper_type": args.gripper_type,
                 "load_mounted_ft_sensor": str(args.load_mounted_ft_sensor).lower(),
                 "arm_type": args.arm_type,
             }
@@ -274,7 +292,7 @@ if __name__ == "__main__":
         if args.arm_prefix:
             file_name = f"{args.arm_prefix}_{file_name}"
         if args.load_gripper:
-            file_name += f"_{args.gripper_name}"
+            file_name += f"_{args.gripper_type}"
 
     urdf_generation(
         os.getcwd(),
