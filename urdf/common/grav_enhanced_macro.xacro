@@ -1,0 +1,282 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <!--
+    Flexiv Grav Enhanced (EG). It grips in P mode over a 0 to 100 mm finger width, the range RDK
+    commands and reports. Past 100 mm it opens into A mode, which is under-actuated and not
+    commandable, so EG-P is the model used by gripper_type 'Grav-Enhanced'.
+
+    Link and joint names follow grav_macro.xacro, so finger_width_joint (EG-P) and the TCP links
+    work unchanged.
+
+    Kinematics, meshes (in meters) and finger inertials come from the SolidWorks exports.
+    EG-P: Every finger joint mimics finger_width_joint, which maps linearly onto the
+          pad gap: exact at 0 and 0.1 m, up to 7 mm off mid-stroke.
+    EG-A: for visualization only. Its input is a_mode_angle_joint, the V angle between the
+          two inner bars, from 120 deg (just past P mode's 100 mm) to 160 deg (fully open).
+  -->
+
+  <xacro:macro name="EG_link" params="name mesh mesh_prefix_path mass com inertia mesh_rpy:='0 0 0'">
+    <xacro:property name="i" value="${inertia.split()}" />
+    <link name="${name}">
+      <inertial>
+        <origin rpy="0 0 0" xyz="${com}" />
+        <mass value="${mass}" />
+        <inertia ixx="${i[0]}" ixy="${i[1]}" ixz="${i[2]}" iyy="${i[3]}" iyz="${i[4]}" izz="${i[5]}" />
+      </inertial>
+      <visual>
+        <origin rpy="${mesh_rpy}" xyz="0 0 0" />
+        <geometry>
+          <mesh filename="${mesh_prefix_path}meshes/Grav-Enhanced/visual/${mesh}.stl" />
+        </geometry>
+        <material name="flexiv_black" />
+      </visual>
+      <collision>
+        <origin rpy="${mesh_rpy}" xyz="0 0 0" />
+        <geometry>
+          <mesh filename="${mesh_prefix_path}meshes/Grav-Enhanced/collision/${mesh}.stl" />
+        </geometry>
+      </collision>
+    </link>
+  </xacro:macro>
+
+  <xacro:macro name="EG_finger_joint"
+    params="prefix name parent child xyz rpy multiplier offset input:='finger_width_joint'
+      input_lower:=0.0 input_upper:=0.1">
+    <xacro:property name="q0" value="${input_lower * multiplier + offset}" />
+    <xacro:property name="q1" value="${input_upper * multiplier + offset}" />
+    <joint name="${prefix}${name}" type="revolute">
+      <origin rpy="${rpy}" xyz="${xyz}" />
+      <parent link="${prefix}${parent}" />
+      <child link="${prefix}${child}" />
+      <axis xyz="0 0 1" />
+      <limit effort="0" lower="${min(q0, q1)}" upper="${max(q0, q1)}" velocity="2.0" />
+      <mimic joint="${prefix}${input}" multiplier="${multiplier}" offset="${offset}" />
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="EG_tcp_link" params="name">
+    <link name="${name}">
+      <inertial>
+        <origin rpy="0 0 0" xyz="0 0 0" />
+        <mass value="0" />
+        <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+      </inertial>
+    </link>
+  </xacro:macro>
+
+  <xacro:macro name="EG" params="prefix mesh_prefix_path mode">
+    <xacro:unless value="${mode in ['EG-P', 'EG-A']}">
+      ${xacro.fatal('Invalid EG mode \'' + mode + '\'. Available: EG-P, EG-A.')}
+    </xacro:unless>
+
+    <!-- base link. As with Grav, the CAD frame (fingers along x) is turned +90 deg about z so
+         the fingers open along y and grav_base_link stays aligned with the flange. -->
+    <xacro:EG_link name="${prefix}grav_base_link" mesh="base" mesh_prefix_path="${mesh_prefix_path}"
+      mesh_rpy="0 0 ${pi/2}" mass="1.188446" com="2.50230E-05 0.00087613 0.056371"
+      inertia="9.49663E-04 2.80989E-08 -1.05890E-07 7.17658E-04 -2.80456E-07 1.06217E-03" />
+
+    <!-- finger links. inner_bar is the same part, in the same frame, in both modes -->
+    <xacro:EG_link name="${prefix}right_inner_bar" mesh="right_inner_bar"
+      mesh_prefix_path="${mesh_prefix_path}" mass="0.0172003"
+      com="0.0371269 0.00123886 -3.42770E-10"
+      inertia="3.21378E-06 1.27154E-07 2.94896E-14 6.77142E-06 3.19843E-14 3.84530E-06" />
+    <xacro:EG_link name="${prefix}left_inner_bar" mesh="left_inner_bar"
+      mesh_prefix_path="${mesh_prefix_path}" mass="0.0172003"
+      com="0.0371269 -0.00123886 3.42770E-10"
+      inertia="3.21378E-06 -1.27154E-07 -2.94896E-14 6.77142E-06 3.19843E-14 3.84530E-06" />
+
+    <xacro:if value="${mode == 'EG-P'}">
+      <xacro:EG_link name="${prefix}right_outer_bar" mesh="p_right_outer_bar"
+        mesh_prefix_path="${mesh_prefix_path}" mass="0.0134627"
+        com="0.0355151 -1.50096E-05 6.64440E-06"
+        inertia="1.92844E-06 -1.60018E-08 -9.99198E-10 3.30594E-06 -2.81456E-08 1.75850E-06" />
+      <xacro:EG_link name="${prefix}left_outer_bar" mesh="p_left_outer_bar"
+        mesh_prefix_path="${mesh_prefix_path}" mass="0.0134627"
+        com="0.0355151 1.50096E-05 -6.64440E-06"
+        inertia="1.92844E-06 1.60018E-08 9.99198E-10 3.30594E-06 -2.81456E-08 1.75850E-06" />
+      <xacro:EG_link name="${prefix}right_finger_mount" mesh="p_right_finger"
+        mesh_prefix_path="${mesh_prefix_path}" mass="0.0251144"
+        com="0.0347518 -0.00651602 -3.36327E-05"
+        inertia="3.19156E-06 1.22899E-06 -2.49718E-09 3.82683E-06 3.25302E-09 3.18495E-06" />
+      <xacro:EG_link name="${prefix}left_finger_mount" mesh="p_left_finger"
+        mesh_prefix_path="${mesh_prefix_path}" mass="0.0251144"
+        com="0.0347518 0.00651602 3.36327E-05"
+        inertia="3.19156E-06 -1.22899E-06 2.49718E-09 3.82683E-06 3.25302E-09 3.18495E-06" />
+    </xacro:if>
+    <xacro:if value="${mode == 'EG-A'}">
+      <xacro:EG_link name="${prefix}right_outer_bar" mesh="a_right_outer_bar"
+        mesh_prefix_path="${mesh_prefix_path}" mass="0.0067788"
+        com="0.020607 0.00022767 2.46200E-05"
+        inertia="1.62800E-06 -1.77060E-08 -3.58110E-09 2.44970E-06 -9.61480E-10 1.01130E-06" />
+      <!-- The export gives the left crank no mass; mirrored from the right one -->
+      <xacro:EG_link name="${prefix}left_outer_bar" mesh="a_left_outer_bar"
+        mesh_prefix_path="${mesh_prefix_path}" mass="0.0067788"
+        com="0.020607 -0.00022767 -2.46200E-05"
+        inertia="1.62800E-06 1.77060E-08 3.58110E-09 2.44970E-06 -9.61480E-10 1.01130E-06" />
+      <xacro:EG_link name="${prefix}right_finger_mount" mesh="a_right_finger"
+        mesh_prefix_path="${mesh_prefix_path}" mass="0.031798"
+        com="0.057626 0.0059323 -2.89990E-05"
+        inertia="2.70490E-06 6.26950E-07 -9.87880E-10 5.47010E-06 -2.51650E-08 3.93210E-06" />
+      <xacro:EG_link name="${prefix}left_finger_mount" mesh="a_left_finger"
+        mesh_prefix_path="${mesh_prefix_path}" mass="0.031798"
+        com="0.057626 -0.0059323 2.89990E-05"
+        inertia="2.70490E-06 -6.26950E-07 9.87880E-10 5.47010E-06 -2.51650E-08 3.93210E-06" />
+    </xacro:if>
+
+    <!-- TCP links -->
+    <xacro:EG_tcp_link name="${prefix}grav_tcp" /><!-- open fingers -->
+    <xacro:EG_tcp_link name="${prefix}closed_fingers_tcp" />
+    <xacro:EG_tcp_link name="${prefix}left_finger_tcp" /><!-- pad centre -->
+    <xacro:EG_tcp_link name="${prefix}right_finger_tcp" />
+
+    <!-- JOINTS -->
+    <!-- TCPs sit on the centre line at the pad centre height. EG-P: open = 0.1 m, closed = 0 m.
+         EG-A: both at the pad centre height of the fully open (160 deg) pose. -->
+    <xacro:property name="open_tcp_z" value="${0.17769 if mode == 'EG-P' else 0.15310}" />
+    <xacro:property name="closed_tcp_z" value="${0.20826 if mode == 'EG-P' else 0.15310}" />
+    <joint name="${prefix}open_fingers_tcp_joint" type="fixed">
+      <origin rpy="0 0 0" xyz="0 0 ${open_tcp_z}" />
+      <parent link="${prefix}grav_base_link" />
+      <child link="${prefix}grav_tcp" />
+      <axis xyz="0 0 1" />
+    </joint>
+    <joint name="${prefix}closed_fingers_tcp_joint" type="fixed">
+      <origin rpy="0 0 0" xyz="0 0 ${closed_tcp_z}" />
+      <parent link="${prefix}grav_base_link" />
+      <child link="${prefix}closed_fingers_tcp" />
+      <axis xyz="0 0 1" />
+    </joint>
+
+    <xacro:if value="${mode == 'EG-P'}">
+      <!-- right finger joints -->
+      <xacro:EG_finger_joint prefix="${prefix}" name="right_outer_knuckle_joint"
+        parent="grav_base_link" child="right_outer_bar"
+        xyz="0 0.024 0.1035" rpy="${pi/2} -0.57685 ${pi/2}" multiplier="-8.943497" offset="0.894350" />
+      <xacro:EG_finger_joint prefix="${prefix}" name="right_inner_knuckle_joint"
+        parent="grav_base_link" child="right_inner_bar"
+        xyz="0 0.010 0.1185" rpy="${pi/2} -0.57688 ${pi/2}" multiplier="-8.943497" offset="0.894350" />
+      <xacro:EG_finger_joint prefix="${prefix}" name="right_inner_finger_joint"
+        parent="right_outer_bar" child="right_finger_mount"
+        xyz="0.068 0 0" rpy="0 0 1.7449" multiplier="8.943497" offset="-0.894350" />
+      <!-- left finger joints -->
+      <xacro:EG_finger_joint prefix="${prefix}" name="left_outer_knuckle_joint"
+        parent="grav_base_link" child="left_outer_bar"
+        xyz="0 -0.024 0.1035" rpy="${-pi/2} -0.57685 ${-pi/2}" multiplier="8.943497"
+        offset="-0.894350" />
+      <xacro:EG_finger_joint prefix="${prefix}" name="left_inner_knuckle_joint"
+        parent="grav_base_link" child="left_inner_bar"
+        xyz="0 -0.010 0.1185" rpy="${-pi/2} -0.57688 ${-pi/2}" multiplier="8.943497"
+        offset="-0.894350" />
+      <xacro:EG_finger_joint prefix="${prefix}" name="left_inner_finger_joint"
+        parent="left_outer_bar" child="left_finger_mount"
+        xyz="0.068 0 0" rpy="0 0 -1.7449" multiplier="-8.943497" offset="0.894350" />
+      <!-- finger TCPs, aligned with grav_base_link -->
+      <joint name="${prefix}right_finger_tcp_joint" type="fixed">
+        <origin rpy="${-pi/4} ${-pi/2} -3.107148" xyz="0.048109 -0.00283 0" />
+        <parent link="${prefix}right_finger_mount" />
+        <child link="${prefix}right_finger_tcp" />
+      </joint>
+      <joint name="${prefix}left_finger_tcp_joint" type="fixed">
+        <origin rpy="${-pi/4} ${-pi/2} -1.605238" xyz="0.048109 0.00283 0" />
+        <parent link="${prefix}left_finger_mount" />
+        <child link="${prefix}left_finger_tcp" />
+      </joint>
+    </xacro:if>
+
+    <xacro:if value="${mode == 'EG-A'}">
+      <!-- Input: V angle between the inner bars, 120 to 160 deg -->
+      <xacro:property name="a_lower" value="${120 * pi / 180}" />
+      <xacro:property name="a_upper" value="${160 * pi / 180}" />
+      <joint name="${prefix}a_mode_angle_joint" type="revolute">
+        <origin rpy="0 0 0" xyz="0 0 0" />
+        <parent link="${prefix}grav_base_link" />
+        <child link="${prefix}unused_a_mode_angle_link" />
+        <axis xyz="1 0 0" />
+        <limit effort="0" lower="${a_lower}" upper="${a_upper}" velocity="1.0" />
+      </joint>
+      <link name="${prefix}unused_a_mode_angle_link">
+        <inertial>
+          <origin rpy="0 0 0" xyz="0 0 0" />
+          <mass value="1E-4" />
+          <inertia ixx="1E-7" ixy="0" ixz="0" iyy="1E-7" iyz="0" izz="1E-7" />
+        </inertial>
+      </link>
+      <!-- right finger joints -->
+      <xacro:EG_finger_joint prefix="${prefix}" name="right_outer_knuckle_joint"
+        parent="grav_base_link" child="right_outer_bar"
+        xyz="0 0.024 0.1035" rpy="${pi/2} 0.63491 ${pi/2}" multiplier="-0.768653"
+        offset="2.148798" input="a_mode_angle_joint"
+        input_lower="${a_lower}" input_upper="${a_upper}" />
+      <xacro:EG_finger_joint prefix="${prefix}" name="right_inner_knuckle_joint"
+        parent="grav_base_link" child="right_inner_bar"
+        xyz="0 0.010 0.1185" rpy="${pi/2} -0.174497 ${pi/2}" multiplier="-0.500000"
+        offset="1.396256" input="a_mode_angle_joint"
+        input_lower="${a_lower}" input_upper="${a_upper}" />
+      <xacro:EG_finger_joint prefix="${prefix}" name="right_inner_finger_joint"
+        parent="right_outer_bar" child="right_finger_mount"
+        xyz="0.034 0 0" rpy="0 0 1.5564" multiplier="0.352341"
+        offset="-0.980888" input="a_mode_angle_joint"
+        input_lower="${a_lower}" input_upper="${a_upper}" />
+      <!-- left finger joints -->
+      <xacro:EG_finger_joint prefix="${prefix}" name="left_outer_knuckle_joint"
+        parent="grav_base_link" child="left_outer_bar"
+        xyz="0 -0.024 0.1035" rpy="${-pi/2} 0.63491 ${-pi/2}" multiplier="0.768653"
+        offset="-2.148798" input="a_mode_angle_joint"
+        input_lower="${a_lower}" input_upper="${a_upper}" />
+      <xacro:EG_finger_joint prefix="${prefix}" name="left_inner_knuckle_joint"
+        parent="grav_base_link" child="left_inner_bar"
+        xyz="0 -0.010 0.1185" rpy="${-pi/2} -0.174497 ${-pi/2}" multiplier="0.500000"
+        offset="-1.396256" input="a_mode_angle_joint"
+        input_lower="${a_lower}" input_upper="${a_upper}" />
+      <xacro:EG_finger_joint prefix="${prefix}" name="left_inner_finger_joint"
+        parent="left_outer_bar" child="left_finger_mount"
+        xyz="0.034 0 0" rpy="0 0 -1.5564" multiplier="-0.352341"
+        offset="0.980888" input="a_mode_angle_joint"
+        input_lower="${a_lower}" input_upper="${a_upper}" />
+      <!-- finger TCPs, aligned with grav_base_link -->
+      <joint name="${prefix}right_finger_tcp_joint" type="fixed">
+        <origin rpy="${-pi/4} ${-pi/2} -1.706888" xyz="0.077732 0.012991 0" />
+        <parent link="${prefix}right_finger_mount" />
+        <child link="${prefix}right_finger_tcp" />
+      </joint>
+      <joint name="${prefix}left_finger_tcp_joint" type="fixed">
+        <origin rpy="${-pi/4} ${-pi/2} -3.005498" xyz="0.077732 -0.012991 0" />
+        <parent link="${prefix}left_finger_mount" />
+        <child link="${prefix}left_finger_tcp" />
+      </joint>
+    </xacro:if>
+
+    <xacro:if value="${mode == 'EG-P'}">
+      <!--
+    Control joint, same as Grav.
+    Note: This virtual joint should be prismatic,
+          but it must be revolute to match the mimic joint.
+          The unused link cannot have 0 mass.
+    -->
+      <joint name="${prefix}finger_width_joint" type="revolute">
+        <origin rpy="0 0 0" xyz="0 0 0" />
+        <parent link="${prefix}grav_base_link" />
+        <child link="${prefix}unused_finger_width_link" />
+        <axis xyz="1 0 0" />
+        <limit effort="45" lower="0" upper="0.100" velocity="0.2" />
+      </joint>
+
+      <link name="${prefix}unused_finger_width_link">
+        <inertial>
+          <origin rpy="0 0 0" xyz="0 0 0" />
+          <mass value="1E-4" />
+          <inertia ixx="1E-7" ixy="0" ixz="0" iyy="1E-7" iyz="0" izz="1E-7" />
+        </inertial>
+      </link>
+    </xacro:if>
+
+    <!-- Connect the gripper to the robot flange link -->
+    <joint name="${prefix}gripper_base_joint" type="fixed">
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <parent link="${prefix}flange" />
+      <child link="${prefix}grav_base_link" />
+    </joint>
+  </xacro:macro>
+
+</robot>
