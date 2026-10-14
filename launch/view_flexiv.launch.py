@@ -1,9 +1,11 @@
+import math
 import os
+import re
 
 import yaml
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.conditions import IfCondition, UnlessCondition
 from launch_ros.parameter_descriptions import ParameterValue
 from launch.substitutions import (
@@ -14,6 +16,9 @@ from launch.substitutions import (
 )
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
+
+# Grav Enhanced A mode input (a_mode_angle_joint) starts just past P mode's 100 mm
+A_MODE_START_ANGLE = math.radians(120.0)
 
 
 def load_robot_types():
@@ -29,15 +34,31 @@ def load_robot_types():
         return yaml.safe_load(f)
 
 
+def load_gripper_types():
+    """Load the gripper types.
+
+    config/gripper_types.yaml is the single source of truth, shared with
+    urdf/common/flexiv_robot.xacro and scripts/create_urdf.py.
+    """
+    path = os.path.join(
+        get_package_share_directory("flexiv_description"),
+        "config",
+        "gripper_types.yaml",
+    )
+    with open(path) as f:
+        return yaml.safe_load(f)["gripper_types"]
+
+
 def generate_launch_description():
     robot_type_groups = load_robot_types()
     robot_types = [t for group in robot_type_groups.values() for t in group]
     paired_types = robot_type_groups["paired"]
+    gripper_types = load_gripper_types()
     pkg_share = FindPackageShare("flexiv_description")
     robot_sn = LaunchConfiguration("robot_sn")
     robot_type = LaunchConfiguration("robot_type")
     load_gripper = LaunchConfiguration("load_gripper")
-    gripper_name = LaunchConfiguration("gripper_name")
+    gripper_type = LaunchConfiguration("gripper_type")
     load_mounted_ft_sensor = LaunchConfiguration("load_mounted_ft_sensor")
     default_rviz_config_path = PathJoinSubstitution(
         [pkg_share, "rviz", "view_flexiv.rviz"]
@@ -64,8 +85,8 @@ def generate_launch_description():
                 "load_gripper:=",
                 load_gripper,
                 " ",
-                "gripper_name:=",
-                gripper_name,
+                "gripper_type:=",
+                gripper_type,
                 " ",
                 "load_mounted_ft_sensor:=",
                 load_mounted_ft_sensor,
@@ -104,19 +125,28 @@ def generate_launch_description():
         parameters=[{"robot_description": robot_description_content}],
     )
 
-    joint_state_publisher_node = Node(
-        package="joint_state_publisher",
-        executable="joint_state_publisher",
-        name="joint_state_publisher",
-        condition=UnlessCondition(LaunchConfiguration("gui")),
-    )
-
-    joint_state_publisher_gui_node = Node(
-        package="joint_state_publisher_gui",
-        executable="joint_state_publisher_gui",
-        name="joint_state_publisher_gui",
-        condition=IfCondition(LaunchConfiguration("gui")),
-    )
+    def joint_state_publishers(context):
+        urdf = robot_description_content.evaluate(context)
+        start_values = {
+            f"zeros.{name}": A_MODE_START_ANGLE
+            for name in re.findall(r'<joint name="([^"]*a_mode_angle_joint)"', urdf)
+        }
+        return [
+            Node(
+                package="joint_state_publisher",
+                executable="joint_state_publisher",
+                name="joint_state_publisher",
+                parameters=[start_values],
+                condition=UnlessCondition(LaunchConfiguration("gui")),
+            ),
+            Node(
+                package="joint_state_publisher_gui",
+                executable="joint_state_publisher_gui",
+                name="joint_state_publisher_gui",
+                parameters=[start_values],
+                condition=IfCondition(LaunchConfiguration("gui")),
+            ),
+        ]
 
     # RViz
     rviz_node = Node(
@@ -175,12 +205,13 @@ def generate_launch_description():
             DeclareLaunchArgument(
                 name="load_gripper",
                 default_value="False",
-                description="Flag to load the Flexiv Grav gripper",
+                description="Flag to load the gripper selected by gripper_type",
             ),
             DeclareLaunchArgument(
-                name="gripper_name",
-                default_value="Flexiv-GN01",
-                description="Full name of the gripper to be controlled",
+                name="gripper_type",
+                default_value="Grav",
+                description="Type of the gripper. See config/gripper_types.yaml.",
+                choices=gripper_types,
             ),
             DeclareLaunchArgument(
                 name="load_mounted_ft_sensor",
@@ -198,8 +229,7 @@ def generate_launch_description():
                 description="Absolute path to rviz config file",
             ),
             robot_state_publisher_node,
-            joint_state_publisher_node,
-            joint_state_publisher_gui_node,
+            OpaqueFunction(function=joint_state_publishers),
             rviz_node,
         ]
     )
