@@ -75,6 +75,25 @@ two arms are separate robots, each has its own GPIO block.
 > Digital IO is 16 control-box ports plus 2 per wrist connector, so Enlight-L and
 > MICO expose 20 ports while Rizon exposes 18.
 
+### Supported gripper types
+
+`load_gripper` attaches the gripper selected by `gripper_type` to the flange.
+[config/gripper_types.yaml](config/gripper_types.yaml) is the single source of truth:
+
+| `gripper_type` | Gripper | Stroke of `finger_width_joint` (0 to 0.1 m) |
+| --- | --- | --- |
+| `Grav` | Flexiv Grav (GN01) | Finger gap 0 to 100 mm |
+| `Grav-Enhanced` | Flexiv Grav Enhanced, P mode | Pad gap 0 to 100 mm (linear fit, up to 7 mm off mid-stroke) |
+| `Grav-Enhanced-A` | Flexiv Grav Enhanced, A mode (visualization only) | Not driven; `a_mode_angle_joint` sets the V angle between the inner bars, 120 to 160 deg (starts at 120 deg in `view_flexiv.launch.py`) |
+
+`gripper_type` selects the geometry only. Grav and Grav Enhanced both appear as
+device `Flexiv-GN01` in Flexiv Elements. Grav Enhanced is modelled in P mode, the
+0 to 100 mm width range that RDK commands; past 100 mm it opens into an
+under-actuated A mode that RDK can't command. `Grav-Enhanced-A` shows that mode for
+visualization only, posed by its own `a_mode_angle_joint` (e.g. the
+`joint_state_publisher_gui` slider). Both grippers share the same link and joint
+names (`finger_width_joint`, `closed_fingers_tcp`, ...).
+
 ### Prerequisites
 
 - [Docker](https://docs.docker.com/get-docker/)
@@ -92,7 +111,7 @@ Run the `create_urdf.sh` script from the package root directory:
 ```
 usage: create_urdf.py [-h] [--robot_type ROBOT_TYPE]
                       [--arm_prefix ARM_PREFIX] [--robot_sn ROBOT_SN]
-                      [--load_gripper] [--gripper_name GRIPPER_NAME]
+                      [--load_gripper] [--gripper_type GRIPPER_TYPE]
                       [--load_mounted_ft_sensor] [--output_path OUTPUT_PATH]
                       [--external_axis_prefix EXTERNAL_AXIS_PREFIX]
                       [--arm_type ARM_TYPE]
@@ -101,8 +120,8 @@ usage: create_urdf.py [-h] [--robot_type ROBOT_TYPE]
                       [--arm_type_left ARM_TYPE_LEFT]
                       [--arm_type_right ARM_TYPE_RIGHT]
                       [--load_gripper_left] [--load_gripper_right]
-                      [--gripper_name_left GRIPPER_NAME_LEFT]
-                      [--gripper_name_right GRIPPER_NAME_RIGHT]
+                      [--gripper_type_left GRIPPER_TYPE_LEFT]
+                      [--gripper_type_right GRIPPER_TYPE_RIGHT]
                       [--load_mounted_ft_sensor_left]
                       [--load_mounted_ft_sensor_right]
 
@@ -117,8 +136,9 @@ optional arguments:
                         Arm prefix. (default: '')
   --robot_sn ROBOT_SN   Robot serial number. (default: '')
   --load_gripper        Load gripper. (default: False)
-  --gripper_name GRIPPER_NAME
-                        Gripper name. (default: 'Flexiv-GN01')
+  --gripper_type GRIPPER_TYPE
+                        Gripper type. See config/gripper_types.yaml.
+                        (default: 'Grav')
   --load_mounted_ft_sensor
                         Load mounted FT sensor. (default: False)
   --output_path OUTPUT_PATH
@@ -142,10 +162,10 @@ Paired-robot arguments (Rizon-Dual and AICO2):
                         Right arm type. Empty picks the default. (default: '')
   --load_gripper_left   Load left gripper. (default: False)
   --load_gripper_right  Load right gripper. (default: False)
-  --gripper_name_left GRIPPER_NAME_LEFT
-                        Left gripper name. (default: 'Flexiv-GN01')
-  --gripper_name_right GRIPPER_NAME_RIGHT
-                        Right gripper name. (default: 'Flexiv-GN01')
+  --gripper_type_left GRIPPER_TYPE_LEFT
+                        Left gripper type. (default: 'Grav')
+  --gripper_type_right GRIPPER_TYPE_RIGHT
+                        Right gripper type. (default: 'Grav')
   --load_mounted_ft_sensor_left
                         Load left mounted FT sensor. (default: False)
   --load_mounted_ft_sensor_right
@@ -170,6 +190,7 @@ Generate URDF for Enlight-L with gripper:
 
 ```bash
 ./scripts/create_urdf.sh --robot_type Enlight-L --robot_sn Enlight-L-123456 --load_gripper
+./scripts/create_urdf.sh --robot_type Rizon4 --robot_sn Rizon4-062001 --load_gripper --gripper_type Grav-Enhanced
 ```
 
 Generate URDF for a dual-arm robot (Enlight-LL or any MICO variant):
@@ -219,8 +240,8 @@ Arguments:
   robot_sn:=ROBOT_SN            Serial number of the robot. Leave empty for the
                                 paired types. (default: '')
   robot_type:=TYPE              Type of the Flexiv robot. (default: 'Enlight-L')
-  load_gripper:=BOOL            Flag to load the Flexiv Grav gripper. (default: 'False')
-  gripper_name:=NAME            Full name of the gripper to be controlled. (default: 'Flexiv-GN01')
+  load_gripper:=BOOL            Flag to load the gripper selected by gripper_type. (default: 'False')
+  gripper_type:=TYPE            Type of the gripper, see config/gripper_types.yaml. (default: 'Grav')
   load_mounted_ft_sensor:=BOOL  Flag to load the mounted force torque sensor. (default: 'False')
   robot_sn_left:=SN             Left robot serial number, paired types. (default: '')
   robot_sn_right:=SN            Right robot serial number, paired types. (default: '')
