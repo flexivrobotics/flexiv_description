@@ -82,17 +82,8 @@ two arms are separate robots, each has its own GPIO block.
 
 | `gripper_type` | Gripper | Stroke of `finger_width_joint` (0 to 0.1 m) |
 | --- | --- | --- |
-| `Grav` | Flexiv Grav (GN01) | Finger gap 0 to 100 mm |
-| `Grav-Enhanced` | Flexiv Grav Enhanced, P mode | Pad gap 0 to 100 mm (linear fit, up to 7 mm off mid-stroke) |
-| `Grav-Enhanced-A` | Flexiv Grav Enhanced, A mode (visualization only) | Not driven; `a_mode_angle_joint` sets the V angle between the inner bars, 120 to 160 deg (starts at 120 deg in `view_flexiv.launch.py`) |
-
-`gripper_type` selects the geometry only. Grav and Grav Enhanced both appear as
-device `Flexiv-GN01` in Flexiv Elements. Grav Enhanced is modelled in P mode, the
-0 to 100 mm width range that RDK commands; past 100 mm it opens into an
-under-actuated A mode that RDK can't command. `Grav-Enhanced-A` shows that mode for
-visualization only, posed by its own `a_mode_angle_joint` (e.g. the
-`joint_state_publisher_gui` slider). Both grippers share the same link and joint
-names (`finger_width_joint`, `closed_fingers_tcp`, ...).
+| `Grav` | Flexiv Grav (GN01) | 0 to 100 mm |
+| `Grav-Enhanced` | Flexiv Grav Enhanced (P mode) | 0 to 100 mm |
 
 ### Prerequisites
 
