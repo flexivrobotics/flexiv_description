@@ -11,7 +11,7 @@
     visual_parameters_file
     arm_prefix:=''
     load_gripper:=false
-    gripper_name:='Flexiv-GN01'
+    gripper_type:='Grav'
     load_mounted_ft_sensor:=false
     add_world_link:=true
     create_base_joint:=true
@@ -29,9 +29,20 @@
       ${xacro.fatal('load_mounted_ft_sensor is only supported by Rizon4, Rizon4R, Rizon10 and Rizon10R. robot_type \'' + robot_type + '\' does not support a mounted FT sensor.')}
     </xacro:if>
 
-    <xacro:if value="${load_gripper and gripper_name=='Flexiv-GN01'}">
+    <xacro:property name="gripper_types"
+      value="${xacro.load_yaml('$(find flexiv_description)/config/gripper_types.yaml')['gripper_types']}" />
+    <xacro:if value="${load_gripper and gripper_type not in gripper_types}">
+      ${xacro.fatal('Invalid gripper_type \'' + gripper_type + '\'. Available: ' + ', '.join(gripper_types) + '.')}
+    </xacro:if>
+
+    <xacro:if value="${load_gripper and gripper_type=='Grav'}">
       <xacro:include filename="$(find flexiv_description)/urdf/common/grav_macro.xacro" />
-      <xacro:flexiv_GN01 prefix="${prefix}" mesh_prefix_path="package://flexiv_description/" />
+      <xacro:GN01 prefix="${prefix}" mesh_prefix_path="package://flexiv_description/" />
+    </xacro:if>
+    <xacro:if value="${load_gripper and gripper_type in ['Grav-Enhanced', 'Grav-Enhanced-A']}">
+      <xacro:include filename="$(find flexiv_description)/urdf/common/grav_enhanced_macro.xacro" />
+      <xacro:EG prefix="${prefix}" mesh_prefix_path="package://flexiv_description/"
+        mode="${'EG-P' if gripper_type == 'Grav-Enhanced' else 'EG-A'}" />
     </xacro:if>
 
     <xacro:include filename="$(find flexiv_description)/urdf/common/flexiv_arm.xacro" />

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://wiki.ros.org/xacro">
 
-  <xacro:macro name="flexiv_GN01" params="prefix mesh_prefix_path">
+  <xacro:macro name="GN01" params="prefix mesh_prefix_path">
 
     <!-- base link -->
     <link name="${prefix}grav_base_link">

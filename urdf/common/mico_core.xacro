@@ -14,7 +14,7 @@
     params="
     robot_sn
     load_gripper:=false
-    gripper_name:='Flexiv-GN01'
+    gripper_type:='Grav'
     load_mounted_ft_sensor:=false
     torso_joint_limits_file:='$(find flexiv_description)/config/MICO-Core/joint_limits.yaml'
     kinematics_parameters_file:='$(find flexiv_description)/config/MICO-Core/default_kinematics.yaml'
@@ -104,7 +104,7 @@
       visual_parameters_file="${arm_cfg}/visual_parameters.yaml"
       arm_prefix="left"
       load_gripper="${load_gripper}"
-      gripper_name="${gripper_name}"
+      gripper_type="${gripper_type}"
       load_mounted_ft_sensor="${load_mounted_ft_sensor}"
       add_world_link="false"
       create_base_joint="false"
@@ -121,7 +121,7 @@
       visual_parameters_file="${arm_cfg}/visual_parameters.yaml"
       arm_prefix="right"
       load_gripper="${load_gripper}"
-      gripper_name="${gripper_name}"
+      gripper_type="${gripper_type}"
       load_mounted_ft_sensor="${load_mounted_ft_sensor}"
       add_world_link="false"
       create_base_joint="false"
