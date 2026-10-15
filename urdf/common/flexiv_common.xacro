@@ -84,8 +84,17 @@
   -->
   <xacro:macro name="get_joint_limits" params="name">
     <xacro:property name="limits" value="${sec_joint_limits[name]}" lazy_eval="false" />
-    <limit lower="${limits['lower']}" upper="${limits['upper']}" effort="${limits['effort']}"
-      velocity="${limits['velocity']}" />
+    <!-- URDF 1.2 dynamic limits; a YAML without them leaves the parser at infinity -->
+    <xacro:if value="${'acceleration' in limits}">
+      <limit lower="${limits['lower']}" upper="${limits['upper']}" effort="${limits['effort']}"
+        velocity="${limits['velocity']}" acceleration="${limits['acceleration']}"
+        deceleration="${limits.get('deceleration', limits['acceleration'])}"
+        jerk="${limits['jerk']}" />
+    </xacro:if>
+    <xacro:unless value="${'acceleration' in limits}">
+      <limit lower="${limits['lower']}" upper="${limits['upper']}" effort="${limits['effort']}"
+        velocity="${limits['velocity']}" />
+    </xacro:unless>
     <!-- Soft limits are optional: the MICO torso joints have none -->
     <xacro:if value="${'soft_lower' in limits}">
       <safety_controller k_position="100.0" k_velocity="40.0"
