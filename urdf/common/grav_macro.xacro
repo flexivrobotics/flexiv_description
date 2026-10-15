@@ -212,7 +212,8 @@
       <parent link="${prefix}grav_base_link" />
       <child link="${prefix}left_outer_bar" />
       <axis xyz="1 0 0" />
-      <limit effort="0" lower="-0.155" upper="0.7854" velocity="2.0" />
+      <limit effort="0" lower="-0.155" upper="0.7854" velocity="2.0"
+        acceleration="8" deceleration="8" jerk="64" />
       <mimic joint="${prefix}finger_width_joint" multiplier="9.404" offset="-0.155" />
     </joint>
     <joint name="${prefix}left_inner_knuckle_joint" type="revolute">
@@ -220,7 +221,8 @@
       <parent link="${prefix}grav_base_link" />
       <child link="${prefix}left_inner_bar" />
       <axis xyz="1 0 0" />
-      <limit effort="0" lower="-0.155" upper="0.7854" velocity="2.0" />
+      <limit effort="0" lower="-0.155" upper="0.7854" velocity="2.0"
+        acceleration="8" deceleration="8" jerk="64" />
       <mimic joint="${prefix}left_outer_knuckle_joint" multiplier="1" offset="0" />
     </joint>
     <joint name="${prefix}left_inner_finger_joint" type="revolute">
@@ -228,7 +230,8 @@
       <parent link="${prefix}left_outer_bar" />
       <child link="${prefix}left_finger_mount" />
       <axis xyz="1 0 0" />
-      <limit effort="0" lower="-0.7854" upper="0.155" velocity="2.0" />
+      <limit effort="0" lower="-0.7854" upper="0.155" velocity="2.0"
+        acceleration="8" deceleration="8" jerk="64" />
       <mimic joint="${prefix}left_outer_knuckle_joint" multiplier="-1" offset="0" />
     </joint>
     <joint name="${prefix}left_inner_finger_pad_joint" type="fixed">
@@ -244,7 +247,8 @@
       <parent link="${prefix}grav_base_link" />
       <child link="${prefix}right_outer_bar" />
       <axis xyz="1 0 0" />
-      <limit effort="0" lower="-0.155" upper="0.7854" velocity="2.0" />
+      <limit effort="0" lower="-0.155" upper="0.7854" velocity="2.0"
+        acceleration="8" deceleration="8" jerk="64" />
       <mimic joint="${prefix}left_outer_knuckle_joint" multiplier="1" offset="0" />
     </joint>
     <joint name="${prefix}right_inner_knuckle_joint" type="revolute">
@@ -252,7 +256,8 @@
       <parent link="${prefix}grav_base_link" />
       <child link="${prefix}right_inner_bar" />
       <axis xyz="1 0 0" />
-      <limit effort="0" lower="-0.155" upper="0.7854" velocity="2.0" />
+      <limit effort="0" lower="-0.155" upper="0.7854" velocity="2.0"
+        acceleration="8" deceleration="8" jerk="64" />
       <mimic joint="${prefix}left_outer_knuckle_joint" multiplier="1" offset="0" />
     </joint>
     <joint name="${prefix}right_inner_finger_joint" type="revolute">
@@ -260,7 +265,8 @@
       <parent link="${prefix}right_outer_bar" />
       <child link="${prefix}right_finger_mount" />
       <axis xyz="1 0 0" />
-      <limit effort="0" lower="-0.7854" upper="0.155" velocity="2.0" />
+      <limit effort="0" lower="-0.7854" upper="0.155" velocity="2.0"
+        acceleration="8" deceleration="8" jerk="64" />
       <mimic joint="${prefix}left_outer_knuckle_joint" multiplier="-1" offset="0" />
     </joint>
     <joint name="${prefix}right_inner_finger_pad_joint" type="fixed">
@@ -282,7 +288,8 @@
       <parent link="${prefix}grav_base_link" />
       <child link="${prefix}unused_finger_width_link" />
       <axis xyz="1 0 0" />
-      <limit effort="80" lower="0" upper="0.100" velocity="0.2" />
+      <limit effort="80" lower="0" upper="0.100" velocity="0.2"
+        acceleration="0.8" deceleration="0.8" jerk="6.4" />
     </joint>
 
     <link name="${prefix}unused_finger_width_link">

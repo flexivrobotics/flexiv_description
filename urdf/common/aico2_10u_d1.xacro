@@ -8,7 +8,8 @@
       <parent link="${prefix}aico2_10u_d1_base_link" />
       <child link="${prefix}aico2_10u_d1_link1" />
       <axis xyz="0 0 1" />
-      <limit lower="-1.5708" upper="1.5708" effort="1032" velocity="1" />
+      <limit lower="-1.5708" upper="1.5708" effort="1032" velocity="1"
+        acceleration="4" deceleration="4" jerk="32" />
     </joint>
 
     <joint name="${prefix}aico2_10u_d1_joint2" type="revolute">
@@ -16,7 +17,8 @@
       <parent link="${prefix}aico2_10u_d1_link1" />
       <child link="${prefix}aico2_10u_d1_link2" />
       <axis xyz="0 1 0" />
-      <limit lower="0" upper="1.5708" effort="1958" velocity="1" />
+      <limit lower="0" upper="1.5708" effort="1958" velocity="1"
+        acceleration="4" deceleration="4" jerk="32" />
     </joint>
 
     <joint name="${prefix}aico2_10u_d1_left_arm_adapter" type="fixed">
