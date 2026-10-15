@@ -6,8 +6,8 @@
     commands and reports. Past 100 mm it opens into A mode, which is under-actuated and not
     commandable, so EG-P is the model used by gripper_type 'Grav-Enhanced'.
 
-    Link and joint names follow grav_macro.xacro, so finger_width_joint (EG-P) and the TCP links
-    work unchanged.
+    Link and joint names follow grav_macro.xacro, so finger_width_joint (EG-P) and the grav_tcp
+    frame (base_to_tcp) work unchanged.
 
     Kinematics, meshes (in meters) and finger inertials come from the SolidWorks exports.
     EG-P: Every finger joint mimics finger_width_joint, which maps linearly onto the
@@ -124,27 +124,17 @@
         inertia="2.70490E-06 -6.26950E-07 9.87880E-10 5.47010E-06 -2.51650E-08 3.93210E-06" />
     </xacro:if>
 
-    <!-- TCP links -->
-    <xacro:EG_tcp_link name="${prefix}grav_tcp" /><!-- open fingers -->
-    <xacro:EG_tcp_link name="${prefix}closed_fingers_tcp" />
-    <xacro:EG_tcp_link name="${prefix}left_finger_tcp" /><!-- pad centre -->
-    <xacro:EG_tcp_link name="${prefix}right_finger_tcp" />
+    <!-- TCP between the open finger tips -->
+    <xacro:EG_tcp_link name="${prefix}grav_tcp" />
 
     <!-- JOINTS -->
-    <!-- TCPs sit on the centre line at the pad centre height. EG-P: open = 0.1 m, closed = 0 m.
-         EG-A: both at the pad centre height of the fully open (160 deg) pose. -->
-    <xacro:property name="open_tcp_z" value="${0.17769 if mode == 'EG-P' else 0.15310}" />
-    <xacro:property name="closed_tcp_z" value="${0.20826 if mode == 'EG-P' else 0.15310}" />
-    <joint name="${prefix}open_fingers_tcp_joint" type="fixed">
-      <origin rpy="0 0 0" xyz="0 0 ${open_tcp_z}" />
+    <!-- TCP sits on the centre line at the pad centre height of the open pose.
+         EG-P: 0.1 m finger width. EG-A: fully open (160 deg). -->
+    <xacro:property name="tcp_z" value="${0.17769 if mode == 'EG-P' else 0.15310}" />
+    <joint name="${prefix}base_to_tcp" type="fixed">
+      <origin rpy="0 0 0" xyz="0 0 ${tcp_z}" />
       <parent link="${prefix}grav_base_link" />
       <child link="${prefix}grav_tcp" />
-      <axis xyz="0 0 1" />
-    </joint>
-    <joint name="${prefix}closed_fingers_tcp_joint" type="fixed">
-      <origin rpy="0 0 0" xyz="0 0 ${closed_tcp_z}" />
-      <parent link="${prefix}grav_base_link" />
-      <child link="${prefix}closed_fingers_tcp" />
       <axis xyz="0 0 1" />
     </joint>
 
@@ -171,17 +161,6 @@
       <xacro:EG_finger_joint prefix="${prefix}" name="left_inner_finger_joint"
         parent="left_outer_bar" child="left_finger_mount"
         xyz="0.068 0 0" rpy="0 0 -1.7449" multiplier="-8.943497" offset="0.894350" />
-      <!-- finger TCPs, aligned with grav_base_link -->
-      <joint name="${prefix}right_finger_tcp_joint" type="fixed">
-        <origin rpy="${-pi/4} ${-pi/2} -3.107148" xyz="0.048109 -0.00283 0" />
-        <parent link="${prefix}right_finger_mount" />
-        <child link="${prefix}right_finger_tcp" />
-      </joint>
-      <joint name="${prefix}left_finger_tcp_joint" type="fixed">
-        <origin rpy="${-pi/4} ${-pi/2} -1.605238" xyz="0.048109 0.00283 0" />
-        <parent link="${prefix}left_finger_mount" />
-        <child link="${prefix}left_finger_tcp" />
-      </joint>
     </xacro:if>
 
     <xacro:if value="${mode == 'EG-A'}">
@@ -234,17 +213,6 @@
         xyz="0.034 0 0" rpy="0 0 -1.5564" multiplier="-0.352341"
         offset="0.980888" input="a_mode_angle_joint"
         input_lower="${a_lower}" input_upper="${a_upper}" />
-      <!-- finger TCPs, aligned with grav_base_link -->
-      <joint name="${prefix}right_finger_tcp_joint" type="fixed">
-        <origin rpy="${-pi/4} ${-pi/2} -1.706888" xyz="0.077732 0.012991 0" />
-        <parent link="${prefix}right_finger_mount" />
-        <child link="${prefix}right_finger_tcp" />
-      </joint>
-      <joint name="${prefix}left_finger_tcp_joint" type="fixed">
-        <origin rpy="${-pi/4} ${-pi/2} -3.005498" xyz="0.077732 -0.012991 0" />
-        <parent link="${prefix}left_finger_mount" />
-        <child link="${prefix}left_finger_tcp" />
-      </joint>
     </xacro:if>
 
     <xacro:if value="${mode == 'EG-P'}">
