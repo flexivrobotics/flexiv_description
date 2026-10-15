@@ -33,7 +33,7 @@ and is read by both `scripts/create_urdf.py` and `launch/view_flexiv.launch.py`.
 | `Enlight-LL` | Two Enlight-L on `world` | — |
 | `MICO-Core` | Two Enlight-L | fixed |
 | `MICO-Plus` | Two Enlight-L | 2-DoF (yaw + pitch) pan-tilt |
-| `MICO-Ultra` | Two Enlight-L | 2-DoF (waist yaw + pitch) on a mobile base (empty base root, no mesh) |
+| `MICO-Ultra` | Two Enlight-L | 2-DoF (waist yaw + pitch) on a mobile base |
 
 Arm joints and links are prefixed `left_${robot_sn}_` and `right_${robot_sn}_`, the
 MICO-Plus/Ultra torso uses `${robot_sn}_torso_` (`${robot_sn}_torso_joint1`/`joint2`),
