@@ -116,13 +116,15 @@
   -->
   <xacro:macro name="get_inertias" params="name">
     <xacro:property name="inertias" value="${sec_inertia_parameters[name]}" lazy_eval="false" />
-    <origin xyz="${inertias['origin']['x']} ${inertias['origin']['y']} ${inertias['origin']['z']}"
-      rpy="${inertias['origin']['roll']} ${inertias['origin']['pitch']} ${inertias['origin']['yaw']}" />
-    <mass value="${inertias['mass']}" />
-    <inertia ixx="${inertias['inertia']['ixx']}" ixy="${inertias['inertia']['ixy']}"
-      ixz="${inertias['inertia']['ixz']}" iyy="${inertias['inertia']['iyy']}"
-      iyz="${inertias['inertia']['iyz']}"
-      izz="${inertias['inertia']['izz']}" />
+    <inertial>
+      <origin xyz="${inertias['origin']['x']} ${inertias['origin']['y']} ${inertias['origin']['z']}"
+        rpy="${inertias['origin']['roll']} ${inertias['origin']['pitch']} ${inertias['origin']['yaw']}" />
+      <mass value="${inertias['mass']}" />
+      <inertia ixx="${inertias['inertia']['ixx']}" ixy="${inertias['inertia']['ixy']}"
+        ixz="${inertias['inertia']['ixz']}" iyy="${inertias['inertia']['iyy']}"
+        iyz="${inertias['inertia']['iyz']}"
+        izz="${inertias['inertia']['izz']}" />
+    </inertial>
   </xacro:macro>
 
   <!--
