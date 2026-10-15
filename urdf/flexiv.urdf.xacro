@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="$(arg robot_type)">
+<!-- URDF 1.2: required for the acceleration/deceleration/jerk joint limits to be parsed -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="$(arg robot_type)" version="1.2">
   <!-- Single entry point for every Flexiv robot model. 'robot_type' values:
 
     Single arm on a mount (one robot_sn):
