@@ -86,9 +86,12 @@
     <xacro:property name="limits" value="${sec_joint_limits[name]}" lazy_eval="false" />
     <limit lower="${limits['lower']}" upper="${limits['upper']}" effort="${limits['effort']}"
       velocity="${limits['velocity']}" />
-    <safety_controller k_position="100.0" k_velocity="40.0"
-      soft_lower_limit="${limits['soft_lower']}"
-      soft_upper_limit="${limits['soft_upper']}" />
+    <!-- Soft limits are optional: the MICO torso joints have none -->
+    <xacro:if value="${'soft_lower' in limits}">
+      <safety_controller k_position="100.0" k_velocity="40.0"
+        soft_lower_limit="${limits['soft_lower']}"
+        soft_upper_limit="${limits['soft_upper']}" />
+    </xacro:if>
   </xacro:macro>
 
   <!--
