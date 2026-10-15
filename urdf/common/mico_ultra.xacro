@@ -57,24 +57,18 @@
 
     <!-- Mobile base root: empty link -->
     <link name="${torso_prefix}base_link">
-      <inertial>
-        <xacro:get_inertias name="base_link" />
-      </inertial>
+      <xacro:get_inertias name="base_link" />
     </link>
 
     <!-- Torso links -->
     <link name="${torso_prefix}link1">
-      <inertial>
-        <xacro:get_inertias name="link1" />
-      </inertial>
+      <xacro:get_inertias name="link1" />
       <xacro:get_visuals name="link1" />
       <xacro:get_collisions name="link1" />
     </link>
 
     <link name="${torso_prefix}link2">
-      <inertial>
-        <xacro:get_inertias name="link2" />
-      </inertial>
+      <xacro:get_inertias name="link2" />
       <xacro:get_visuals name="link2" />
       <xacro:get_collisions name="link2" />
     </link>
