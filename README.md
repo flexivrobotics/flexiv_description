@@ -46,7 +46,7 @@ own hardware interface. Select the arm with `arm_type` (`Rizon4`, `Rizon4s` or
 | `robot_type` | Actuated axis joints |
 | --- | --- |
 | `AICO1-4-V1` | `joint2` (`joint1` is fixed) |
-| `AICO1-4-V2` | `joint1`, `joint2`, `joint_head` |
+| `AICO1-4-V2` | `joint1` (`joint2`, `joint_head` are fixed) |
 
 **Two paired robots** — `robot_sn_left` **and** `robot_sn_right` are both required,
 driven by one `FlexivDualHardwareInterface`. Select the arms with `arm_type_left`
