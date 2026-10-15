@@ -55,9 +55,7 @@
 
     <!-- Torso: MICO-Core base_link (fixed, no revolute joints) -->
     <link name="${torso_prefix}base_link">
-      <inertial>
-        <xacro:get_inertias name="base_link" />
-      </inertial>
+      <xacro:get_inertias name="base_link" />
       <xacro:get_visuals name="base_link" />
       <xacro:get_collisions name="base_link" />
     </link>
