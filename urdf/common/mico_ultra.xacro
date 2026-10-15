@@ -3,7 +3,6 @@
 
   <!--
     MICO-Ultra: 2-DOF torso (waist yaw + pitch) with two Enlight-L arms, mounted on a mobile base.
-    base_link is the mobile-base root (empty link, no mesh present).
     Torso joints: <robot_sn>_torso_joint1 (waist yaw), <robot_sn>_torso_joint2 (pitch).
     Arm joints:   left_<robot_sn>_joint1..7, right_<robot_sn>_joint1..7.
     An empty robot_sn drops the separating underscore, e.g. 'torso_joint1', 'left_joint1'.
@@ -46,7 +45,7 @@
       inertia_parameters_file="${torso_inertia_file}"
       visual_parameters_file="${torso_visual_file}" />
 
-    <!-- World link and fixed joint to torso base (mobile base root: empty link, no mesh) -->
+    <!-- World link and fixed joint to torso base -->
     <link name="world" />
 
     <joint name="${torso_prefix}world_joint" type="fixed">
@@ -55,9 +54,11 @@
       <origin xyz="0 0 0" rpy="0 0 0" />
     </joint>
 
-    <!-- Mobile base root: empty link -->
+    <!-- Mobile base -->
     <link name="${torso_prefix}base_link">
       <xacro:get_inertias name="base_link" />
+      <xacro:get_visuals name="base_link" />
+      <xacro:get_collisions name="base_link" />
     </link>
 
     <!-- Torso links -->
@@ -71,6 +72,18 @@
       <xacro:get_inertias name="link2" />
       <xacro:get_visuals name="link2" />
       <xacro:get_collisions name="link2" />
+    </link>
+
+    <link name="${torso_prefix}neck_link">
+      <xacro:get_inertias name="neck_link" />
+      <xacro:get_visuals name="neck_link" />
+      <xacro:get_collisions name="neck_link" />
+    </link>
+
+    <link name="${torso_prefix}head_link">
+      <xacro:get_inertias name="head_link" />
+      <xacro:get_visuals name="head_link" />
+      <xacro:get_collisions name="head_link" />
     </link>
 
     <!-- Torso flange links (massless) -->
@@ -119,6 +132,19 @@
       <xacro:get_kinematics name="right_arm_adapter" />
       <parent link="${torso_prefix}link2" />
       <child link="${torso_prefix}right_flange" />
+    </joint>
+
+    <!-- Fixed neck and head -->
+    <joint name="${torso_prefix}neck_joint" type="fixed">
+      <xacro:get_kinematics name="neck_joint" />
+      <parent link="${torso_prefix}link2" />
+      <child link="${torso_prefix}neck_link" />
+    </joint>
+
+    <joint name="${torso_prefix}head_joint" type="fixed">
+      <xacro:get_kinematics name="head_joint" />
+      <parent link="${torso_prefix}neck_link" />
+      <child link="${torso_prefix}head_link" />
     </joint>
 
     <!-- Left arm (Enlight-L): no world link, no base joint -->
