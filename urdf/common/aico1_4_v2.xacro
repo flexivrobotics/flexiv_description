@@ -16,7 +16,7 @@
       <child link="${prefix}aico1_4_v2_link1" />
       <axis xyz="0 1 0" />
       <limit lower="-0.523598775598" upper="1.57079632679" effort="1000"
-        velocity="1" />
+        velocity="1" acceleration="4" deceleration="4" jerk="32" />
     </joint>
 
     <joint name="${prefix}aico1_4_v2_joint2" type="fixed">

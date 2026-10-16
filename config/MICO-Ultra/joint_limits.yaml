@@ -4,8 +4,14 @@ joint_limits:
     upper: 1.5703
     effort: 400
     velocity: 1
+    acceleration: 4.0
+    deceleration: 4.0
+    jerk: 32.0
   joint2:
     lower: 0
     upper: 1.5703
     effort: 400
     velocity: 1
+    acceleration: 4.0
+    deceleration: 4.0
+    jerk: 32.0
