@@ -33,7 +33,7 @@ and is read by both `scripts/create_urdf.py` and `launch/view_flexiv.launch.py`.
 | `Enlight-LL` | Two Enlight-L on `world` | — |
 | `MICO-Core` | Two Enlight-L | fixed |
 | `MICO-Plus` | Two Enlight-L | 2-DoF (yaw + pitch) pan-tilt |
-| `MICO-Ultra` | Two Enlight-L | 2-DoF (waist yaw + pitch) on a mobile base (empty base root, no mesh) |
+| `MICO-Ultra` | Two Enlight-L | 2-DoF (waist yaw + pitch) on a mobile base |
 
 Arm joints and links are prefixed `left_${robot_sn}_` and `right_${robot_sn}_`, the
 MICO-Plus/Ultra torso uses `${robot_sn}_torso_` (`${robot_sn}_torso_joint1`/`joint2`),
@@ -46,7 +46,7 @@ own hardware interface. Select the arm with `arm_type` (`Rizon4`, `Rizon4s` or
 | `robot_type` | Actuated axis joints |
 | --- | --- |
 | `AICO1-4-V1` | `joint2` (`joint1` is fixed) |
-| `AICO1-4-V2` | `joint1`, `joint2`, `joint_head` |
+| `AICO1-4-V2` | `joint1` (`joint2`, `joint_head` are fixed) |
 
 **Two paired robots** — `robot_sn_left` **and** `robot_sn_right` are both required,
 driven by one `FlexivDualHardwareInterface`. Select the arms with `arm_type_left`
