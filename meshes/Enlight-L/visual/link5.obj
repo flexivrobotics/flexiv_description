@@ -3,7 +3,7 @@
 # Version : 5.2.22102.3391
 # ModelUnit : MilliMeters
 # ExportUnit : Default
-mtllib Link5.mtl
+mtllib link5.mtl
 o Link5_simple_0
 v 0.03721 0.06069 0.10301
 v 0.03718 0.06069 0.10302
