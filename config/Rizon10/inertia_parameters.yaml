@@ -16,21 +16,21 @@ inertia_parameters:
       iyz: -0.0005
       izz: 0.0419
   link1:
-    mass: 14.197
+    mass: 9.842
     origin:
-      x: 0.0001
-      y: 0.0403
-      z: 0.1304
+      x: -0.0001
+      y: 0.0577
+      z: 0.164
       roll: 0
       pitch: 0
       yaw: 0
     inertia:
-      ixx: 0.2373
-      ixy: -0.0005
-      ixz: -0.0004
-      iyy: 0.1699
-      iyz: 0.0629
-      izz: 0.1166
+      ixx: 0.1912
+      ixy: -0.0004
+      ixz: -0.0002
+      iyy: 0.1335
+      iyz: 0.0441
+      izz: 0.1069
   link2:
     mass: 7.287
     origin:

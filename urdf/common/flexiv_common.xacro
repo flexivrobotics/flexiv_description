@@ -86,9 +86,12 @@
     <xacro:property name="limits" value="${sec_joint_limits[name]}" lazy_eval="false" />
     <limit lower="${limits['lower']}" upper="${limits['upper']}" effort="${limits['effort']}"
       velocity="${limits['velocity']}" />
-    <safety_controller k_position="100.0" k_velocity="40.0"
-      soft_lower_limit="${limits['soft_lower']}"
-      soft_upper_limit="${limits['soft_upper']}" />
+    <!-- Soft limits are optional: the MICO torso joints have none -->
+    <xacro:if value="${'soft_lower' in limits}">
+      <safety_controller k_position="100.0" k_velocity="40.0"
+        soft_lower_limit="${limits['soft_lower']}"
+        soft_upper_limit="${limits['soft_upper']}" />
+    </xacro:if>
   </xacro:macro>
 
   <!--
@@ -116,13 +119,15 @@
   -->
   <xacro:macro name="get_inertias" params="name">
     <xacro:property name="inertias" value="${sec_inertia_parameters[name]}" lazy_eval="false" />
-    <origin xyz="${inertias['origin']['x']} ${inertias['origin']['y']} ${inertias['origin']['z']}"
-      rpy="${inertias['origin']['roll']} ${inertias['origin']['pitch']} ${inertias['origin']['yaw']}" />
-    <mass value="${inertias['mass']}" />
-    <inertia ixx="${inertias['inertia']['ixx']}" ixy="${inertias['inertia']['ixy']}"
-      ixz="${inertias['inertia']['ixz']}" iyy="${inertias['inertia']['iyy']}"
-      iyz="${inertias['inertia']['iyz']}"
-      izz="${inertias['inertia']['izz']}" />
+    <inertial>
+      <origin xyz="${inertias['origin']['x']} ${inertias['origin']['y']} ${inertias['origin']['z']}"
+        rpy="${inertias['origin']['roll']} ${inertias['origin']['pitch']} ${inertias['origin']['yaw']}" />
+      <mass value="${inertias['mass']}" />
+      <inertia ixx="${inertias['inertia']['ixx']}" ixy="${inertias['inertia']['ixy']}"
+        ixz="${inertias['inertia']['ixz']}" iyy="${inertias['inertia']['iyy']}"
+        iyz="${inertias['inertia']['iyz']}"
+        izz="${inertias['inertia']['izz']}" />
+    </inertial>
   </xacro:macro>
 
   <!--

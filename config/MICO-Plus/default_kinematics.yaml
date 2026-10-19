@@ -3,31 +3,45 @@ kinematics:
     joint1:
       x: 0.0
       y: 0.0
-      z: 0.278
+      z: 0.2738
       roll: 0.0
       pitch: 0.0
       yaw: 0.0
     joint2:
       x: 0.04
       y: 0.0
-      z: 0.1735
+      z: 0.112
       roll: 0.0
       pitch: 0.0
       yaw: 0.0
     left_arm_adapter:
       x: -0.04
-      y: 0.015
-      z: 0.31
+      y: 0.025
+      z: 0.294
       roll: -1.5708
       pitch: 0.0
       yaw: 0.0
     right_arm_adapter:
       x: -0.04
-      y: -0.015
-      z: 0.31
-      roll: 1.5708
-      pitch: 3.14159
-      yaw: 0.0
+      y: -0.025
+      z: 0.294
+      roll: -1.5708
+      pitch: 0
+      yaw: 3.14159
+    neck_joint:
+      x: -0.04
+      y: 0
+      z: 0.39
+      roll: 0
+      pitch: 0
+      yaw: 0
+    head_joint:
+      x: 0
+      y: 0
+      z: 0.0726
+      roll: 0
+      pitch: 0
+      yaw: 0
 
   ARM_1:
     joint1:

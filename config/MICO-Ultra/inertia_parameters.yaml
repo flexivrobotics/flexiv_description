@@ -1,49 +1,81 @@
 inertia_parameters:
   base_link:
-    mass: 0
+    mass: 162
     origin:
-      x: 0.0
-      y: 0.0
-      z: 0.0
+      x: 0.00036864
+      y: -2.2548E-06
+      z: 0.24081
       roll: 0.0
       pitch: 0.0
       yaw: 0.0
     inertia:
-      ixx: 0
-      ixy: 0
-      ixz: 0
-      iyy: 0
-      iyz: 0
-      izz: 0
+      ixx: 3.781980223
+      ixy: -0.065
+      ixz: 0.018
+      iyy: 9.496
+      iyz: 0.073
+      izz: 7.029
   link1:
-    mass: 7.082
+    mass: 8.5
     origin:
-      x: -0.015488
-      y: 1.5112E-07
-      z: 0.18006
+      x: -0.0013583
+      y: 3.2038E-06
+      z: 0.081361
       roll: 0.0
       pitch: 0.0
       yaw: 0.0
     inertia:
-      ixx: 0.1589
-      ixy: -8.79E-08
-      ixz: 0.0042256
-      iyy: 0.15681
-      iyz: -3.9975E-07
-      izz: 0.03051
+      ixx: 0.133
+      ixy: -0.003
+      ixz: 0.031
+      iyy: 0.122
+      iyz: -0.006
+      izz: 0.048
   link2:
-    mass: 21.979
+    mass: 18.5
     origin:
-      x: -0.018599
-      y: -3.3799E-06
-      z: 0.16518
+      x: -0.011412
+      y: -0.00044055
+      z: 0.15578
       roll: 0.0
       pitch: 0.0
       yaw: 0.0
     inertia:
-      ixx: 0.45359
-      ixy: 1.7934E-06
-      ixz: -0.0023155
-      iyy: 0.26008
-      iyz: 2.1595E-06
-      izz: 0.23508
+      ixx: 0.419
+      ixy: -0.001
+      ixz: -0.067
+      iyy: 0.410
+      iyz: -0.001
+      izz: 0.128
+  neck_link:
+    mass: 0.8
+    origin:
+      x: 0.00086711
+      y: -0.00028073
+      z: 0.046211
+      roll: 0
+      pitch: 0
+      yaw: 0
+    inertia:
+      ixx: 0.002
+      ixy: 0.000
+      ixz: 0.000
+      iyy: 0.002
+      iyz: 0.000
+      izz: 0.000
+  head_link:
+    mass: 2.6
+    origin:
+      x: 0.059677
+      y: 1.0703E-06
+      z: 0.017334
+      roll: 0
+      pitch: 0
+      yaw: 0
+    inertia:
+      ixx: 0.008
+      ixy: 0.000
+      ixz: 0.000
+      iyy: 0.005
+      iyz: 0.000
+      izz: 0.012
