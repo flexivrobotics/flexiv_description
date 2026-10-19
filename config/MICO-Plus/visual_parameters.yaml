@@ -4,28 +4,48 @@ visual_parameters:
       shell:
         mesh:
           package: flexiv_description
-          path: meshes/MICO-Plus/visual/Base-link.obj
+          path: meshes/MICO-Plus/visual/base_link.obj
     collision:
       mesh:
         package: flexiv_description
-        path: meshes/MICO-Plus/collision/Base-link.stl
+        path: meshes/MICO-Plus/collision/base_link.stl
   link1:
     visual:
       shell:
         mesh:
           package: flexiv_description
-          path: meshes/MICO-Plus/visual/Yaw-link.obj
+          path: meshes/MICO-Plus/visual/link1.obj
     collision:
       mesh:
         package: flexiv_description
-        path: meshes/MICO-Plus/collision/Yaw-link.stl
+        path: meshes/MICO-Plus/collision/link1.stl
   link2:
     visual:
       shell:
         mesh:
           package: flexiv_description
-          path: meshes/MICO-Plus/visual/Pitch-link.obj
+          path: meshes/MICO-Plus/visual/link2.obj
     collision:
       mesh:
         package: flexiv_description
-        path: meshes/MICO-Plus/collision/Pitch-link.stl
+        path: meshes/MICO-Plus/collision/link2.stl
+  neck_link:
+    visual:
+      shell:
+        mesh:
+          package: flexiv_description
+          path: meshes/MICO-Plus/visual/neck_link.obj
+    collision:
+      mesh:
+        package: flexiv_description
+        path: meshes/MICO-Plus/collision/neck_link.stl
+  head_link:
+    visual:
+      shell:
+        mesh:
+          package: flexiv_description
+          path: meshes/MICO-Plus/visual/head_link.obj
+    collision:
+      mesh:
+        package: flexiv_description
+        path: meshes/MICO-Plus/collision/head_link.stl

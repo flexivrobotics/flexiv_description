@@ -56,27 +56,33 @@
 
     <!-- Torso links -->
     <link name="${torso_prefix}base_link">
-      <inertial>
-        <xacro:get_inertias name="base_link" />
-      </inertial>
+      <xacro:get_inertias name="base_link" />
       <xacro:get_visuals name="base_link" />
       <xacro:get_collisions name="base_link" />
     </link>
 
     <link name="${torso_prefix}link1">
-      <inertial>
-        <xacro:get_inertias name="link1" />
-      </inertial>
+      <xacro:get_inertias name="link1" />
       <xacro:get_visuals name="link1" />
       <xacro:get_collisions name="link1" />
     </link>
 
     <link name="${torso_prefix}link2">
-      <inertial>
-        <xacro:get_inertias name="link2" />
-      </inertial>
+      <xacro:get_inertias name="link2" />
       <xacro:get_visuals name="link2" />
       <xacro:get_collisions name="link2" />
+    </link>
+
+    <link name="${torso_prefix}neck_link">
+      <xacro:get_inertias name="neck_link" />
+      <xacro:get_visuals name="neck_link" />
+      <xacro:get_collisions name="neck_link" />
+    </link>
+
+    <link name="${torso_prefix}head_link">
+      <xacro:get_inertias name="head_link" />
+      <xacro:get_visuals name="head_link" />
+      <xacro:get_collisions name="head_link" />
     </link>
 
     <!-- Torso flange links (massless) -->
@@ -125,6 +131,19 @@
       <xacro:get_kinematics name="right_arm_adapter" />
       <parent link="${torso_prefix}link2" />
       <child link="${torso_prefix}right_flange" />
+    </joint>
+
+    <!-- Fixed neck and head -->
+    <joint name="${torso_prefix}neck_joint" type="fixed">
+      <xacro:get_kinematics name="neck_joint" />
+      <parent link="${torso_prefix}link2" />
+      <child link="${torso_prefix}neck_link" />
+    </joint>
+
+    <joint name="${torso_prefix}head_joint" type="fixed">
+      <xacro:get_kinematics name="head_joint" />
+      <parent link="${torso_prefix}neck_link" />
+      <child link="${torso_prefix}head_link" />
     </joint>
 
     <!-- Left arm (Enlight-L): no world link, no base joint -->
