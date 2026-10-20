@@ -8,7 +8,8 @@
       <parent link="${prefix}aico1_4_v1_base_link" />
       <child link="${prefix}aico1_4_v1_link1" />
       <axis xyz="0 0 1" />
-      <limit lower="0" upper="0.3" effort="100" velocity="1" />
+      <limit lower="0" upper="0.3" effort="100" velocity="1"
+        acceleration="4" deceleration="4" jerk="32" />
     </joint>
 
     <joint name="${prefix}aico1_4_v1_joint2" type="revolute">
@@ -16,11 +17,12 @@
       <parent link="${prefix}aico1_4_v1_link1" />
       <child link="${prefix}aico1_4_v1_link2" />
       <axis xyz="0 1 0" />
-      <limit lower="0" upper="1.57" effort="365" velocity="1" />
+      <limit lower="0" upper="1.57" effort="365" velocity="1"
+        acceleration="4" deceleration="4" jerk="32" />
     </joint>
 
     <joint name="${prefix}aico1_4_v1_arm_adapter" type="fixed">
-      <origin xyz="0.0037763 0.0 0.3214" rpy="1.5708 0 0" />
+      <origin xyz="0.0037763 7.8713E-05 0.3214" rpy="1.5708 0 0" />
       <parent link="${prefix}aico1_4_v1_link2" />
       <child link="${arm_prefix}base_link" />
       <axis xyz="0 0 0" />

@@ -24,7 +24,7 @@ and is read by both `scripts/create_urdf.py` and `launch/view_flexiv.launch.py`.
 - `Rizon10R`
 
 `Rizon4R` is mirrored `Rizon4` kinematics and is the default right arm of a pair.
-`Rizon10R` is mirrored `Rizon10` kinematics and is the default right arm of an `AICO2-10-V1` pair.
+`Rizon10R` is mirrored `Rizon10` kinematics and is the default right arm of an `AICO2-10` pair.
 
 **One robot with two arms** — one `robot_sn`, one `FlexivHardwareInterface`:
 
@@ -33,7 +33,7 @@ and is read by both `scripts/create_urdf.py` and `launch/view_flexiv.launch.py`.
 | `Enlight-LL` | Two Enlight-L on `world` | — |
 | `MICO-Core` | Two Enlight-L | fixed |
 | `MICO-Plus` | Two Enlight-L | 2-DoF (yaw + pitch) pan-tilt |
-| `MICO-Ultra` | Two Enlight-L | 2-DoF (waist yaw + pitch) on a mobile base (empty base root, no mesh) |
+| `MICO-Ultra` | Two Enlight-L | 2-DoF (waist yaw + pitch) on a mobile base |
 
 Arm joints and links are prefixed `left_${robot_sn}_` and `right_${robot_sn}_`, the
 MICO-Plus/Ultra torso uses `${robot_sn}_torso_` (`${robot_sn}_torso_joint1`/`joint2`),
@@ -46,7 +46,7 @@ own hardware interface. Select the arm with `arm_type` (`Rizon4`, `Rizon4s` or
 | `robot_type` | Actuated axis joints |
 | --- | --- |
 | `AICO1-4-V1` | `joint2` (`joint1` is fixed) |
-| `AICO1-4-V2` | `joint1`, `joint2`, `joint_head` |
+| `AICO1-4-V2` | `joint1` (`joint2`, `joint_head` are fixed) |
 
 **Two paired robots** — `robot_sn_left` **and** `robot_sn_right` are both required,
 driven by one `FlexivDualHardwareInterface`. Select the arms with `arm_type_left`
@@ -57,7 +57,16 @@ and `arm_type_right`; empty picks the arm the model actually carries:
 | `Rizon-Dual` | none, both arms bolt to `world` using `config/dual_arm_mounting.yaml` | `Rizon4` + `Rizon4R` |
 | `AICO2-4-V1` | 2-DoF | `Rizon4` + `Rizon4R` |
 | `AICO2-4-V2` | 2-DoF | `Rizon4` + `Rizon4R` |
+| `AICO2-4-D3` | 2-DoF | `Rizon4` + `Rizon4R` |
+| `AICO2-4E-D1` | 2-DoF | `Rizon4` + `Rizon4R` |
+| `AICO2-4U-D1` | 2-DoF | `Rizon4` + `Rizon4R` |
 | `AICO2-10-V1` | 2-DoF | `Rizon10` + `Rizon10R` |
+| `AICO2-10-D2` | 2-DoF | `Rizon10` + `Rizon10R` |
+| `AICO2-10E-D1` | 2-DoF | `Rizon10` + `Rizon10R` |
+| `AICO2-10U-D1` | 2-DoF | `Rizon10` + `Rizon10R` |
+
+Every AICO2 axis exposes `joint1` and `joint2`, named `${external_axis_prefix}` +
+the robot type lowercased with dashes as underscores, e.g. `aico2_10e_d1_joint1`.
 
 Arm prefixes are `left_${robot_sn_left}_` and `right_${robot_sn_right}_`. Since the
 two arms are separate robots, each has its own GPIO block.

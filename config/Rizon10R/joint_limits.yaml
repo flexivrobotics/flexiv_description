@@ -4,6 +4,9 @@ joint_limits:
     upper: 2.8798
     effort: 261
     velocity: 1.7453
+    acceleration: 6.9812
+    deceleration: 6.9812
+    jerk: 55.8496
     soft_lower: -2.7925
     soft_upper: 2.7925
   joint2:
@@ -11,6 +14,9 @@ joint_limits:
     upper: 2.7576
     effort: 261
     velocity: 1.7453
+    acceleration: 6.9812
+    deceleration: 6.9812
+    jerk: 55.8496
     soft_lower: -2.6704
     soft_upper: 2.6704
   joint3:
@@ -18,6 +24,9 @@ joint_limits:
     upper: 2.8798
     effort: 123
     velocity: 2.0944
+    acceleration: 8.3776
+    deceleration: 8.3776
+    jerk: 67.0208
     soft_lower: -2.7925
     soft_upper: 2.7925
   joint4:
@@ -25,6 +34,9 @@ joint_limits:
     upper: 2.7925
     effort: 123
     velocity: 2.0944
+    acceleration: 8.3776
+    deceleration: 8.3776
+    jerk: 67.0208
     soft_lower: -2.7053
     soft_upper: 2.7053
   joint5:
@@ -32,6 +44,9 @@ joint_limits:
     upper: 3.0543
     effort: 57
     velocity: 3.8397
+    acceleration: 15.3588
+    deceleration: 15.3588
+    jerk: 122.8704
     soft_lower: -2.9671
     soft_upper: 2.9671
   joint6:
@@ -39,6 +54,9 @@ joint_limits:
     upper: 4.6251
     effort: 57
     velocity: 3.8397
+    acceleration: 15.3588
+    deceleration: 15.3588
+    jerk: 122.8704
     soft_lower: -1.3963
     soft_upper: 4.5379
   joint7:
@@ -46,5 +64,8 @@ joint_limits:
     upper: 3.0543
     effort: 57
     velocity: 3.8397
+    acceleration: 15.3588
+    deceleration: 15.3588
+    jerk: 122.8704
     soft_lower: -2.9671
     soft_upper: 2.9671

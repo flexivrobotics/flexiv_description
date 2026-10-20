@@ -4,18 +4,48 @@ visual_parameters:
       shell:
         mesh:
           package: flexiv_description
-          path: meshes/MICO-Ultra/visual/waist_link.STL
+          path: meshes/MICO-Ultra/visual/link1.obj
     collision:
       mesh:
         package: flexiv_description
-        path: meshes/MICO-Ultra/collision/waist_link.STL
+        path: meshes/MICO-Ultra/collision/link1.stl
   link2:
     visual:
       shell:
         mesh:
           package: flexiv_description
-          path: meshes/MICO-Ultra/visual/pitch_link.STL
+          path: meshes/MICO-Ultra/visual/link2.obj
     collision:
       mesh:
         package: flexiv_description
-        path: meshes/MICO-Ultra/collision/pitch_link.STL
+        path: meshes/MICO-Ultra/collision/link2.stl
+  base_link:
+    visual:
+      shell:
+        mesh:
+          package: flexiv_description
+          path: meshes/MICO-Ultra/visual/base_link.obj
+    collision:
+      mesh:
+        package: flexiv_description
+        path: meshes/MICO-Ultra/collision/base_link.stl
+  neck_link:
+    visual:
+      shell:
+        mesh:
+          package: flexiv_description
+          path: meshes/MICO-Ultra/visual/neck_link.obj
+    collision:
+      mesh:
+        package: flexiv_description
+        path: meshes/MICO-Ultra/collision/neck_link.stl
+  head_link:
+    visual:
+      shell:
+        mesh:
+          package: flexiv_description
+          path: meshes/MICO-Ultra/visual/head_link.obj
+    collision:
+      mesh:
+        package: flexiv_description
+        path: meshes/MICO-Ultra/collision/head_link.stl

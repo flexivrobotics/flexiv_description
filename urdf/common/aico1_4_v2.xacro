@@ -16,23 +16,19 @@
       <child link="${prefix}aico1_4_v2_link1" />
       <axis xyz="0 1 0" />
       <limit lower="-0.523598775598" upper="1.57079632679" effort="1000"
-        velocity="1" />
+        velocity="1" acceleration="4" deceleration="4" jerk="32" />
     </joint>
 
-    <joint name="${prefix}aico1_4_v2_joint2" type="revolute">
+    <joint name="${prefix}aico1_4_v2_joint2" type="fixed">
       <origin xyz="-0.005 -0.0991 0.47875" rpy="0 0 0" />
       <parent link="${prefix}aico1_4_v2_link1" />
       <child link="${prefix}aico1_4_v2_neck_link" />
-      <axis xyz="0 0 1" />
-      <limit lower="-1.57079632679" upper="1.57079632679" effort="50" velocity="1" />
     </joint>
 
-    <joint name="${prefix}aico1_4_v2_joint_head" type="revolute">
+    <joint name="${prefix}aico1_4_v2_joint_head" type="fixed">
       <origin xyz="-0.025 0 0.088" rpy="0 0 0" />
       <parent link="${prefix}aico1_4_v2_neck_link" />
       <child link="${prefix}aico1_4_v2_head_link" />
-      <axis xyz="0 1 0" />
-      <limit lower="0" upper="0.436332312999" effort="80" velocity="1" />
     </joint>
 
     <joint name="${prefix}aico1_4_v2_arm_adapter" type="fixed">
