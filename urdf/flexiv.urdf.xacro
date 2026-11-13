@@ -39,7 +39,7 @@
   <xacro:arg name="visual_parameters_file"
     default="$(find flexiv_description)/config/$(arg robot_type)/visual_parameters.yaml" />
   <xacro:arg name="load_gripper" default="false" />
-  <xacro:arg name="gripper_name" default="Flexiv-GN01" />
+  <xacro:arg name="gripper_type" default="Grav" />
   <xacro:arg name="load_mounted_ft_sensor" default="false" />
   <xacro:arg name="mounting_file" default="$(find flexiv_description)/config/single_robot_mounting.yaml" />
   <xacro:arg name="dual_mounting_file" default="$(find flexiv_description)/config/dual_robot_mounting.yaml" />
@@ -57,8 +57,8 @@
   <xacro:arg name="arm_type_right" default="" />
   <xacro:arg name="load_gripper_left" default="false" />
   <xacro:arg name="load_gripper_right" default="false" />
-  <xacro:arg name="gripper_name_left" default="Flexiv-GN01" />
-  <xacro:arg name="gripper_name_right" default="Flexiv-GN01" />
+  <xacro:arg name="gripper_type_left" default="Grav" />
+  <xacro:arg name="gripper_type_right" default="Grav" />
   <xacro:arg name="load_mounted_ft_sensor_left" default="false" />
   <xacro:arg name="load_mounted_ft_sensor_right" default="false" />
   <!-- Empty means 'use the arm's default_kinematics.yaml'. -->
@@ -111,7 +111,7 @@
       visual_parameters_file="$(arg visual_parameters_file)"
       arm_prefix="$(arg arm_prefix)"
       load_gripper="$(arg load_gripper)"
-      gripper_name="$(arg gripper_name)"
+      gripper_type="$(arg gripper_type)"
       load_mounted_ft_sensor="$(arg load_mounted_ft_sensor)"
       base_rpy="${radians(mounting['orientation']['rx'])} ${radians(mounting['orientation']['ry'])} ${radians(mounting['orientation']['rz'])}">
     </xacro:flexiv_robot>
@@ -142,7 +142,7 @@
       visual_parameters_file="${arm_cfg}/visual_parameters.yaml"
       arm_prefix="left"
       load_gripper="$(arg load_gripper)"
-      gripper_name="$(arg gripper_name)"
+      gripper_type="$(arg gripper_type)"
       load_mounted_ft_sensor="$(arg load_mounted_ft_sensor)"
       add_world_link="true"
       create_base_joint="true"
@@ -161,7 +161,7 @@
       visual_parameters_file="${arm_cfg}/visual_parameters.yaml"
       arm_prefix="right"
       load_gripper="$(arg load_gripper)"
-      gripper_name="$(arg gripper_name)"
+      gripper_type="$(arg gripper_type)"
       load_mounted_ft_sensor="$(arg load_mounted_ft_sensor)"
       add_world_link="false"
       create_base_joint="true"
@@ -187,7 +187,7 @@
       robot_sn="$(arg robot_sn)"
       kinematics_parameters_file="${mico_core_kin}"
       load_gripper="$(arg load_gripper)"
-      gripper_name="$(arg gripper_name)"
+      gripper_type="$(arg gripper_type)"
       load_mounted_ft_sensor="$(arg load_mounted_ft_sensor)"
       />
   </xacro:if>
@@ -203,7 +203,7 @@
       robot_sn="$(arg robot_sn)"
       kinematics_parameters_file="${mico_plus_kin}"
       load_gripper="$(arg load_gripper)"
-      gripper_name="$(arg gripper_name)"
+      gripper_type="$(arg gripper_type)"
       load_mounted_ft_sensor="$(arg load_mounted_ft_sensor)"
       />
   </xacro:if>
@@ -219,7 +219,7 @@
       robot_sn="$(arg robot_sn)"
       kinematics_parameters_file="${mico_ultra_kin}"
       load_gripper="$(arg load_gripper)"
-      gripper_name="$(arg gripper_name)"
+      gripper_type="$(arg gripper_type)"
       load_mounted_ft_sensor="$(arg load_mounted_ft_sensor)"
       />
   </xacro:if>
@@ -272,7 +272,7 @@
       visual_parameters_file="${cfg}/${aico1_arm}/visual_parameters.yaml"
       arm_prefix="$(arg arm_prefix)"
       load_gripper="$(arg load_gripper)"
-      gripper_name="$(arg gripper_name)"
+      gripper_type="$(arg gripper_type)"
       load_mounted_ft_sensor="$(arg load_mounted_ft_sensor)"
       add_world_link="false"
       create_base_joint="false" />
@@ -378,7 +378,7 @@
       visual_parameters_file="${cfg}/${arm_left}/visual_parameters.yaml"
       arm_prefix="left"
       load_gripper="$(arg load_gripper_left)"
-      gripper_name="$(arg gripper_name_left)"
+      gripper_type="$(arg gripper_type_left)"
       load_mounted_ft_sensor="$(arg load_mounted_ft_sensor_left)"
       add_world_link="false"
       create_base_joint="${paired_base_joint}"
@@ -394,7 +394,7 @@
       visual_parameters_file="${cfg}/${arm_right}/visual_parameters.yaml"
       arm_prefix="right"
       load_gripper="$(arg load_gripper_right)"
-      gripper_name="$(arg gripper_name_right)"
+      gripper_type="$(arg gripper_type_right)"
       load_mounted_ft_sensor="$(arg load_mounted_ft_sensor_right)"
       add_world_link="false"
       create_base_joint="${paired_base_joint}"
