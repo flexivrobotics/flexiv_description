@@ -50,7 +50,8 @@
       <parent link="${prefix}${parent}" />
       <child link="${prefix}${child}" />
       <axis xyz="0 0 1" />
-      <limit effort="0" lower="${min(q0, q1)}" upper="${max(q0, q1)}" velocity="2.0" />
+      <limit effort="0" lower="${min(q0, q1)}" upper="${max(q0, q1)}" velocity="2.0"
+        acceleration="8" deceleration="8" jerk="64" />
       <mimic joint="${prefix}${input}" multiplier="${multiplier}" offset="${offset}" />
     </joint>
   </xacro:macro>
@@ -172,7 +173,8 @@
         <parent link="${prefix}grav_base_link" />
         <child link="${prefix}unused_a_mode_angle_link" />
         <axis xyz="1 0 0" />
-        <limit effort="0" lower="${a_lower}" upper="${a_upper}" velocity="1.0" />
+        <limit effort="0" lower="${a_lower}" upper="${a_upper}" velocity="1.0"
+          acceleration="4" deceleration="4" jerk="32" />
       </joint>
       <link name="${prefix}unused_a_mode_angle_link">
         <inertial>
@@ -227,7 +229,8 @@
         <parent link="${prefix}grav_base_link" />
         <child link="${prefix}unused_finger_width_link" />
         <axis xyz="1 0 0" />
-        <limit effort="45" lower="0" upper="0.100" velocity="0.2" />
+        <limit effort="45" lower="0" upper="0.100" velocity="0.2"
+          acceleration="0.8" deceleration="0.8" jerk="6.4" />
       </joint>
 
       <link name="${prefix}unused_finger_width_link">
