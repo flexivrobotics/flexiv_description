@@ -1,0 +1,12 @@
+# Single source of truth for the gripper types urdf/flexiv.urdf.xacro accepts
+# (gripper_type, gripper_type_left, gripper_type_right). Read by
+# urdf/common/flexiv_robot.xacro, scripts/create_urdf.py and
+# launch/view_flexiv.launch.py, so add new models here.
+#
+# gripper_type selects the geometry only. The device name that RDK enables is a
+# separate argument, since Grav and Grav Enhanced are both 'Flexiv-GN01' in
+# Flexiv Elements.
+gripper_types:
+  - Grav             # Flexiv Grav (GN01)
+  - Grav-Enhanced    # Flexiv Grav Enhanced (EG), P mode
+  - Grav-Enhanced-A  # EG in A mode, visualization only (input: a_mode_angle_joint)
